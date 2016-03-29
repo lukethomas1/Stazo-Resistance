@@ -25,6 +25,9 @@ public class GameObject {
         randomizeSpies();
     }
 
+    /**
+     * Assigns the spies randomly in the spy array.
+     */
     private void randomizeSpies () {
         int maxSpies = (playerCount + 2) / 3; //Gets max number of spies according to playerCount
         int numSpies = 0; //Current number of spies in array
@@ -57,6 +60,11 @@ public class GameObject {
         return playerCount;
     }
 
+    /**
+     * Add a player to the array.
+     * @param player The player to be added.
+     * @return t/f depending on success of adding the player.
+     */
     public Boolean addPlayer (String player) {
 
         if (playerIndex < playerCount) {
