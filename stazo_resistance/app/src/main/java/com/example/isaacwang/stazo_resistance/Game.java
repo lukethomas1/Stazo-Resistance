@@ -1,90 +1,140 @@
-package com.example.brian.stazoresistance;
+package com.example.isaacwang.stazo_resistance;
 
 /**
- * Created by Brian on 3/29/2016.
+ * Created by isaacwang on 3/29/16.
  */
-public class GameObject {
+public class Game {
 
     private static final int win = 3; //How many rounds it takes to win the game
 
-    private static int playerCount; //How many players are in the game
-
-    private String[] players; //Array of player names
-    private Boolean[] spy; //Parallel array of t/f depending on if the player is a spy or not
+    private static int numPlayers; //How many players are in the game
+    private Player[] players;
     private int playerIndex = 0; //Where to insert the next player
 
     private int spyScore = 0; //Score of the Spies
     private int resistanceScore = 0; //Score of the Resistance
+    private int round = 0; //The round of the game we're on, 0-4
 
-    public GameObject (int count) {
-        playerCount = count;
+    // Sequences for missions depending on number of players
+    private static final Mission[] fiveSequence = {new Mission(2,1), new Mission(3,1),
+            new Mission(2,1), new Mission(3,1), new Mission(3,1)};
+    private static final Mission[] sixSequence = {new Mission(2,1), new Mission(3,1),
+            new Mission(4,1), new Mission(3,1), new Mission(4,1)};
+    private static final Mission[] sevenSequence = {new Mission(2,1), new Mission(3,1),
+            new Mission(3,1), new Mission(4,2), new Mission(4,1)};
+    private static final Mission[] entSequence = {new Mission(3,1), new Mission(4,1),
+            new Mission(4,1), new Mission(5,2), new Mission(5,1)};
 
-        players = new String[playerCount];
-        spy = new Boolean[playerCount];
+    // Array of all the sequences
+    private static final Mission[][] allSequences = {fiveSequence, sixSequence, sevenSequence,
+            entSequence, entSequence, entSequence};
 
-        randomizeSpies();
+    // The sequence to be used for this game
+    private Mission[] sequence;
+
+
+    public Game(int numPlayers) {
+
+        // initialize variables
+        this.numPlayers = numPlayers;
+        players = new Player[numPlayers];
+        sequence = allSequences[numPlayers-5];
+
+        // generate players, no names
+        generatePlayers();
+
+        // set spies
+        assignSpies();
+    }
+
+    /**
+     * generates nameless players to prep for assignSpies
+     */
+    private void generatePlayers() {
+        for (int i=0; i < numPlayers; i++) {
+            players[i] = new Player(i);
+        }
     }
 
     /**
      * Assigns the spies randomly in the spy array.
      */
-    private void randomizeSpies () {
-        int maxSpies = (playerCount + 2) / 3; //Gets max number of spies according to playerCount
+    private void assignSpies () {
+        int maxSpies = (numPlayers + 2) / 3; //Gets max number of spies according to playerCount
         int numSpies = 0; //Current number of spies in array
 
-        for (int i = 0; i < spy.length; i++) {
+        while (numSpies < maxSpies) {
 
-            spy[i] = false;
+            //Randomly generates index from 0 to playerCount-1
+            int randomNum = (int) (Math.random() * numPlayers);
 
-            //Already assigned all the spies, keep filling up the rest with false.
-            if (numSpies >= maxSpies) {
-                continue;
-            }
-
-            //Randomize spies; 0 = not spy, 1 = spy
-            int randomNum = (int)(Math.random());
-
-            if (randomNum == 1) {
-                spy[i] = true;
+            //If the player at that index is not already a spy, make them a spy
+            if (!players[randomNum].getSpy()) {
+                players[randomNum].setSpy(true);
                 numSpies++;
             }
         }
-
-        //Failed to assign correct number of spies, redo
-        if (numSpies < maxSpies) {
-            randomizeSpies();
-        }
     }
 
-    public int getNumPlayers () {
-        return playerCount;
-    }
+    public int getNumPlayers () {return numPlayers;}
+
+    public int getSpyScore () {return spyScore;}
+
+    public int getResistanceScore () {return resistanceScore;}
+
+    public Mission getMission() {return sequence[round];}
 
     /**
-     * Add a player to the array.
-     * @param player The player to be added.
+     * Add a player to the array (just sets the name)
+     * @param name The player to be added.
      * @return t/f depending on success of adding the player.
      */
-    public Boolean addPlayer (String player) {
-
-        if (playerIndex < playerCount) {
-
-            players[playerIndex] = player;
+    public Boolean addPlayer (String name) {
+        if (playerIndex < numPlayers) {
+            players[playerIndex].setName(name);
             playerIndex++;
-
         }
         else {
             return false;
         }
-
         return true;
     }
 
-    public int getSpyScore () {
-        return spyScore;
+    /**
+     * Checks if mission passes or fails
+     * @param fails the number of fails entered
+     * @return whether the mission passed
+     */
+    public boolean executeMission (int fails) {
+        if (getMission().missionPass(fails)){
+            resistanceScore++;
+            round++;
+            return true;
+        }
+        else {
+            spyScore++;
+            round++;
+            return false;
+        }
     }
 
-    public int getResistanceScore () {
-        return resistanceScore;
+    private static class Mission {
+        private final int numMems;
+        private final int numFails;
+        public Mission(int mems, int fails) {
+            numMems = mems;
+            numFails = fails;
+        }
+        public int getMems(){return numMems;}
+        public int getFails(){return numFails;}
+
+        /**
+         * Checks if mission passes or fails
+         * @param fails number of fails
+         * @return whether the mission passes
+         */
+        public boolean missionPass(int fails){
+            return fails < numFails;
+        }
     }
 }
