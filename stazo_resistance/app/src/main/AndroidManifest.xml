@@ -31,6 +31,10 @@
             android:name=".Approval"
             android:label="Approval"></activity>
         <activity android:name=".Sabotage"></activity>
+        <activity
+            android:name=".MissionPassTho"
+            android:label="MissionPassTho"></activity>
     </application>
+
 
 </manifest>
