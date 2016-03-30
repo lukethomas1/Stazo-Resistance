@@ -117,7 +117,11 @@ public class Game {
 
     public int getSpyScore () {return spyScore;}
 
+    public void incrementSpyScore () {spyScore++;}
+
     public int getResistanceScore () {return resistanceScore;}
+
+    public void incrementResistanceScore () {resistanceScore++;}
 
     public int getIteratorIndex() {return playerIndex;}
 
