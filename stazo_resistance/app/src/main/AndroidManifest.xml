@@ -18,7 +18,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".NameEntry"></activity>
+        <activity android:name=".NameEntry" />
+        <activity android:name=".RoleRevealActivity"></activity>
     </application>
 
 </manifest>
