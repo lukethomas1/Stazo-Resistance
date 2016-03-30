@@ -14,6 +14,7 @@ public class Game {
     private Player[] players;
     private int playerIndex = 0; //Where to insert the next player
 
+    //Mission Logic
     private Player[] agents; //Agents on the mission
     private int agentIndex; //Where to insert next agent
     private int sabotageIndex; //Who is currently succeed/sabotaging
@@ -40,9 +41,18 @@ public class Game {
     // The sequence to be used for this game
     private Mission[] sequence;
 
-    public void assignMission () {
-        int mem = sequence[round].getMems();
-        agents = new Player[mem];
+    public Game(int numPlayers) {
+
+        // initialize variables
+        this.numPlayers = numPlayers;
+        players = new Player[numPlayers];
+        sequence = allSequences[numPlayers-5];
+
+        // generate players, no names
+        generatePlayers();
+
+        // set spies
+        assignSpies();
     }
 
     public boolean missionReady(){
@@ -57,20 +67,6 @@ public class Game {
         if (!succ) {
             fails++;
         }
-    }
-
-    public Game(int numPlayers) {
-
-        // initialize variables
-        this.numPlayers = numPlayers;
-        players = new Player[numPlayers];
-        sequence = allSequences[numPlayers-5];
-
-        // generate players, no names
-        generatePlayers();
-
-        // set spies
-        assignSpies();
     }
 
     /**
