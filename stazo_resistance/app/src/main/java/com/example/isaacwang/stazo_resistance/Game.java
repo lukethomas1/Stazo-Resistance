@@ -15,7 +15,9 @@ public class Game {
     private int playerIndex = 0; //Where to insert the next player
 
     private Player[] agents; //Agents on the mission
-    private int missionCount = 0;
+    private int agentIndex; //Where to insert next agent
+    private int sabotageIndex; //Who is currently succeed/sabotaging
+    private int fails; //Number of fails on the mission
 
     private int spyScore = 0; //Score of the Spies
     private int resistanceScore = 0; //Score of the Resistance
@@ -39,11 +41,22 @@ public class Game {
     private Mission[] sequence;
 
     public void assignMission () {
-        Mission[] mission = allSequences[numPlayers - 5];
-
-        int mem = mission[missionCount].getMems();
-
+        int mem = sequence[round].getMems();
         agents = new Player[mem];
+    }
+
+    public boolean missionReady(){
+        return (agentIndex == getMission().getMems());
+    }
+
+    public void addToMission(Player player) {
+        agents[agentIndex++] = player;
+    }
+
+    public void succMission(boolean succ) {
+        if (!succ) {
+            fails++;
+        }
     }
 
     public Game(int numPlayers) {
