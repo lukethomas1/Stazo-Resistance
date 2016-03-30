@@ -9,13 +9,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 public class NameEntry extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.entername);
+
+        setPlayerNumberText();
     }
 
     public void handleClick(View view)
@@ -29,23 +33,14 @@ public class NameEntry extends AppCompatActivity {
         // Check for user clicking done with no name
         if (name.equals(""))
         {
-            EnterNameFragment dialogFragment = new EnterNameFragment();
-
-            // Show the alert prompting the user to enter a name
-            dialogFragment.show(getFragmentManager(), "AlertDialog");
+            promptNameEntry();
         }
 
         // Switch screens to role reveal
         else
         {
-            // Retrieve the Resistance application
-            Resistance resistance = (Resistance) getApplication();
-
-            // Retrieve the game
-            Game game = resistance.getGame();
-
-            // Add the player name
-            game.addPlayerName(name);
+            // Save the name data in the player objects
+            storeNameData(name);
 
             // Transfer control to RoleRevealActivity
             Intent intent = new Intent(this, RoleRevealActivity.class);
@@ -53,6 +48,47 @@ public class NameEntry extends AppCompatActivity {
             startActivity(intent);
         }
     }
+
+    private void setPlayerNumberText()
+    {
+        // Get Player Number TextView
+        TextView playerTextView = (TextView) findViewById(R.id.playerNumTextView);
+
+        // Set the player number.  Will be 1+ the current iterator index
+        playerTextView.setText(playerTextView.getText() + " " + (getGame().getIteratorIndex() + 1 ));
+    }
+
+
+    private void storeNameData(String name)
+    {
+        // Retrieve the game
+        Game game = getGame();
+
+        // Add the player name
+        game.addPlayerName(name);
+    }
+
+    private Game getGame()
+    {
+        // Retrieve the Resistance application
+        Resistance resistance = (Resistance) getApplication();
+
+        // Retrieve the game
+        Game game = resistance.getGame();
+
+        return game;
+    }
+
+
+    private void promptNameEntry()
+    {
+        // Create DialogFragment to manage AlertDialog
+        EnterNameFragment dialogFragment = new EnterNameFragment();
+
+        // Show the alert prompting the user to enter a name
+        dialogFragment.show(getFragmentManager(), "AlertDialog");
+    }
+
 
     public class EnterNameFragment extends DialogFragment
     {
