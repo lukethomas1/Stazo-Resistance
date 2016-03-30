@@ -23,7 +23,7 @@ public class IntroActivity extends AppCompatActivity {
         setContentView(R.layout.introscreen);
     }
 
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_intro, menu);
@@ -43,7 +43,7 @@ public class IntroActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
     public void startGame(View view){
         AlertDialog.Builder numEntry = new AlertDialog.Builder(this);

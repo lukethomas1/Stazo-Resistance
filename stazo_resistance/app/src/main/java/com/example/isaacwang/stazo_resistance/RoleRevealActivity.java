@@ -42,7 +42,7 @@ public class RoleRevealActivity extends AppCompatActivity {
         Game gameObject = ((Resistance)getApplication()).getGame();
 
         // Check if this is the last player, if so go to mission proposal activity
-        if(gameObject.getIteratorIndex() == gameObject.getNumPlayers() - 1) {
+        if(gameObject.getIteratorIndex() == gameObject.getNumPlayers()) {
             i = new Intent(this, Proposal.class);
         }
 

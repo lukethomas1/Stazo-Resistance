@@ -15,11 +15,12 @@ public class Game {
     private int playerIndex = 0; //Where to insert the next player
 
     //Mission Logic
-    private Player[] agents; //Agents on the mission
+    private Player[] agents = new Player[5]; //Agents on the mission
     private int round = 0; //The round of the game we're on, 0-4
-    private int agentIndex; //Where to insert next agent
-    private int sabotageIndex; //Who is currently succeed/sabotaging
-    private int fails; //Number of fails on the mission
+    private int proposerIndex = 0; //Who is currently proposing
+    private int agentIndex = 0; //Where to insert next agent
+    private int sabotageIndex = 0; //Who is currently succeed/sabotaging
+    private int fails = 0; //Number of fails on the mission
     private int spyScore = 0; //Score of the Spies
     private int resistanceScore = 0; //Score of the Resistance
 
@@ -43,11 +44,20 @@ public class Game {
     // Getters
     public int getNumPlayers () {return numPlayers;}
     public Player getPlayer(int index) {return players[index];}
+    public Player getProposer() {return players[proposerIndex];}
     public int getIteratorIndex() {return playerIndex;}
     public Mission getMission() {return sequence[round];}
     public Player[] getAgents() {return agents;}
     public int getSpyScore () {return spyScore;}
     public int getResistanceScore () {return resistanceScore;}
+    public String getPlayerName(int index) {
+        if (index >= numPlayers) {
+            return "default";
+        }
+        else {
+            return getPlayer(index).getName();
+        }
+    }
 
     // Setters
     public void incrementSpyScore () {spyScore++;}
@@ -99,8 +109,6 @@ public class Game {
                 numSpies++;
             }
         }
-
-        playerIndex = 0;
     }
 
     /**
@@ -129,20 +137,42 @@ public class Game {
         else return null;
     }
 
+    //Have we iterated through all the players?
+    public Boolean fullyIterated() {return playerIndex >= numPlayers;}
+
 
     //MISSION LOGIC BELOW--------------------------------------------------------------------------
 
-    public boolean missionReady(){
-        return (agentIndex == getMission().getMems());
-    }
-
+    //Add a player to the mission if not already on it
     public void addToMission(Player player) {
-        agents[agentIndex++] = player;
+        //If the player is already on the mission, do nothing
+        if (!isOnMission(player)) {
+            agents[agentIndex++] = player;
+        }
     }
 
-    public void failMission(){
-        fails ++;
+    //Is the player already in the mission?
+    public boolean isOnMission(Player player) {
+        Player p;
+
+        //Not a for-each loop because agent array is never truly emptied, index is just reset
+        for (int i = 0; i < agentIndex; i++) {
+            p = agents[i];
+            if (p == player) {
+                return true;
+            }
+        }
+        return false;
     }
+
+    //Is the mission ready to be voted on?
+    public boolean missionReady(){return (agentIndex == getMission().getMems());}
+
+    //Called when an agent fails a mission
+    public void sabotageMission(){fails ++;}
+
+    //Called to "clear" a mission, resets index
+    public void clearAgents() {agentIndex = 0;}
 
 
     /**
@@ -150,7 +180,8 @@ public class Game {
      * @param fails the number of fails entered
      * @return whether the mission passed
      */
-    public boolean executeMission (int fails) {
+    public boolean executeMission () {
+        incrementProposer();
         if (getMission().missionPass(fails)){
             resistanceScore++;
             round++;
@@ -161,6 +192,10 @@ public class Game {
             round++;
             return false;
         }
+    }
+
+    public void incrementProposer() {
+        proposerIndex++;
     }
 
     private static class Mission {
