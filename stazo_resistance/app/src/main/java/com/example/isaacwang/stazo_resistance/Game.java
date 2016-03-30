@@ -77,6 +77,7 @@ public class Game {
                 numSpies++;
             }
         }
+
     }
 
     public int getNumPlayers () {return numPlayers;}

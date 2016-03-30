@@ -18,9 +18,10 @@ public class RoleRevealActivity extends AppCompatActivity {
         // Get the text field that displays the role of the player
         TextView roleText = (TextView)findViewById(R.id.role_textView);
         // Set the text to the player's role
-        Player currentPlayer = ((Resistance)getApplication()).getNextPlayer();
+        Player currentPlayer = ((Resistance)getApplication()).getGame().getNextPlayer();
         // Make sure player isn't null
         if(currentPlayer != null) {
+            roleText.setText("Testing");
             // If player is a spy, change text to say "Spy" rather than "Rebel"
             if(currentPlayer.isSpy()) {
                 roleText.setText("Spy");
