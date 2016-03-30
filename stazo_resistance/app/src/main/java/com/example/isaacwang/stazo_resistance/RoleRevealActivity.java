@@ -12,15 +12,23 @@ public class RoleRevealActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.rolereveal);
+
         // Get the intent that created this activity
         Intent intent = getIntent();
         // Get the text field that displays the role of the player
         TextView roleText = (TextView)findViewById(R.id.role_textView);
         // Set the text to the player's role
-        roleText.setText(intent.getStringExtra("Role"));
+        Player currentPlayer = ((Resistance)getApplication()).getNextPlayer();
+        // Make sure player isn't null
+        if(currentPlayer != null) {
+            // If player is a spy, change text to say "Spy" rather than "Rebel"
+            if(currentPlayer.isSpy()) {
+                roleText.setText("Spy");
+            }
+        }
     }
 
-    public void goToName(){
+    public void goToName(View view){
         Intent i = new Intent(this, NameEntry.class);
         startActivity(i);
     };

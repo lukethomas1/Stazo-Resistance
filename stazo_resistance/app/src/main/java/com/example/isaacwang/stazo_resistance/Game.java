@@ -72,7 +72,7 @@ public class Game {
             int randomNum = (int) (Math.random() * numPlayers);
 
             //If the player at that index is not already a spy, make them a spy
-            if (!players[randomNum].getSpy()) {
+            if (!players[randomNum].isSpy()) {
                 players[randomNum].setSpy(true);
                 numSpies++;
             }
