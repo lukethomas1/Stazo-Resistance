@@ -83,7 +83,11 @@ public class Game {
 
     public int getSpyScore () {return spyScore;}
 
+    public void incrementSpyScore () {spyScore++;}
+
     public int getResistanceScore () {return resistanceScore;}
+
+    public void incrementResistanceScore () {resistanceScore++;}
 
     public int getPlayerIndex() {return playerIndex;}
 
