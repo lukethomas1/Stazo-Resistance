@@ -24,6 +24,9 @@
         <activity
             android:name=".HowToPlay"
             android:label="How To Play"></activity>
+
+        <activity android:name=".GameOver"></activity>
+
         <activity
             android:name=".Approval"
             android:label="Approval"></activity>

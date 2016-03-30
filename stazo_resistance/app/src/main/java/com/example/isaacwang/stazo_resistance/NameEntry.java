@@ -31,6 +31,7 @@ public class NameEntry extends AppCompatActivity {
         String name = nameField.getText().toString();
 
         // Check for user clicking done with no name
+
         if (name.equals(""))
         {
             promptNameEntry();
@@ -44,7 +45,6 @@ public class NameEntry extends AppCompatActivity {
 
             // Transfer control to RoleRevealActivity
             Intent intent = new Intent(this, RoleRevealActivity.class);
-
             startActivity(intent);
         }
     }
