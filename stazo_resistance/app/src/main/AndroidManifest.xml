@@ -18,7 +18,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".NameEntry"></activity>
+        <activity android:name=".NameEntry" />
+        <activity android:name=".HowToPlay"
+            android:label="How To Play">
+        </activity>
     </application>
 
 </manifest>
