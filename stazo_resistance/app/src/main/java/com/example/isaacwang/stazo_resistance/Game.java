@@ -14,6 +14,9 @@ public class Game {
     private Player[] players;
     private int playerIndex = 0; //Where to insert the next player
 
+    private Player[] agents; //Agents on the mission
+    private int missionCount = 0;
+
     private int spyScore = 0; //Score of the Spies
     private int resistanceScore = 0; //Score of the Resistance
     private int round = 0; //The round of the game we're on, 0-4
@@ -35,6 +38,13 @@ public class Game {
     // The sequence to be used for this game
     private Mission[] sequence;
 
+    public void assignMission () {
+        Mission[] mission = allSequences[numPlayers - 5];
+
+        int mem = mission[missionCount].getMems();
+
+        agents = new Player[mem];
+    }
 
     public Game(int numPlayers) {
 
@@ -72,14 +82,38 @@ public class Game {
             int randomNum = (int) (Math.random() * numPlayers);
 
             //If the player at that index is not already a spy, make them a spy
-            if (!players[randomNum].getSpy()) {
+            if (!players[randomNum].isSpy()) {
                 players[randomNum].setSpy(true);
                 numSpies++;
             }
         }
+
+        resetIterator();
     }
 
     public int getNumPlayers () {return numPlayers;}
+
+    /**
+     * Gets a Player at array index "index".
+     *
+     * @param index The index of the Player to return.
+     *
+     * @return The Player at array index "index".
+     */
+    public Player getPlayer(int index) {return players[index];}
+
+    /**
+     * Iterates through the players, returning the next one in the array.
+     *
+     * @return The next player in the array. If there are no players left, returns null.
+     */
+    public Player getNextPlayer() {
+        // Ensure there is a next player to return
+        if ( playerIndex < players.length )
+            return players[playerIndex++];
+
+        else return null;
+    }
 
     public int getSpyScore () {return spyScore;}
 
@@ -89,19 +123,26 @@ public class Game {
 
     public void incrementResistanceScore () {resistanceScore++;}
 
-    public int getPlayerIndex() {return playerIndex;}
+    public int getIteratorIndex() {return playerIndex;}
 
     public Mission getMission() {return sequence[round];}
+
+    public Player[] getAgents() {return agents;}
+
+    /**
+     * Resets the iterator to the beginning of the array to traverse the
+     * players from the beginning.
+     */
+    public void resetIterator() {playerIndex = 0;}
 
     /**
      * Add a player to the array (just sets the name)
      * @param name The player to be added.
      * @return t/f depending on success of adding the player.
      */
-    public Boolean addPlayer (String name) {
+    public Boolean addPlayerName (String name) {
         if (playerIndex < numPlayers) {
             players[playerIndex].setName(name);
-            playerIndex++;
         }
         else {
             return false;
