@@ -23,8 +23,11 @@ public class NameEntry extends AppCompatActivity {
         // Check if a String was entered
         EditText nameField = (EditText) findViewById(R.id.nameEditText);
 
+        // The name retrieved from the EditText
+        String name = nameField.getText().toString();
+
         // Check for user clicking done with no name
-        if (nameField.getText().toString().equals(""))
+        if (name.equals(""))
         {
             EnterNameFragment dialogFragment = new EnterNameFragment();
 
@@ -35,6 +38,15 @@ public class NameEntry extends AppCompatActivity {
         // Switch screens to role reveal
         else
         {
+            // Retrieve the Resistance application
+            Resistance resistance = (Resistance) getApplication();
+
+            // Retrieve the game
+            Game game = resistance.getGame();
+
+            // Add the player name
+            game.addPlayer(name);
+
             // Transfer control to RoleRevealActivity
             Intent intent = new Intent(this, RoleRevealActivity.class);
 
