@@ -72,7 +72,7 @@ public class Game {
             int randomNum = (int) (Math.random() * numPlayers);
 
             //If the player at that index is not already a spy, make them a spy
-            if (!players[randomNum].getSpy()) {
+            if (!players[randomNum].isSpy()) {
                 players[randomNum].setSpy(true);
                 numSpies++;
             }
@@ -81,9 +81,27 @@ public class Game {
 
     public int getNumPlayers () {return numPlayers;}
 
+    /**
+     * Gets a Player at array index "index".
+     *
+     * @param index The index of the Player to return.
+     *
+     * @return The Player at array index "index".
+     */
     public Player getPlayer(int index) {return players[index];}
 
-    public Player getNextPlayer() {return players[playerIndex++];}
+    /**
+     * Iterates through the players, returning the next one in the array.
+     *
+     * @return The next player in the array. If there are no players left, returns null.
+     */
+    public Player getNextPlayer() {
+        // Ensure there is a next player to return
+        if ( playerIndex < players.length )
+            return players[playerIndex++];
+
+        else return null;
+    }
 
     public int getSpyScore () {return spyScore;}
 
@@ -93,7 +111,11 @@ public class Game {
 
     public Mission getMission() {return sequence[round];}
 
-    public void resetPlayerIndex() {playerIndex = 0;}
+    /**
+     * Resets the iterator to the beginning of the array to traverse the
+     * players from the beginning.
+     */
+    public void resetIterator() {playerIndex = 0;}
 
     /**
      * Add a player to the array (just sets the name)
