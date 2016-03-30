@@ -59,16 +59,12 @@ public class IntroActivity extends AppCompatActivity {
 
     public void startNameEntry(int numPlayers) {
         ((Resistance) this.getApplication()).setGame(new Game(numPlayers + 5));
+        Intent i = new Intent(this, NameEntry.class);
+        startActivity(i);
     }
 
     public void howToPlay (View view) {
         Intent intent = new Intent(this, HowToPlay.class);
         startActivity(intent);
     }
-
-    public void goToName(){
-
-        Intent i = new Intent(this, NameEntry.class);
-        startActivity(i);
-    };
 }
