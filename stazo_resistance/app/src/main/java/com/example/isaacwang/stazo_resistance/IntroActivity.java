@@ -69,6 +69,12 @@ public class IntroActivity extends AppCompatActivity {
         numEntry.create();
         numEntry.show();
     }
+
+    public void howToPlay (View view) {
+        Intent intent = new Intent(this, HowToPlay.class);
+        startActivity(intent);
+    }
+
     public void goToName(){
         Intent i = new Intent(this, NameEntry.class);
         startActivity(i);
