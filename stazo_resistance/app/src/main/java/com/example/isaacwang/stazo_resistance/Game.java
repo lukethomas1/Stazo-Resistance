@@ -109,7 +109,7 @@ public class Game {
 
     public int getResistanceScore () {return resistanceScore;}
 
-    public int getPlayerIndex() {return playerIndex;}
+    public int getIteratorIndex() {return playerIndex;}
 
     public Mission getMission() {return sequence[round];}
 
