@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Resistance</string>
     <string name="action_settings">Settings</string>
-    <string-array name = "numArray">
+    <string-array name="numArray">
         <item> "5" </item>
         <item> "6" </item>
         <item> "7" </item>

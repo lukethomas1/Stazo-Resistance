@@ -2,6 +2,7 @@ package com.example.isaacwang.stazo_resistance;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -58,14 +59,18 @@ public class IntroActivity extends AppCompatActivity {
 
     public void startGame(View view){
         AlertDialog.Builder numEntry = new AlertDialog.Builder(this);
-        numEntry.setTitle("Enter the number of players");;
+        numEntry.setTitle("Enter the number of players");
         numEntry.setItems(R.array.numArray, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                //something
                 game = new Game(whichButton + 5);
+                goToName();
             }
         });
         numEntry.create();
         numEntry.show();
     }
+    public void goToName(){
+        Intent i = new Intent(this, NameEntry.class);
+        startActivity(i);
+    };
 }
