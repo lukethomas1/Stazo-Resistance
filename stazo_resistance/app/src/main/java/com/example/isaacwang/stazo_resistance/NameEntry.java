@@ -24,7 +24,8 @@ public class NameEntry extends AppCompatActivity {
         EditText nameField = (EditText) view;
 
         // Check for user clicking done with no name
-        if (nameField.getText().equals(""))
+        /*if (nameField.getText().toString().equals(""))*/
+        if (false)
         {
             EnterNameFragment dialogFragment = new EnterNameFragment();
 
@@ -36,8 +37,7 @@ public class NameEntry extends AppCompatActivity {
         else
         {
             // Transfer control to RoleRevealActivity
-            Intent intent = new Intent(getApplicationContext(), RoleRevealActivity.class);
-
+            Intent intent = new Intent(this, RoleRevealActivity.class);
             startActivity(intent);
         }
     }
