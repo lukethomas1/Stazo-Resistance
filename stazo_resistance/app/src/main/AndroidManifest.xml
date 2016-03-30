@@ -20,6 +20,9 @@
         </activity>
         <activity android:name=".NameEntry" />
         <activity android:name=".RoleRevealActivity"></activity>
+        <activity android:name=".HowToPlay"
+            android:label="How To Play">
+        </activity>
     </application>
 
 </manifest>
