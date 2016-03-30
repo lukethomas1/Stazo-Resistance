@@ -78,6 +78,7 @@ public class Game {
             }
         }
 
+        resetIterator();
     }
 
     public int getNumPlayers () {return numPlayers;}
@@ -123,10 +124,9 @@ public class Game {
      * @param name The player to be added.
      * @return t/f depending on success of adding the player.
      */
-    public Boolean addPlayer (String name) {
+    public Boolean addPlayerName (String name) {
         if (playerIndex < numPlayers) {
             players[playerIndex].setName(name);
-            playerIndex++;
         }
         else {
             return false;
