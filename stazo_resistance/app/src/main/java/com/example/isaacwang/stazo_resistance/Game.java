@@ -81,6 +81,10 @@ public class Game {
 
     public int getNumPlayers () {return numPlayers;}
 
+    public Player getPlayer(int index) {return players[index];}
+
+    public Player getNextPlayer() {return players[playerIndex++];}
+
     public int getSpyScore () {return spyScore;}
 
     public int getResistanceScore () {return resistanceScore;}
@@ -88,6 +92,8 @@ public class Game {
     public int getPlayerIndex() {return playerIndex;}
 
     public Mission getMission() {return sequence[round];}
+
+    public void resetPlayerIndex() {playerIndex = 0;}
 
     /**
      * Add a player to the array (just sets the name)
