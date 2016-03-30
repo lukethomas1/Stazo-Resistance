@@ -21,11 +21,11 @@ public class NameEntry extends AppCompatActivity {
     public void handleClick(View view)
     {
         // Check if a String was entered
-        EditText nameField = (EditText) view;
+        EditText nameField = (EditText) findViewById(R.id.nameEditText);
 
         // Check for user clicking done with no name
-        /*if (nameField.getText().toString().equals(""))*/
-        if (false)
+
+        if (nameField.getText().toString().equals(""))
         {
             EnterNameFragment dialogFragment = new EnterNameFragment();
 
