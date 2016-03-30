@@ -1,5 +1,8 @@
 package com.example.isaacwang.stazo_resistance;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by isaacwang on 3/29/16.
  */
@@ -81,6 +84,8 @@ public class Game {
     public int getSpyScore () {return spyScore;}
 
     public int getResistanceScore () {return resistanceScore;}
+
+    public int getPlayerIndex() {return playerIndex;}
 
     public Mission getMission() {return sequence[round];}
 
