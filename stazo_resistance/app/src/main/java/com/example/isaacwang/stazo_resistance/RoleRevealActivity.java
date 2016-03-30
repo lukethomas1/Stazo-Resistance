@@ -21,7 +21,6 @@ public class RoleRevealActivity extends AppCompatActivity {
         Player currentPlayer = ((Resistance)getApplication()).getGame().getNextPlayer();
         // Make sure player isn't null
         if(currentPlayer != null) {
-            roleText.setText("Testing");
             // If player is a spy, change text to say "Spy" rather than "Rebel"
             if(currentPlayer.isSpy()) {
                 roleText.setText("Spy");
@@ -29,8 +28,30 @@ public class RoleRevealActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Called onClick when the OK button is pressed in RoleReveal, checks whether
+     * to go on to mission proposal or back to name entry before starting the next
+     * Activity.
+     *
+     * @param view
+     */
     public void goToName(View view){
-        Intent i = new Intent(this, NameEntry.class);
+        // To be set to next Activity
+        Intent i;
+        // Get the global Game object
+        Game gameObject = ((Resistance)getApplication()).getGame();
+
+        // Check if this is the last player, if so go to mission proposal activity
+        if(gameObject.getIteratorIndex() == gameObject.getNumPlayers() - 1) {
+            i = new Intent(this, Proposal.class);
+        }
+
+        // Not the last player, go back to name entry activity
+        else {
+            i = new Intent(this, NameEntry.class);
+        }
+
+        // Go to appropriate activity
         startActivity(i);
     };
 }
