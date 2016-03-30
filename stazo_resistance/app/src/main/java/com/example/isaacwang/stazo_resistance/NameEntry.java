@@ -21,10 +21,10 @@ public class NameEntry extends AppCompatActivity {
     public void handleClick(View view)
     {
         // Check if a String was entered
-        EditText nameField = (EditText) view;
+        EditText nameField = (EditText) findViewById(R.id.nameEditText);
 
         // Check for user clicking done with no name
-        if (nameField.getText().equals(""))
+        if (nameField.getText().toString().equals(""))
         {
             EnterNameFragment dialogFragment = new EnterNameFragment();
 
@@ -36,7 +36,7 @@ public class NameEntry extends AppCompatActivity {
         else
         {
             // Transfer control to RoleRevealActivity
-            Intent intent = new Intent(getApplicationContext(), RoleRevealActivity.class);
+            Intent intent = new Intent(this, RoleRevealActivity.class);
 
             startActivity(intent);
         }
