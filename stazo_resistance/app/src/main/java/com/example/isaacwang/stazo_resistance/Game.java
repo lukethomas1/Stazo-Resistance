@@ -8,21 +8,20 @@ import android.os.Parcelable;
  */
 public class Game {
 
+    //Setup Logic
     private static final int win = 3; //How many rounds it takes to win the game
-
     private static int numPlayers; //How many players are in the game
     private Player[] players;
     private int playerIndex = 0; //Where to insert the next player
 
     //Mission Logic
     private Player[] agents; //Agents on the mission
+    private int round = 0; //The round of the game we're on, 0-4
     private int agentIndex; //Where to insert next agent
     private int sabotageIndex; //Who is currently succeed/sabotaging
     private int fails; //Number of fails on the mission
-
     private int spyScore = 0; //Score of the Spies
     private int resistanceScore = 0; //Score of the Resistance
-    private int round = 0; //The round of the game we're on, 0-4
 
     // Sequences for missions depending on number of players
     private static final Mission[] fiveSequence = {new Mission(2,1), new Mission(3,1),
@@ -41,6 +40,24 @@ public class Game {
     // The sequence to be used for this game
     private Mission[] sequence;
 
+    // Getters
+    public int getNumPlayers () {return numPlayers;}
+    public Player getPlayer(int index) {return players[index];}
+    public int getIteratorIndex() {return playerIndex;}
+    public Mission getMission() {return sequence[round];}
+    public Player[] getAgents() {return agents;}
+    public int getSpyScore () {return spyScore;}
+    public int getResistanceScore () {return resistanceScore;}
+
+    // Setters
+    public void incrementSpyScore () {spyScore++;}
+    public void incrementResistanceScore () {resistanceScore++;}
+
+    //SETUP LOGIC BELOW---------------------------------------------------------------------------
+    /**
+     * Constructor for game
+     * @param numPlayers number of players
+     */
     public Game(int numPlayers) {
 
         // initialize variables
@@ -53,20 +70,6 @@ public class Game {
 
         // set spies
         assignSpies();
-    }
-
-    public boolean missionReady(){
-        return (agentIndex == getMission().getMems());
-    }
-
-    public void addToMission(Player player) {
-        agents[agentIndex++] = player;
-    }
-
-    public void succMission(boolean succ) {
-        if (!succ) {
-            fails++;
-        }
     }
 
     /**
@@ -97,52 +100,8 @@ public class Game {
             }
         }
 
-        resetIterator();
+        playerIndex = 0;
     }
-
-    public int getNumPlayers () {return numPlayers;}
-
-    /**
-     * Gets a Player at array index "index".
-     *
-     * @param index The index of the Player to return.
-     *
-     * @return The Player at array index "index".
-     */
-    public Player getPlayer(int index) {return players[index];}
-
-    /**
-     * Iterates through the players, returning the next one in the array.
-     *
-     * @return The next player in the array. If there are no players left, returns null.
-     */
-    public Player getNextPlayer() {
-        // Ensure there is a next player to return
-        if ( playerIndex < players.length )
-            return players[playerIndex++];
-
-        else return null;
-    }
-
-    public int getSpyScore () {return spyScore;}
-
-    public void incrementSpyScore () {spyScore++;}
-
-    public int getResistanceScore () {return resistanceScore;}
-
-    public void incrementResistanceScore () {resistanceScore++;}
-
-    public int getIteratorIndex() {return playerIndex;}
-
-    public Mission getMission() {return sequence[round];}
-
-    public Player[] getAgents() {return agents;}
-
-    /**
-     * Resets the iterator to the beginning of the array to traverse the
-     * players from the beginning.
-     */
-    public void resetIterator() {playerIndex = 0;}
 
     /**
      * Add a player to the array (just sets the name)
@@ -158,6 +117,33 @@ public class Game {
         }
         return true;
     }
+
+    /**
+     * Iterates through the players, returning the next one in the array.
+     * @return The next player in the array. If there are no players left, returns null.
+     */
+    public Player getNextPlayer() {
+        // Ensure there is a next player to return
+        if ( playerIndex < players.length )
+            return players[playerIndex++];
+        else return null;
+    }
+
+
+    //MISSION LOGIC BELOW--------------------------------------------------------------------------
+
+    public boolean missionReady(){
+        return (agentIndex == getMission().getMems());
+    }
+
+    public void addToMission(Player player) {
+        agents[agentIndex++] = player;
+    }
+
+    public void failMission(){
+        fails ++;
+    }
+
 
     /**
      * Checks if mission passes or fails
