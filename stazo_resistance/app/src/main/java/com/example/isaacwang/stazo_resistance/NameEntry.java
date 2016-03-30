@@ -46,7 +46,7 @@ public class NameEntry extends AppCompatActivity {
             Game game = resistance.getGame();
 
             // Add the player name
-            game.addPlayer(name);
+            game.addPlayerName(name);
 
             // Transfer control to RoleRevealActivity
             Intent intent = new Intent(this, RoleRevealActivity.class);

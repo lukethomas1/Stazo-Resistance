@@ -3,8 +3,8 @@
     package="com.example.isaacwang.stazo_resistance">
 
     <application
+        android:name=".Resistance"
         android:allowBackup="true"
-        android:name="Resistance"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
@@ -19,11 +19,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".NameEntry"></activity>
-        <activity android:name=".RoleRevealActivity"></activity>
-        <activity android:name=".HowToPlay"
-            android:label="How To Play">
-        </activity>
+        <activity android:name=".NameEntry" />
+        <activity android:name=".RoleRevealActivity" />
+        <activity
+            android:name=".HowToPlay"
+            android:label="How To Play"></activity>
+        <activity
+            android:name=".Approval"
+            android:label="Approval"></activity>
+        <activity android:name=".Sabotage"></activity>
     </application>
 
 </manifest>
