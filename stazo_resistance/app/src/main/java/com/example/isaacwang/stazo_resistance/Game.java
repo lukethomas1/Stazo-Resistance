@@ -14,6 +14,9 @@ public class Game {
     private Player[] players;
     private int playerIndex = 0; //Where to insert the next player
 
+    private Player[] agents; //Agents on the mission
+    private int missionCount = 0;
+
     private int spyScore = 0; //Score of the Spies
     private int resistanceScore = 0; //Score of the Resistance
     private int round = 0; //The round of the game we're on, 0-4
@@ -35,6 +38,13 @@ public class Game {
     // The sequence to be used for this game
     private Mission[] sequence;
 
+    public void assignMission () {
+        Mission[] mission = allSequences[numPlayers - 5];
+
+        int mem = mission[missionCount].getMems();
+
+        agents = new Player[mem];
+    }
 
     public Game(int numPlayers) {
 
@@ -112,6 +122,8 @@ public class Game {
     public int getIteratorIndex() {return playerIndex;}
 
     public Mission getMission() {return sequence[round];}
+
+    public Player[] getAgents() {return agents;}
 
     /**
      * Resets the iterator to the beginning of the array to traverse the
