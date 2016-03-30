@@ -17,7 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Rebel!"
+        android:text="Rebel"
         android:id="@+id/role_textView"
         android:textSize="100px"
         android:layout_below="@+id/plain_textView"
@@ -31,5 +31,6 @@
         android:id="@+id/ok_button"
         android:layout_marginTop="81dp"
         android:layout_below="@+id/role_textView"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:onClick="goToName" />
 </RelativeLayout>

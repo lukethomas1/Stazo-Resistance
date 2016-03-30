@@ -18,6 +18,6 @@ public class Player {
 
     // Getters
     public String getName(){return name;}
-    public boolean getSpy(){return isSpy;}
+    public boolean isSpy(){return isSpy;}
     public int getNum(){return num;}
 }
