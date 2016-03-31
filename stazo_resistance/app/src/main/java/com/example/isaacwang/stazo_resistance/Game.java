@@ -13,6 +13,7 @@ public class Game {
     private static int numPlayers; //How many players are in the game
     private Player[] players;
     private int playerIndex = 0; //Where to insert the next player
+    private boolean resistanceWon;
 
     //Mission Logic
     private Player[] agents = new Player[5]; //Agents on the mission
@@ -60,10 +61,16 @@ public class Game {
             return getPlayer(index).getName();
         }
     }
+    public boolean getWhoWon() {
+        return resistanceWon;
+    }
 
     // Setters
     public void incrementSpyScore () {spyScore++;}
     public void incrementResistanceScore () {resistanceScore++;}
+    public void setWhoWon(boolean won) {
+        resistanceWon = won;
+    }
 
     //SETUP LOGIC BELOW---------------------------------------------------------------------------
     /**
@@ -185,11 +192,13 @@ public class Game {
         if (getMission().missionPass(fails)){
             resistanceScore++;
             round++;
+            fails = 0;
             return true;
         }
         else {
             spyScore++;
             round++;
+            fails = 0;
             return false;
         }
     }
@@ -207,15 +216,13 @@ public class Game {
             numFails = fails;
         }
         public int getMems(){return numMems;}
-        public int getFails(){return numFails;}
 
         /**
          * Checks if mission passes or fails
          * @param fails number of fails
          * @return whether the mission passes
          */
-        private boolean missionPass(int fails){
-            return fails < numFails;
-        }
+
+        private boolean missionPass(int fails) {return fails < numFails;}
     }
 }
