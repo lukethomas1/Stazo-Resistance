@@ -169,7 +169,7 @@ public class Proposal extends AppCompatActivity{
                 button = (Button) findViewById(R.id.pButton1);
                 break;
         }
-        if (!game.isOnMission(player)) {
+        if (!game.isOnMission(player) && !game.missionReady()) {
             ((Button)button).setBackgroundColor(getColor(R.color.colorPressed));
         }
         game.addToMission(player);
