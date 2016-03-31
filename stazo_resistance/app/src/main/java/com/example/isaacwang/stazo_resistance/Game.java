@@ -48,6 +48,8 @@ public class Game {
     public int getIteratorIndex() {return playerIndex;}
     public Mission getMission() {return sequence[round];}
     public Player[] getAgents() {return agents;}
+    public int getAgentIndex() {return agentIndex;}
+    public int getSabotageIndex() {return sabotageIndex;}
     public int getSpyScore () {return spyScore;}
     public int getResistanceScore () {return resistanceScore;}
     public String getPlayerName(int index) {
@@ -146,19 +148,17 @@ public class Game {
     //Add a player to the mission if not already on it
     public void addToMission(Player player) {
         //If the player is already on the mission, do nothing
-        if (!isOnMission(player)) {
+        if (!isOnMission(player) && agentIndex < getMission().getMems()) {
             agents[agentIndex++] = player;
         }
     }
 
     //Is the player already in the mission?
     public boolean isOnMission(Player player) {
-        Player p;
 
         //Not a for-each loop because agent array is never truly emptied, index is just reset
         for (int i = 0; i < agentIndex; i++) {
-            p = agents[i];
-            if (p == player) {
+            if (agents[i].equals(player)) {
                 return true;
             }
         }
@@ -197,8 +197,9 @@ public class Game {
     public void incrementProposer() {
         proposerIndex++;
     }
+    public void incrementSabotager() {sabotageIndex++;}
 
-    private static class Mission {
+    public static class Mission {
         private final int numMems;
         private final int numFails;
         public Mission(int mems, int fails) {
@@ -213,7 +214,7 @@ public class Game {
          * @param fails number of fails
          * @return whether the mission passes
          */
-        public boolean missionPass(int fails){
+        private boolean missionPass(int fails){
             return fails < numFails;
         }
     }

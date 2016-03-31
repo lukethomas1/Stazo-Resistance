@@ -20,4 +20,15 @@ public class Player {
     public String getName(){return name;}
     public boolean isSpy(){return isSpy;}
     public int getNum(){return num;}
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Player)) {
+            return false;
+        }
+        if (((Player) o).getNum() != num) {
+            return false;
+        }
+        return true;
+    }
 }

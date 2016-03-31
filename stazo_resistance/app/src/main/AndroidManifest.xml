@@ -9,6 +9,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <uses-sdk android:minSdkVersion="7"/>
         <activity
             android:name=".IntroActivity"
             android:label="@string/app_name"

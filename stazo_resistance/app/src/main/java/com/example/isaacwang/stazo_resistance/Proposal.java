@@ -13,17 +13,20 @@ import android.widget.TextView;
  */
 public class Proposal extends AppCompatActivity{
     private Game game;
+    private int memsLeft;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.proposal);
         game = getGame();
+        memsLeft = game.getMission().getMems();
 
         //Resets agentIndex, "clearing" the agents
         game.clearAgents();
 
-        //Sets textview depending on who is proposing
-        setProposer();
+        //Sets proposer and # textviews
+        setProposerText();
+        setAgentsText();
 
         //Set button names to the names of players
         setNames();
@@ -35,9 +38,23 @@ public class Proposal extends AppCompatActivity{
     /**
      * Set text of textview at top to have the correct player's name
      */
-    private void setProposer() {
-        ((TextView)findViewById(R.id.proposeMission)).setText(game.getProposer().getName() +
-        ", propose a Mission!");
+    private void setProposerText() {
+        ((TextView) findViewById(R.id.proposeMission)).setText(game.getProposer().getName() +
+                ", propose a Mission!");
+    }
+
+    /**
+     * Sets # of mems left text field
+     */
+    private void setAgentsText() {
+        if (memsLeft == 0) {
+            ((TextView)findViewById(R.id.membersNeeded)).setText("Mission ready! Hit \"Done\" " +
+                    "to proceed");
+        }
+        else {
+            ((TextView) findViewById(R.id.membersNeeded)).setText("You need "
+                    + memsLeft + " more agents");
+        }
     }
 
     /**
@@ -102,43 +119,62 @@ public class Proposal extends AppCompatActivity{
      */
     public void addPlayer(View view) {
         Player player;
+        Button button;
         switch(view.getId())
         {
             case R.id.pButton1:
                 player = game.getPlayer(0);
+                button = (Button) findViewById(R.id.pButton1);
                 break;
             case R.id.pButton2:
                 player = game.getPlayer(1);
+                button = (Button) findViewById(R.id.pButton2);
                 break;
             case R.id.pButton3:
                 player = game.getPlayer(2);
+                button = (Button) findViewById(R.id.pButton3);
                 break;
             case R.id.pButton4:
                 player = game.getPlayer(3);
+                button = (Button) findViewById(R.id.pButton4);
                 break;
             case R.id.pButton5:
                 player = game.getPlayer(4);
+                button = (Button) findViewById(R.id.pButton5);
                 break;
             case R.id.pButton6:
                 player = game.getPlayer(5);
+                button = (Button) findViewById(R.id.pButton6);
                 break;
             case R.id.pButton7:
                 player = game.getPlayer(6);
+                button = (Button) findViewById(R.id.pButton7);
                 break;
             case R.id.pButton8:
                 player = game.getPlayer(7);
+                button = (Button) findViewById(R.id.pButton8);
                 break;
             case R.id.pButton9:
                 player = game.getPlayer(8);
+                button = (Button) findViewById(R.id.pButton9);
                 break;
             case R.id.pButton10:
                 player = game.getPlayer(9);
+                button = (Button) findViewById(R.id.pButton10);
                 break;
             default:
                 player = game.getPlayer(0);
+                button = (Button) findViewById(R.id.pButton1);
                 break;
         }
+        if (!game.isOnMission(player)) {
+            ((Button)button).setBackgroundColor(getColor(R.color.colorPressed));
+        }
         game.addToMission(player);
+        memsLeft--;
+        if (memsLeft >= 0) {
+            setAgentsText();
+        }
     }
 
     public void done(View view) {

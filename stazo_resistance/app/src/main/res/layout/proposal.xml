@@ -6,15 +6,23 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=", propose a Mission!"
+        android:text="Joe, propose a Mission!"
         android:id="@+id/proposeMission"
         android:layout_gravity="center_horizontal"
         android:textSize="30dp"
         android:layout_marginTop="30dp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="You need # more agents"
+        android:id="@+id/membersNeeded"
+        android:layout_gravity="center_horizontal"
+        android:textSize="20dp"
+        android:layout_marginTop="10dp" />
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="390dp"
+        android:layout_height="346dp"
         android:id="@+id/scrollView2"
         android:layout_gravity="center"
         android:fillViewport="false">

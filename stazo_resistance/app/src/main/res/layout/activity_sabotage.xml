@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Make your choice"
-        android:id="@+id/enterNameTextView"
+        android:id="@+id/makeYourChoice"
         android:layout_gravity="center"
         android:textColor="#000000"
         android:textStyle="bold"
@@ -30,7 +30,8 @@
         android:id="@+id/button"
         android:layout_marginStart="53dp"
         android:layout_centerVertical="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:onClick="succeed"/>
 
     <Button
         android:layout_width="wrap_content"
@@ -39,6 +40,7 @@
         android:id="@+id/button2"
         android:layout_marginEnd="44dp"
         android:layout_centerVertical="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:onClick="fail"/>
 
 </RelativeLayout>
