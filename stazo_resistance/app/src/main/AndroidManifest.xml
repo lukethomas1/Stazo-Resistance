@@ -19,10 +19,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".NameEntry" />
-        <activity android:name=".RoleRevealActivity" />
-        <activity
-            android:name=".HowToPlay"
+        <activity android:name=".NameEntry"></activity>
+        <activity android:name=".RoleRevealActivity"></activity>
+        <activity android:name=".HowToPlay"
             android:label="How To Play"></activity>
         <activity android:name=".GameOver"></activity>
         <activity android:name=".Approval"></activity>
