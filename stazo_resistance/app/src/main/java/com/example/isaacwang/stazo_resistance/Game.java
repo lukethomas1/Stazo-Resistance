@@ -188,6 +188,7 @@ public class Game {
      * @return whether the mission passed
      */
     public boolean executeMission () {
+        sabotageIndex = 0;
         incrementProposer();
         if (getMission().missionPass(fails)){
             resistanceScore++;
