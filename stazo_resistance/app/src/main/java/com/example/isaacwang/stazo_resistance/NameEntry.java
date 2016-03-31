@@ -3,11 +3,13 @@ package com.example.isaacwang.stazo_resistance;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -18,7 +20,6 @@ public class NameEntry extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.entername);
-
         setPlayerNumberText();
     }
 

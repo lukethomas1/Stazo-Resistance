@@ -20,7 +20,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".NameEntry"></activity>
+        <activity android:name=".NameEntry"
+            android:windowSoftInputMode="stateVisible" ></activity>
         <activity android:name=".RoleRevealActivity"></activity>
         <activity android:name=".HowToPlay"
             android:label="How To Play"></activity>
