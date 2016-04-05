@@ -20,7 +20,7 @@ public class Sabotage extends AppCompatActivity {
 
         Resistance resistance = ((Resistance) this.getApplication());
         game = resistance.getGame();
-        Player saboteur = game.getAgents()[game.getSabotageIndex()];
+        Player saboteur = game.getAgents().get(game.getSabotageIndex());
         ((TextView) findViewById(R.id.makeYourChoice)).setText(saboteur.getName() + ", make your choice!");
     }
 
@@ -38,7 +38,7 @@ public class Sabotage extends AppCompatActivity {
         Intent i;
 
         //If all agents have succeeded/sabotaged
-        if (game.getSabotageIndex() >= game.getAgentIndex()) {
+        if (game.getSabotageIndex() >= game.getAgents().size()) {
             i = new Intent(this, MissionPassTho.class);
             startActivity(i);
         }

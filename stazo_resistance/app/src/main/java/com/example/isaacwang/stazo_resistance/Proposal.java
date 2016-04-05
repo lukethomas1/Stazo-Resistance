@@ -16,7 +16,7 @@ import android.widget.TextView;
  */
 public class Proposal extends AppCompatActivity{
     private Game game;
-    private int memsLeft;
+    private int memsLeft; // used to track how many more members are needed
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -170,11 +170,45 @@ public class Proposal extends AppCompatActivity{
                 button = (Button) findViewById(R.id.pButton1);
                 break;
         }
-        if (!game.isOnMission(player) && !game.missionReady()) {
-            ((Button)button).setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPressed));
+
+        /* if the player isn't on the mission already*/
+        if (!game.isOnMission(player)) {
+
+            // if the mission is already full, do nothing
+            if (game.missionReady()) {
+                return;
+            }
+
+            // change button color
+            /*((Button)button).setBackgroundColor(ContextCompat.getColor(getApplicationContext(),
+                    R.color.colorPressed));*/
+            ((Button)button).setBackground(getDrawable(R.drawable.player_button_selected));
+
+
+            // add player to mission
+            game.addToMission(player);
+
+            // decrement number of members still needed
+            memsLeft--;
         }
-        game.addToMission(player);
-        memsLeft--;
+
+        /* if the player is already on the mission */
+        else {
+
+            // change button color
+            /*((Button)button).setBackgroundColor(ContextCompat.getColor(getApplicationContext(),
+                    R.color.colorNotPressed));*/
+            ((Button)button).setBackground(getDrawable(R.drawable.player_button));
+
+
+            // remove player from mission
+            game.removeFromMission(player);
+
+            // increment number of members still needed
+            memsLeft++;
+
+        }
+
         if (memsLeft >= 0) {
             setAgentsText();
         }
