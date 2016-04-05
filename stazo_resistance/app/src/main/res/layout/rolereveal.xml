@@ -29,8 +29,25 @@
         android:layout_height="wrap_content"
         android:text="OK"
         android:id="@+id/ok_button"
-        android:layout_marginTop="81dp"
+        android:onClick="goToName"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="75dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/phrase_textView"
         android:layout_below="@+id/role_textView"
         android:layout_centerHorizontal="true"
-        android:onClick="goToName" />
+        android:layout_marginTop="43dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/spy2_textView"
+        android:layout_below="@+id/phrase_textView"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>
