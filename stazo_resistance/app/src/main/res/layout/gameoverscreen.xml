@@ -14,20 +14,26 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:textSize="20dp"
+        android:layout_marginTop="30dp"
+        android:textSize="50dp"
         android:text="Game Over" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:textSize="30dp"
-        android:text="@string/won" />
+        android:textSize="50dp"
+        android:layout_marginTop="20dp"
+        android:text="Eric wins!"
+        android:id="@+id/wonText"
+        />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Return to Main Menu"
-        android:onClick="goToIntro"/>
+        android:onClick="returnToMain"
+        android:layout_marginTop="50dp"
+        android:textSize="25dp"/>
 
 </LinearLayout>

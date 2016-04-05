@@ -3,6 +3,8 @@ package com.example.isaacwang.stazo_resistance;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+
 /**
  * Created by isaacwang on 3/29/16.
  */
@@ -16,10 +18,9 @@ public class Game {
     private boolean resistanceWon;
 
     //Mission Logic
-    private Player[] agents = new Player[5]; //Agents on the mission
+    private ArrayList<Player> agents = new ArrayList<Player>();
     private int round = 0; //The round of the game we're on, 0-4
     private int proposerIndex = 0; //Who is currently proposing
-    private int agentIndex = 0; //Where to insert next agent
     private int sabotageIndex = 0; //Who is currently succeed/sabotaging
     private int fails = 0; //Number of fails on the mission
     private int spyScore = 0; //Score of the Spies
@@ -48,8 +49,7 @@ public class Game {
     public Player getProposer() {return players[proposerIndex];}
     public int getIteratorIndex() {return playerIndex;}
     public Mission getMission() {return sequence[round];}
-    public Player[] getAgents() {return agents;}
-    public int getAgentIndex() {return agentIndex;}
+    public ArrayList<Player> getAgents() {return agents;}
     public int getSabotageIndex() {return sabotageIndex;}
     public int getSpyScore () {return spyScore;}
     public int getResistanceScore () {return resistanceScore;}
@@ -152,34 +152,29 @@ public class Game {
 
     //MISSION LOGIC BELOW--------------------------------------------------------------------------
 
-    //Add a player to the mission if not already on it
+    //Add a player to the mission (assumes not already on mission)
     public void addToMission(Player player) {
-        //If the player is already on the mission, do nothing
-        if (!isOnMission(player) && agentIndex < getMission().getMems()) {
-            agents[agentIndex++] = player;
-        }
+            agents.add(player);
+    }
+
+    //Remove a player from mission
+    public void removeFromMission(Player player) {
+        agents.remove(player);
     }
 
     //Is the player already in the mission?
     public boolean isOnMission(Player player) {
-
-        //Not a for-each loop because agent array is never truly emptied, index is just reset
-        for (int i = 0; i < agentIndex; i++) {
-            if (agents[i].equals(player)) {
-                return true;
-            }
-        }
-        return false;
+        return agents.contains(player);
     }
 
     //Is the mission ready to be voted on?
-    public boolean missionReady(){return (agentIndex == getMission().getMems());}
+    public boolean missionReady(){return (agents.size() == getMission().getMems());}
 
     //Called when an agent fails a mission
-    public void sabotageMission(){fails ++;}
+    public void sabotageMission(){fails++;}
 
     //Called to "clear" a mission, resets index
-    public void clearAgents() {agentIndex = 0;}
+    public void clearAgents() {agents.clear();}
 
 
     /**
