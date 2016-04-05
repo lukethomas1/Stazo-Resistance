@@ -32,7 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Return to Main Menu"
-        android:onClick="returnToMain"/>
+        android:onClick="returnToMain"
         android:layout_marginTop="50dp"
         android:textSize="25dp"/>
 
