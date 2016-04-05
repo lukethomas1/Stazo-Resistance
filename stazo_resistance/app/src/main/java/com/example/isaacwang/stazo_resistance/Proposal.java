@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewManager;
@@ -170,7 +171,7 @@ public class Proposal extends AppCompatActivity{
                 break;
         }
         if (!game.isOnMission(player) && !game.missionReady()) {
-            ((Button)button).setBackgroundColor(getColor(R.color.colorPressed));
+            ((Button)button).setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPressed));
         }
         game.addToMission(player);
         memsLeft--;

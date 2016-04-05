@@ -19,6 +19,12 @@ public class RoleRevealActivity extends AppCompatActivity {
         Intent intent = getIntent();
         // Get the text field that displays the role of the player
         TextView roleText = (TextView)findViewById(R.id.role_textView);
+        // Get the text field that displays the names of the other spies
+        TextView spyText = (TextView)findViewById(R.id.spy2_textView);
+        // Get the text field that displays the phrase above the spies
+        TextView phraseText = (TextView)findViewById(R.id.phrase_textView);
+        // Get the game object
+        Game gameObject = ((Resistance)getApplication()).getGame();
         // Set the text to the player's role
         Player currentPlayer = ((Resistance)getApplication()).getGame().getNextPlayer();
         // Make sure player isn't null
@@ -26,6 +32,24 @@ public class RoleRevealActivity extends AppCompatActivity {
             // If player is a spy, change text to say "Spy" rather than "Rebel"
             if(currentPlayer.isSpy()) {
                 roleText.setText("Spy");
+                // Iterate through all players and show spies in the text field
+                for(int i = 0; i < gameObject.getNumPlayers(); i++) {
+                    // Don't show this spy himself as a spy, and only show spies
+                    if(i != currentPlayer.getNum() && gameObject.getPlayer(i).isSpy()) {
+                        // Add the phrase above the spies names
+                        phraseText.setText("The other spies are:");
+                        // Get the name of the player, even if it is null
+                        CharSequence playerName = gameObject.getPlayer(i).getName();
+                        // If the player name is null, set it to "Player #"
+                        if(playerName == null) {
+                            playerName = "Player " + (gameObject.getPlayer(i).getNum() + 1);
+                        }
+                        // Add the other spies name to the text field
+                        spyText.append(playerName + ", ");
+                    }
+                }
+                // Trim off the last comma and space after the last spy was added
+                spyText.setText(spyText.getText().subSequence(0, spyText.getText().length() - 2));
             }
         }
     }
