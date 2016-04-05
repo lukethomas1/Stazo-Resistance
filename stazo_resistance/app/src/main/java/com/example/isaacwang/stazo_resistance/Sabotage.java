@@ -9,12 +9,17 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 public class Sabotage extends AppCompatActivity {
 
     private Game game;
+    boolean keepDefault = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        final int FULL = 100;
+        final int HALF = 50;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sabotage);
 
@@ -22,15 +27,38 @@ public class Sabotage extends AppCompatActivity {
         game = resistance.getGame();
         Player saboteur = game.getAgents()[game.getSabotageIndex()];
         ((TextView) findViewById(R.id.makeYourChoice)).setText(saboteur.getName() + ", make your choice!");
+
+        // Randomly place the succeed and fail buttons
+        keepDefault = ((((int)(Math.random() * FULL)) + 1) < HALF);
+        if(!keepDefault) {
+            TextView button1 = (TextView) findViewById(R.id.button);
+            TextView button2 = (TextView) findViewById(R.id.button2);
+            button1.setText("Fail");
+            button2.setText("Succeed");
+        }
     }
 
     public void succeed(View view) {
-        proceed();
+        if(keepDefault) {
+            proceed();
+        }
+
+        else {
+            keepDefault = true;
+            fail(view);
+        }
     }
 
     public void fail(View view) {
-        game.sabotageMission();
-        proceed();
+        if(keepDefault) {
+            game.sabotageMission();
+            proceed();
+        }
+
+        else {
+            keepDefault = true;
+            succeed(view);
+        }
     }
 
     private void proceed() {
