@@ -32,12 +32,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Return to Main Menu"
-<<<<<<< HEAD
-        android:onClick="returnToMain"/>
-=======
+        android:onClick="returnToMain"
         android:layout_marginTop="50dp"
-        android:textSize="25dp"
-        android:onClick="goToIntro"/>
->>>>>>> 3a1603ad014a827ace219d2fc1162d21b9b1efcf
+        android:textSize="25dp"/>
 
 </LinearLayout>

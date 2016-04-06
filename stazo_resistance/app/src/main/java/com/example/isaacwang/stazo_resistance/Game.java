@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by isaacwang on 3/29/16.
@@ -13,12 +14,13 @@ public class Game {
     //Setup Logic
     private static final int win = 3; //How many rounds it takes to win the game
     private static int numPlayers; //How many players are in the game
-    private Player[] players;
+    //private Player[] players;
+    private List<Player> players = new ArrayList<Player>();
     private int playerIndex = 0; //Where to insert the next player
     private boolean resistanceWon;
 
     //Mission Logic
-    private ArrayList<Player> agents = new ArrayList<Player>();
+    private List<Player> agents = new ArrayList<Player>();
     private int round = 0; //The round of the game we're on, 0-4
     private int proposerIndex = 0; //Who is currently proposing
     private int sabotageIndex = 0; //Who is currently succeed/sabotaging
@@ -45,11 +47,11 @@ public class Game {
 
     // Getters
     public int getNumPlayers () {return numPlayers;}
-    public Player getPlayer(int index) {return players[index];}
-    public Player getProposer() {return players[proposerIndex];}
+    public Player getPlayer(int index) {return players.get(index);}
+    public Player getProposer() {return players.get(proposerIndex);}
     public int getIteratorIndex() {return playerIndex;}
     public Mission getMission() {return sequence[round];}
-    public ArrayList<Player> getAgents() {return agents;}
+    public List<Player> getAgents() {return agents;}
     public int getSabotageIndex() {return sabotageIndex;}
     public int getSpyScore () {return spyScore;}
     public int getResistanceScore () {return resistanceScore;}
@@ -66,8 +68,6 @@ public class Game {
     }
 
     // Setters
-    public void incrementSpyScore () {spyScore++;}
-    public void incrementResistanceScore () {resistanceScore++;}
     public void setWhoWon(boolean won) {
         resistanceWon = won;
     }
@@ -81,7 +81,7 @@ public class Game {
 
         // initialize variables
         this.numPlayers = numPlayers;
-        players = new Player[numPlayers];
+        //players = new Player[numPlayers];
         sequence = allSequences[numPlayers-5];
 
         // generate players, no names
@@ -96,7 +96,7 @@ public class Game {
      */
     private void generatePlayers() {
         for (int i=0; i < numPlayers; i++) {
-            players[i] = new Player(i);
+            players.add(new Player(i));
         }
     }
 
@@ -113,8 +113,8 @@ public class Game {
             int randomNum = (int) (Math.random() * numPlayers);
 
             //If the player at that index is not already a spy, make them a spy
-            if (!players[randomNum].isSpy()) {
-                players[randomNum].setSpy(true);
+            if (!players.get(randomNum).isSpy()) {
+                players.get(randomNum).setSpy(true);
                 numSpies++;
             }
         }
@@ -127,7 +127,7 @@ public class Game {
      */
     public Boolean addPlayerName (String name) {
         if (playerIndex < numPlayers) {
-            players[playerIndex].setName(name);
+            players.get(playerIndex).setName(name);
         }
         else {
             return false;
@@ -141,13 +141,10 @@ public class Game {
      */
     public Player getNextPlayer() {
         // Ensure there is a next player to return
-        if ( playerIndex < players.length )
-            return players[playerIndex++];
+        if ( playerIndex < players.size() )
+            return players.get(playerIndex++);
         else return null;
     }
-
-    //Have we iterated through all the players?
-    public Boolean fullyIterated() {return playerIndex >= numPlayers;}
 
 
     //MISSION LOGIC BELOW--------------------------------------------------------------------------

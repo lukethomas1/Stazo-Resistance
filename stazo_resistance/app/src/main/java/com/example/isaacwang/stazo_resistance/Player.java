@@ -1,12 +1,18 @@
 package com.example.isaacwang.stazo_resistance;
 
+import android.provider.Settings;
+
+
 /**
  * Created by isaacwang on 3/29/16.
  */
 public class Player {
     private String name;
     private boolean isSpy = false;
+
+    /* Used from game to game, player1 vs player2 */
     private int num;
+
 
     public Player(int num) {
         this.num = num;

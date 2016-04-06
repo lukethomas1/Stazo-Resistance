@@ -13,6 +13,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.firebase.client.Firebase;
+
 public class NameEntry extends AppCompatActivity {
 
     @Override
@@ -21,6 +23,10 @@ public class NameEntry extends AppCompatActivity {
 
         setContentView(R.layout.entername);
         setPlayerNumberText();
+
+        Firebase fbRef = new Firebase(((Resistance)getApplication()).getFbURL());
+        /*Firebase userRef = fbRef.child("players").child("players1");
+        userRef.setValue(new Player(5));*/
     }
 
     public void handleClick(View view)
@@ -112,6 +118,7 @@ public class NameEntry extends AppCompatActivity {
         }
     }
 
+//BACK LOGIC----------------------------------------------------------------------------------------------------------------------
     @Override
     public void onBackPressed() {
         String[] quitArray = {"Yes", "No"};
