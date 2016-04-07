@@ -16,7 +16,10 @@ import android.view.MenuItem;
 import android.view.Window;
 import android.widget.EditText;
 
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 
 import java.util.Random;
 
@@ -33,6 +36,22 @@ public class IntroActivity extends AppCompatActivity {
                 Settings.Secure.ANDROID_ID);
         fbRef =
                 new Firebase(((Resistance) getApplication()).getFbURL());
+
+
+
+        Firebase gameRef = fbRef.child("games").child(generateGameId());
+        boolean whoWon = true;
+        gameRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                System.out.println(snapshot.getValue());
+            }
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                System.out.println("The read failed: " + firebaseError.getMessage());
+            }
+        });
+
     }
 
     public void startGame(View view){
@@ -62,6 +81,9 @@ public class IntroActivity extends AppCompatActivity {
 
         /*((Resistance) this.getApplication()).
                 setGame(new Game(whichButton + 5));*/
+
+
+
         Intent i = new Intent(this, NameEntry.class);
         startActivity(i);
     }
