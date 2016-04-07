@@ -14,8 +14,8 @@ public class Player {
     private int num;
 
 
-    public Player(int num) {
-        this.num = num;
+    public Player(String name) {
+        this.name = name;
     }
 
     //Setters

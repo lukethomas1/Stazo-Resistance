@@ -77,18 +77,18 @@ public class Game {
      * Constructor for game
      * @param numPlayers number of players
      */
-    public Game(int numPlayers) {
+    public Game() {
 
         // initialize variables
         this.numPlayers = numPlayers;
         //players = new Player[numPlayers];
-        sequence = allSequences[numPlayers-5];
+        //sequence = allSequences[numPlayers-5];
 
         // generate players, no names
-        generatePlayers();
+        //generatePlayers();
 
         // set spies
-        assignSpies();
+        //assignSpies();
     }
 
     /**
@@ -96,7 +96,7 @@ public class Game {
      */
     private void generatePlayers() {
         for (int i=0; i < numPlayers; i++) {
-            players.add(new Player(i));
+            players.add(new Player("yooo"));
         }
     }
 
@@ -126,12 +126,14 @@ public class Game {
      * @return t/f depending on success of adding the player.
      */
     public Boolean addPlayerName (String name) {
-        if (playerIndex < numPlayers) {
+        /*if (playerIndex < numPlayers) {
             players.get(playerIndex).setName(name);
         }
         else {
             return false;
         }
+        return true;*/
+        players.add(new Player("yoo"));
         return true;
     }
 

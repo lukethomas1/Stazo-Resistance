@@ -26,6 +26,14 @@
     <Button
         android:layout_width="150dp"
         android:layout_height="wrap_content"
+        android:text="Join Game"
+        android:id="@+id/joingame"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0"
+        android:onClick="joinGame"/>
+    <Button
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
         android:text="How to Play"
         android:id="@+id/howtoplay"
         android:layout_gravity="center_horizontal"

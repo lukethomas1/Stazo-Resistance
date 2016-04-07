@@ -10,6 +10,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,49 +23,56 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class IntroActivity extends AppCompatActivity {
 
     private String android_id;
     private Firebase fbRef;
+    private Player me = new Player("lmaoooo");
+    private String game_id;
+    private ArrayList<Player> p;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.introscreen);
+        game_id = generateGameId();
         android_id = Settings.Secure.getString(getApplicationContext().getContentResolver(),
                 Settings.Secure.ANDROID_ID);
         fbRef =
                 new Firebase(((Resistance) getApplication()).getFbURL());
 
 
-
-        Firebase gameRef = fbRef.child("games").child(generateGameId());
-        boolean whoWon = true;
-        gameRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                System.out.println(snapshot.getValue());
-            }
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-                System.out.println("The read failed: " + firebaseError.getMessage());
-            }
-        });
-
     }
 
+    /**
+     * For when a player creates a new game
+     * @param view
+     */
     public void startGame(View view){
-        AlertDialog.Builder numEntry = new AlertDialog.Builder(this);
-        numEntry.setTitle("Enter the number of players");
-        numEntry.setItems(R.array.numArray, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                startNameEntry(whichButton);
+        // Creating the empty game
+
+        // Name entry dialog
+        AlertDialog.Builder nameEntry = new AlertDialog.Builder(this);
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        nameEntry.setTitle("Enter your name");
+        nameEntry.setView(input);
+        nameEntry.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //me = new Player(input.getText().toString());
             }
         });
-        numEntry.create();
-        numEntry.show();
+        nameEntry.show();
+
+        final Firebase playerRef = fbRef.child("games").child(game_id).child("players");
+        p = new ArrayList<Player>();
+        p.add(me);
+        playerRef.setValue(p);
     }
 
     /**
@@ -71,18 +80,6 @@ public class IntroActivity extends AppCompatActivity {
      * @param whichButton the button pressed in number of players popup
      */
     public void startNameEntry(int whichButton) {
-        String game_id = generateGameId();
-
-        Game game = new Game(whichButton + 5);
-
-        // Creating the game
-        Firebase gameRef = fbRef.child("games").child(game_id);
-        gameRef.setValue(new Game(whichButton + 5));
-
-        /*((Resistance) this.getApplication()).
-                setGame(new Game(whichButton + 5));*/
-
-
 
         Intent i = new Intent(this, NameEntry.class);
         startActivity(i);
