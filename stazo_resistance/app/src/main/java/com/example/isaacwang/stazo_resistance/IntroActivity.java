@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.provider.SyncStateContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -15,35 +16,24 @@ import android.view.MenuItem;
 import android.view.Window;
 import android.widget.EditText;
 
+import com.firebase.client.Firebase;
+
+import java.util.Random;
+
 public class IntroActivity extends AppCompatActivity {
+
+    private String android_id;
+    private Firebase fbRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.introscreen);
+        android_id = Settings.Secure.getString(getApplicationContext().getContentResolver(),
+                Settings.Secure.ANDROID_ID);
+        fbRef =
+                new Firebase(((Resistance) getApplication()).getFbURL());
     }
-
-    /*@Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_intro, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }*/
 
     public void startGame(View view){
         AlertDialog.Builder numEntry = new AlertDialog.Builder(this);
@@ -57,10 +47,38 @@ public class IntroActivity extends AppCompatActivity {
         numEntry.show();
     }
 
-    public void startNameEntry(int numPlayers) {
-        ((Resistance) this.getApplication()).setGame(new Game(numPlayers + 5));
+    /**
+     * Starts the name entry activity and initializes game
+     * @param whichButton the button pressed in number of players popup
+     */
+    public void startNameEntry(int whichButton) {
+        String game_id = generateGameId();
+
+        Game game = new Game(whichButton + 5);
+
+        // Creating the game
+        Firebase gameRef = fbRef.child("games").child(game_id);
+        gameRef.setValue(new Game(whichButton + 5));
+
+        /*((Resistance) this.getApplication()).
+                setGame(new Game(whichButton + 5));*/
         Intent i = new Intent(this, NameEntry.class);
         startActivity(i);
+    }
+
+    public String generateGameId() {
+        Random rand = new Random();
+        int a;
+        String code = "";
+        for (int i=0; i < 6; i++ ) {
+            a = rand.nextInt(10);
+            code += a;
+        }
+        return code;
+    }
+
+    public Boolean hasPlayer(String id) {
+        return true;
     }
 
     public void howToPlay (View view) {
