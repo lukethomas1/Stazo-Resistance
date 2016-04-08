@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Your Game ID is"
+        android:id="@+id/titleTextView"
+        android:layout_gravity="center_horizontal"
+        android:textSize="40dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1234567890"
+        android:id="@+id/idTextView"
+        android:layout_gravity="center_horizontal"
+        android:textSize="30dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lobby"
+        android:id="@+id/lobbyTextView"
+        android:layout_gravity="center_horizontal"
+        android:textSize="35dp" />
+
+    <GridLayout
+        android:id="@+id/grid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:columnCount="13"
+        android:rowCount="26">
+
+
+    </GridLayout>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Go"
+        android:id="@+id/goButton"
+        android:layout_row="25"
+        android:layout_column="12"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginTop="300dp" />
+    </LinearLayout>
