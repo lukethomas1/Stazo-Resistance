@@ -73,6 +73,12 @@ public class IntroActivity extends AppCompatActivity {
         p = new ArrayList<Player>();
         p.add(me);
         playerRef.setValue(p);
+
+        // Go to lobby screen
+        Intent toLobby = new Intent( this, Lobby.class );
+
+        startActivity( toLobby );
+
     }
 
     /**
