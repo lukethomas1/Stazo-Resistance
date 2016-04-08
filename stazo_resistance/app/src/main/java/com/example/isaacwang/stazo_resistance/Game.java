@@ -96,7 +96,7 @@ public class Game {
      */
     private void generatePlayers() {
         for (int i=0; i < numPlayers; i++) {
-            players.add(new Player("yooo"));
+            players.add(new Player("yooo", 1));
         }
     }
 
@@ -133,7 +133,7 @@ public class Game {
             return false;
         }
         return true;*/
-        players.add(new Player("yoo"));
+        players.add(new Player("yoo", 1));
         return true;
     }
 
