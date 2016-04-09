@@ -13,6 +13,7 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by Ansel on 4/7/16.
@@ -20,9 +21,25 @@ import java.util.ArrayList;
 public class Lobby extends AppCompatActivity
 {
     private String game_id;
-    private Firebase fbRef;
+    private Firebase gameRef;
     private Firebase playerRef;
     private ArrayList<Player> playerArray;
+    private int numPlayers;
+
+    // Sequences for missions depending on number of players
+    private static final Mission[] fiveSequence = {new Mission(2,1), new Mission(3,1),
+            new Mission(2,1), new Mission(3,1), new Mission(3,1)};
+    private static final Mission[] sixSequence = {new Mission(2,1), new Mission(3,1),
+            new Mission(4,1), new Mission(3,1), new Mission(4,1)};
+    private static final Mission[] sevenSequence = {new Mission(2,1), new Mission(3,1),
+            new Mission(3,1), new Mission(4,2), new Mission(4,1)};
+    private static final Mission[] entSequence = {new Mission(3,1), new Mission(4,1),
+            new Mission(4,1), new Mission(5,2), new Mission(5,1)};
+
+    // Array of all the sequences
+    private static final Mission[][] allSequences = {fiveSequence, sixSequence, sevenSequence,
+            entSequence, entSequence, entSequence};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,15 +54,17 @@ public class Lobby extends AppCompatActivity
         ((TextView) findViewById(R.id.idTextView)).setText(game_id);
 
         // Changes to Lobby handling
-        fbRef =
+        Firebase fbRef =
                 new Firebase(((Resistance) getApplication()).getFbURL());
-        playerRef = fbRef.child("games").child(game_id).child("players");
+        gameRef = fbRef.child("games").child("game_id");
+        playerRef = gameRef.child("players");
         // Single-execution for adding us to the player array
         playerRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 // Copying the player array
                 playerArray = ((ArrayList<Player>) snapshot.getValue());
+                numPlayers = playerArray.size();
             }
             @Override
             public void onCancelled(FirebaseError firebaseError) {
@@ -84,6 +103,15 @@ public class Lobby extends AppCompatActivity
                 break;
             }
         }
+    }
+
+    public void initializeGame() {
+        gameRef.child("agents").setValue(new ArrayList<Player>());
+        gameRef.child("sequence").setValue(getMissionSequence());
+    }
+
+    public Mission[] getMissionSequence() {
+        return allSequences[numPlayers-5];
     }
 
 

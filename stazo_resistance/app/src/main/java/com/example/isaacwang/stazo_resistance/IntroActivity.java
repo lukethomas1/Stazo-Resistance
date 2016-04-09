@@ -25,6 +25,7 @@ import com.firebase.client.ValueEventListener;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 public class IntroActivity extends AppCompatActivity {
@@ -60,6 +61,13 @@ public class IntroActivity extends AppCompatActivity {
         p = new ArrayList<Player>();
         p.add(new Player("Player 1", 1));
         playerRef.setValue(p);
+
+        // Values hashmap initialization
+        HashMap<String, Integer> values = new HashMap<String, Integer>();
+        values.put("proposer_index", new Integer(0));
+        values.put("spy_score", new Integer(0));
+        values.put("res_score", new Integer(0));
+        fbRef.child("games").child(game_id).child("values").setValue(values);
 
         // Starting Lobby activity
         Intent toLobby = new Intent( this, Lobby.class );
