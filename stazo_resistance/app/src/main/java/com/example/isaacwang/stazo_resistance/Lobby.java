@@ -64,7 +64,9 @@ public class Lobby extends AppCompatActivity
             public void onDataChange(DataSnapshot snapshot) {
                 // Copying the player array
                 playerArray = ((ArrayList<Player>) snapshot.getValue());
-                numPlayers = playerArray.size();
+                if (playerArray != null) {
+                    numPlayers = playerArray.size();
+                }
             }
             @Override
             public void onCancelled(FirebaseError firebaseError) {

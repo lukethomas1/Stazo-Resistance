@@ -67,6 +67,7 @@ public class IntroActivity extends AppCompatActivity {
         values.put("proposer_index", new Integer(0));
         values.put("spy_score", new Integer(0));
         values.put("res_score", new Integer(0));
+        values.put("round", new Integer(0));
         fbRef.child("games").child(game_id).child("values").setValue(values);
 
         // Starting Lobby activity

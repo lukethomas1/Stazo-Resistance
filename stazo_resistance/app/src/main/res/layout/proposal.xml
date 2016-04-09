@@ -36,7 +36,7 @@
                 android:layout_height="@dimen/player_button_height"
                 android:text="p1"
                 android:id="@+id/pButton1"
-                android:onClick="addPlayer"
+                android:onClick="togglePlayer"
                 android:background="@drawable/player_button"/>
             <Button
                 android:layout_width="fill_parent"
@@ -44,7 +44,7 @@
                 android:text="p2"
                 android:id="@+id/pButton2"
                 android:layout_below="@id/pButton1"
-                android:onClick="addPlayer"
+                android:onClick="togglePlayer"
                 android:background="@drawable/player_button"/>
             <Button
                 android:layout_width="fill_parent"
@@ -52,7 +52,7 @@
                 android:text="p3"
                 android:id="@+id/pButton3"
                 android:layout_below="@id/pButton2"
-                android:onClick="addPlayer"
+                android:onClick="togglePlayer"
                 android:background="@drawable/player_button"/>
             <Button
                 android:layout_width="fill_parent"
@@ -60,7 +60,7 @@
                 android:text="p4"
                 android:id="@+id/pButton4"
                 android:layout_below="@id/pButton3"
-                android:onClick="addPlayer"
+                android:onClick="togglePlayer"
                 android:background="@drawable/player_button"/>
             <Button
                 android:layout_width="fill_parent"
@@ -68,7 +68,7 @@
                 android:text="p5"
                 android:id="@+id/pButton5"
                 android:layout_below="@id/pButton4"
-                android:onClick="addPlayer"
+                android:onClick="togglePlayer"
                 android:background="@drawable/player_button"/>
             <Button
                 android:layout_width="fill_parent"
@@ -76,7 +76,7 @@
                 android:text="p6"
                 android:id="@+id/pButton6"
                 android:layout_below="@id/pButton5"
-                android:onClick="addPlayer"
+                android:onClick="togglePlayer"
                 android:background="@drawable/player_button"/>
             <Button
                 android:layout_width="fill_parent"
@@ -84,7 +84,7 @@
                 android:text="p7"
                 android:id="@+id/pButton7"
                 android:layout_below="@id/pButton6"
-                android:onClick="addPlayer"
+                android:onClick="togglePlayer"
                 android:background="@drawable/player_button"/>
             <Button
                 android:layout_width="fill_parent"
@@ -92,7 +92,7 @@
                 android:text="p8"
                 android:id="@+id/pButton8"
                 android:layout_below="@id/pButton7"
-                android:onClick="addPlayer"
+                android:onClick="togglePlayer"
                 android:background="@drawable/player_button"/>
             <Button
                 android:layout_width="fill_parent"
@@ -100,7 +100,7 @@
                 android:text="p9"
                 android:id="@+id/pButton9"
                 android:layout_below="@id/pButton8"
-                android:onClick="addPlayer"
+                android:onClick="togglePlayer"
                 android:background="@drawable/player_button"/>
             <Button
                 android:layout_width="fill_parent"
@@ -108,7 +108,7 @@
                 android:text="p10"
                 android:id="@+id/pButton10"
                 android:layout_below="@id/pButton9"
-                android:onClick="addPlayer"
+                android:onClick="togglePlayer"
                 android:background="@drawable/player_button"/>
 
         </RelativeLayout>
