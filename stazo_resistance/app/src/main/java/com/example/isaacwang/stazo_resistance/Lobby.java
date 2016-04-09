@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.widget.GridLayout;
 import android.widget.TextView;
 
@@ -47,9 +48,9 @@ public class Lobby extends AppCompatActivity
         // Set the layout
         setContentView(R.layout.lobby);
 
-        //addPlayerToGrid("Ansel");
-        //addPlayerToGrid("Matt");
-        //addPlayerToGrid("Luke");
+        addPlayerToGrid("Ansel");
+        addPlayerToGrid("Matt");
+        addPlayerToGrid("Luke");
         this.game_id = getIntent().getStringExtra("game_id");
         ((TextView) findViewById(R.id.idTextView)).setText(game_id);
 
@@ -58,13 +59,18 @@ public class Lobby extends AppCompatActivity
                 new Firebase(((Resistance) getApplication()).getFbURL());
         gameRef = fbRef.child("games").child("game_id");
         playerRef = gameRef.child("players");
+
         // Single-execution for adding us to the player array
         playerRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 // Copying the player array
                 playerArray = ((ArrayList<Player>) snapshot.getValue());
-                numPlayers = playerArray.size();
+
+                if (playerArray != null)
+                {
+                    numPlayers = playerArray.size();
+                }
             }
             @Override
             public void onCancelled(FirebaseError firebaseError) {
@@ -80,6 +86,9 @@ public class Lobby extends AppCompatActivity
         GridLayout grid = (GridLayout) findViewById( R.id.grid );
 
         TextView playerView = new TextView( this );
+
+        playerView.setGravity(Gravity.RIGHT); // Center vertically and horizontally
+
         playerView.setText( playerName );
 
         grid.addView(playerView);
