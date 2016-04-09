@@ -63,6 +63,7 @@ public class IntroActivity extends AppCompatActivity {
 
         // Starting Lobby activity
         Intent toLobby = new Intent( this, Lobby.class );
+        toLobby.putExtra("game_id", game_id);
         startActivity( toLobby );
     }
 
@@ -81,16 +82,27 @@ public class IntroActivity extends AppCompatActivity {
         gameIdEntry.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+
+                // Finding the game
                 game_id = (input.getText().toString());
                 playerRef = fbRef.child("games").child(game_id).child("players");
 
+                // Single-execution for adding us to the player array
                 playerRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
+
+                        // Adding us to the player array
                         int id = ((ArrayList<Player>) snapshot.getValue()).size() + 1;
                         p = ((ArrayList<Player>) snapshot.getValue());
                         p.add(new Player("Player " + id, id));
                         playerRef.setValue(p);
+
+                        // Starting Lobby activity
+                        Intent toLobby = new Intent(getApplicationContext(),
+                                Lobby.class );
+                        toLobby.putExtra("game_id", game_id);
+                        startActivity(toLobby);
                     }
 
                     @Override
