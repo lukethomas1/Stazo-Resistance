@@ -5,16 +5,20 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.GridLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.GenericTypeIndicator;
 import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by Ansel on 4/7/16.
@@ -48,28 +52,35 @@ public class Lobby extends AppCompatActivity
         // Set the layout
         setContentView(R.layout.lobby);
 
-        addPlayerToGrid("Ansel");
-        addPlayerToGrid("Matt");
-        addPlayerToGrid("Luke");
+        //addPlayerToGrid("Ansel");
+        //addPlayerToGrid("Matt");
+        //addPlayerToGrid("Luke");
         this.game_id = getIntent().getStringExtra("game_id");
         ((TextView) findViewById(R.id.idTextView)).setText(game_id);
 
         // Changes to Lobby handling
         Firebase fbRef =
                 new Firebase(((Resistance) getApplication()).getFbURL());
-        gameRef = fbRef.child("games").child("game_id");
+        gameRef = fbRef.child("games").child(game_id);
         playerRef = gameRef.child("players");
 
-        // Single-execution for adding us to the player array
+        // Adding us to the player array
         playerRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 // Copying the player array
-                playerArray = ((ArrayList<Player>) snapshot.getValue());
+                playerArray = ((ArrayList<Player>)
+                        snapshot.getValue(new GenericTypeIndicator<List<Player>>() {}));
 
                 if (playerArray != null)
                 {
                     numPlayers = playerArray.size();
+                    for (Player p: playerArray) {
+                        addPlayerToGrid(p.getName());
+                    }
+                }
+                else {
+                    System.out.println("null");
                 }
             }
             @Override
@@ -83,11 +94,11 @@ public class Lobby extends AppCompatActivity
     public void addPlayerToGrid( String playerName )
     {
         // Get the grid
-        GridLayout grid = (GridLayout) findViewById( R.id.grid );
+        LinearLayout grid = (LinearLayout) findViewById( R.id.player_container );
 
         TextView playerView = new TextView( this );
 
-        playerView.setGravity(Gravity.RIGHT); // Center vertically and horizontally
+        playerView.setGravity(Gravity.CENTER); // Center vertically and horizontally
 
         playerView.setText( playerName );
 
@@ -97,7 +108,7 @@ public class Lobby extends AppCompatActivity
     public void removePlayerFromGrid( String playerName )
     {
         // Get the grid
-        GridLayout grid = (GridLayout) findViewById( R.id.grid );
+        LinearLayout grid = (LinearLayout) findViewById( R.id.player_container );
 
         for ( int i = 0; i < grid.getChildCount(); i++ )
         {
@@ -115,8 +126,16 @@ public class Lobby extends AppCompatActivity
     }
 
     public void initializeGame() {
-        gameRef.child("agents").setValue(new ArrayList<Player>());
         gameRef.child("sequence").setValue(getMissionSequence());
+    }
+
+    public void startGame(View view) {
+        initializeGame();
+
+        // starting proposal activity
+        Intent i = new Intent(this, Proposal.class);
+        i.putExtra("game_id", game_id);
+        startActivity(i);
     }
 
     public Mission[] getMissionSequence() {

@@ -47,7 +47,7 @@ public class IntroActivity extends AppCompatActivity {
     }
 
     /**
-     * Creates game directory on database and initializes player array
+     * Creates game directory on database an d initializes player array
      * with player 1 and moves to the lobby screen
      * @param view
      */
