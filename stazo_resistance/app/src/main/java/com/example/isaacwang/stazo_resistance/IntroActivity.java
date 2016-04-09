@@ -46,39 +46,25 @@ public class IntroActivity extends AppCompatActivity {
     }
 
     /**
-     * For when a player creates a new game
+     * Creates game directory on database and initializes player array
+     * with player 1 and moves to the lobby screen
      * @param view
      */
     public void startGame(View view){
 
+        // Creating game on database
         game_id = generateGameId();
         playerRef = fbRef.child("games").child(game_id).child("players");
+
+        // Creating players array in game and adding player 1
         p = new ArrayList<Player>();
         p.add(new Player("Player 1", 1));
-
-        // updating database players array
         playerRef.setValue(p);
-
-        /*
-        // Name entry dialog
-        AlertDialog.Builder nameEntry = new AlertDialog.Builder(this);
-        final EditText input = new EditText(this);
-        input.setInputType(InputType.TYPE_CLASS_TEXT);
-        nameEntry.setTitle("Enter your name");
-        nameEntry.setView(input);
-        nameEntry.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-                // initializing player/array
-                me = new Player(input.getText().toString());
-            }
-        });
-        nameEntry.show();*/
     }
 
     /**
-     * For joining a game
+     * Adds player to the player array for corresponding game and moves to
+     * the lobby screen
      * @param view
      */
     public void joinGame(View view) {
