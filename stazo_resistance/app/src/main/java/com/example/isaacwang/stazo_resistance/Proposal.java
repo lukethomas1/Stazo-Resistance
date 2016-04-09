@@ -105,12 +105,15 @@ public class Proposal extends AppCompatActivity{
                 // grabbing proposer index
                 proposer_index = vals.get("proposer_index");
 
-                //Sets proposer and # textviews
+                // sets proposer and # textviews
                 setProposerText();
                 setAgentsText();
 
-                //Set button names to the names of players
+                // set button names to the names of players
                 setNames();
+
+                // set members still needed
+                setMemsLeft();
             }
 
             @Override
@@ -283,7 +286,8 @@ public class Proposal extends AppCompatActivity{
             valsRef.setValue(vals);
 
             // move on to next activity
-            Intent i = new Intent(this, Approval.class);
+            Intent i = new Intent(this, VoteMission.class);
+            i.putExtra("game_id", game_id);
             startActivity(i);
         }
     }

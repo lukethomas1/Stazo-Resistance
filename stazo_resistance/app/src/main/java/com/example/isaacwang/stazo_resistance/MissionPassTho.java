@@ -13,6 +13,7 @@ import android.widget.TextView;
  * Created by ericzhang on 3/29/16.
  */
 public class MissionPassTho extends AppCompatActivity{
+    /*
     private Game game;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,5 +77,5 @@ public class MissionPassTho extends AppCompatActivity{
     public void goToIntro() {
         Intent i = new Intent(this, IntroActivity.class);
         startActivity(i);
-    }
+    }*/
 }

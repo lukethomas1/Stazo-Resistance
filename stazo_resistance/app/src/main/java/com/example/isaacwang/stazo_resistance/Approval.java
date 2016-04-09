@@ -9,7 +9,7 @@ import android.view.View;
 
 public class Approval extends AppCompatActivity {
 
-    private Game game;
+    /*private Game game;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,5 +52,5 @@ public class Approval extends AppCompatActivity {
     public void goToIntro() {
         Intent i = new Intent(this, IntroActivity.class);
         startActivity(i);
-    }
+    }*/
 }
