@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.provider.SyncStateContract;
+import android.speech.RecognizerIntent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -59,8 +60,13 @@ public class IntroActivity extends AppCompatActivity {
 
         // Creating players array in game and adding player 1
         p = new ArrayList<Player>();
-        p.add(new Player("Player 1", 1));
+        Player me = new Player("Player 1", 1);
+        p.add(me);
         playerRef.setValue(p);
+
+        // Save payer to application too
+        Resistance game = ((Resistance)getApplication());
+        game.setPlayer(me);
 
         // Values hashmap initialization
         HashMap<String, Integer> values = new HashMap<String, Integer>();
@@ -106,8 +112,13 @@ public class IntroActivity extends AppCompatActivity {
                         int id = ((ArrayList<Player>) snapshot.getValue()).size() + 1;
                         ((Resistance) getApplication()).setMyId(id);
                         p = ((ArrayList<Player>) snapshot.getValue());
-                        p.add(new Player("Player " + id, id));
+                        Player me = new Player("Player " + id, id);
+                        p.add(me);
                         playerRef.setValue(p);
+
+                        // Save player to application too
+                        Resistance game = ((Resistance)getApplication());
+                        game.setPlayer(me);
 
                         // Starting Lobby activity
                         Intent toLobby = new Intent(getApplicationContext(),

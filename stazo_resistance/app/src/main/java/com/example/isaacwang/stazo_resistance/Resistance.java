@@ -5,20 +5,20 @@ import android.app.Application;
 import com.firebase.client.Firebase;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by isaacwang on 3/29/16.
  */
 public class Resistance extends Application {
     private static final String fbURL = "https://amber-torch-3377.firebaseio.com/";
-
+    private Player player;
     // locally stored player array, initialized after lobby goes.
 
     // your own id
     private int myId;
 
     public String getFbURL() { return fbURL;}
+    public Player getPlayer() {return player;}
 
     public void setMyId(int id) {
         myId = id;
@@ -26,6 +26,7 @@ public class Resistance extends Application {
     public int getMyId() {
         return myId;
     }
+    public void setPlayer(Player p) {this.player = p;}
 
     @Override
     public void onCreate() {
