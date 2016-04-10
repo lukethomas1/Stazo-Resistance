@@ -14,18 +14,8 @@ public class Resistance extends Application {
     private Player player;
     // locally stored player array, initialized after lobby goes.
 
-    // your own id
-    private int myId;
-
     public String getFbURL() { return fbURL;}
     public Player getPlayer() {return player;}
-
-    public void setMyId(int id) {
-        myId = id;
-    }
-    public int getMyId() {
-        return myId;
-    }
     public void setPlayer(Player p) {this.player = p;}
 
     @Override

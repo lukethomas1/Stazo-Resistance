@@ -169,6 +169,8 @@ public class Lobby extends AppCompatActivity
 
         // we are ready for the game to start -> chain into goToProposal
         gameRef.child("values").child("ready").setValue(new Integer(1));
+
+        gameRef.child("values").child("num_players").setValue(new Integer(numPlayers));
     }
 
     // called when ready is set to 1;

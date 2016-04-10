@@ -23,8 +23,7 @@ public class VoteMission extends AppCompatActivity{
     private ArrayList<Player> agentArray;
     private int voteCounter;
     private int proCounter;
-    private Firebase gameRef =
-            (new Firebase(((Resistance) getApplication()).getFbURL())).child("games").child("game_id");
+    private Firebase gameRef;
     HashMap<String, Integer> values;
 
     private String game_id;
@@ -56,10 +55,13 @@ public class VoteMission extends AppCompatActivity{
                 ((TextView) findViewById(R.id.proposedList)).setText(list);
 
                 // Getting the vote counter and num players
-                values = (HashMap<String, Integer>) snapshot.child("values").getValue();
-                voteCounter = values.get("vote_counter");
-                int numPlayers = values.get("num_players");
-                proCounter = values.get("pro_counter");
+                values = (HashMap<String, Integer>) snapshot.child("values").getValue(
+                        new GenericTypeIndicator<HashMap<String, Integer>>() {
+                        }
+                );
+                voteCounter = ((Integer)values.get("vote_counter")).intValue();
+                int numPlayers = ((Integer) values.get("num_players")).intValue();
+                proCounter = ((Integer)values.get("pro_counter")).intValue();
 
                 //check if vote counter reached num players
                 if (voteCounter == numPlayers) {

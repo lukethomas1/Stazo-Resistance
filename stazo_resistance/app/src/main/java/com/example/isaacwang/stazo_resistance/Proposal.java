@@ -283,6 +283,8 @@ public class Proposal extends AppCompatActivity{
             // update Database agents array and proposer_index
             agentsRef.setValue(agentsArray);
             vals.put("proposer_index", proposer_index + 1);
+            vals.put("vote_counter", 0);
+            vals.put("pro_counter", 0);
             valsRef.setValue(vals);
 
             // move on to next activity

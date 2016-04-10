@@ -34,6 +34,9 @@ public class Player {
     public int getNum(){return num;}
 
     @Override
+    public String toString() {return name;}
+
+    @Override
     public boolean equals(Object o) {
         if (!(o instanceof Player)) {
             return false;

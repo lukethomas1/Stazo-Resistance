@@ -110,7 +110,6 @@ public class IntroActivity extends AppCompatActivity {
 
                         // Adding us to the player array
                         int id = ((ArrayList<Player>) snapshot.getValue()).size() + 1;
-                        ((Resistance) getApplication()).setMyId(id);
                         p = ((ArrayList<Player>) snapshot.getValue());
                         Player me = new Player("Player " + id, id);
                         p.add(me);
