@@ -14,22 +14,11 @@ public class Resistance extends Application {
     private static final String fbURL = "https://amber-torch-3377.firebaseio.com/";
 
     // locally stored player array, initialized after lobby goes.
-    private ArrayList<Player> playerArray = new ArrayList<Player>();
 
     // your own id
     private int myId;
 
-
-
     public String getFbURL() { return fbURL;}
-
-    public ArrayList<Player> getPlayerArray() {
-        return playerArray;
-    }
-
-    public void setPlayerArray(ArrayList<Player> p) {
-        playerArray = p;
-    }
 
     public void setMyId(int id) {
         myId = id;

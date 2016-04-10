@@ -38,7 +38,6 @@ public class VoteMission extends AppCompatActivity{
         gameRef = fbRef.child("games").child(game_id);
         agentRef = gameRef.child("agents");
 
-
         // Single-execution for adding us to the player array
         agentRef.addValueEventListener(new ValueEventListener() {
             @Override

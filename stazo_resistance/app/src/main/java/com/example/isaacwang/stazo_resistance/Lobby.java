@@ -73,7 +73,6 @@ public class Lobby extends AppCompatActivity
                 playerArray = ((ArrayList<Player>)
                         snapshot.getValue(new GenericTypeIndicator<List<Player>>() {
                         }));
-                ((Resistance) getApplication()).setPlayerArray(playerArray);
 
                 // updating number of players
                 numPlayers = playerArray.size();
@@ -167,9 +166,6 @@ public class Lobby extends AppCompatActivity
 
         // the sequence of missions stored on database
         gameRef.child("sequence").setValue(getMissionSequence());
-
-        // local copy of playerArray;
-        ((Resistance) getApplication()).setPlayerArray(playerArray);
 
         // we are ready for the game to start -> chain into goToProposal
         gameRef.child("values").child("ready").setValue(new Integer(1));
