@@ -14,10 +14,13 @@ import android.widget.TextView;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.GenericTypeIndicator;
 import com.firebase.client.ValueEventListener;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by isaacwang on 3/29/16.
@@ -27,12 +30,14 @@ public class Proposal extends AppCompatActivity{
     private Firebase gameRef;
     private Firebase agentsRef;
     private Firebase valsRef;
+    private String game_id;
     private ArrayList<Player> playerArray; // pulled from database
     private ArrayList<Player> agentsArray; // stored locally
     private Mission curMission;            // what is the current mission?
     private int proposer_index;            // who is proposing the mission?
     private int memsLeft;                  // how many more members do we need
     private HashMap<String, Integer> vals; // map of values
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,20 +47,13 @@ public class Proposal extends AppCompatActivity{
         // firebase reference definitions
         Firebase fbRef =
                 new Firebase(((Resistance) getApplication()).getFbURL());
-        gameRef = fbRef.child("games").child("game_id");
+        game_id = getIntent().getStringExtra("game_id");
+        gameRef = fbRef.child("games").child(game_id);
         agentsRef = gameRef.child("agents");
         valsRef = gameRef.child("values");
 
         // initialization
         grabData();
-        agentsArray = new ArrayList<Player>();
-
-        //Sets proposer and # textviews
-        setProposerText();
-        setAgentsText();
-
-        //Set button names to the names of players
-        setNames();
     }
 
     /**
@@ -85,17 +83,37 @@ public class Proposal extends AppCompatActivity{
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 // grabbing the player array
-                playerArray = ((ArrayList<Player>) snapshot.child("players").getValue());
+                playerArray = ((ArrayList<Player>) snapshot.child("players").getValue(
+                        new GenericTypeIndicator<List<Player>>() {
+                        }
+                ));
+
+                // setting local agentsArray
+                agentsArray = new ArrayList<Player>();
 
                 // grabbing the current mission
                 vals = ((HashMap<String, Integer>)
-                        snapshot.child("values").getValue());
-                int round = vals.get("round");
-                Mission[] sequence = ((Mission[]) snapshot.child("sequence").getValue());
-                curMission = sequence[round];
+                        snapshot.child("values").getValue(
+                                new GenericTypeIndicator<HashMap<String, Integer>>() {
+                        }));
+                int round = ((Integer) vals.get("round")).intValue();
+                ArrayList<Mission> sequence = ((ArrayList<Mission>) snapshot.child("sequence").getValue(
+                        new GenericTypeIndicator<List<Mission>>() {
+                        }));
+                curMission = sequence.get(round);
 
                 // grabbing proposer index
                 proposer_index = vals.get("proposer_index");
+
+                // sets proposer and # textviews
+                setProposerText();
+                setAgentsText();
+
+                // set button names to the names of players
+                setNames();
+
+                // set members still needed
+                setMemsLeft();
             }
 
             @Override
@@ -268,7 +286,8 @@ public class Proposal extends AppCompatActivity{
             valsRef.setValue(vals);
 
             // move on to next activity
-            Intent i = new Intent(this, Approval.class);
+            Intent i = new Intent(this, VoteMission.class);
+            i.putExtra("game_id", game_id);
             startActivity(i);
         }
     }

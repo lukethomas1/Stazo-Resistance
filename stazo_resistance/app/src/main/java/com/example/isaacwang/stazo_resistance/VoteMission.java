@@ -2,7 +2,6 @@ package com.example.isaacwang.stazo_resistance;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
@@ -28,10 +27,18 @@ public class VoteMission extends AppCompatActivity{
             (new Firebase(((Resistance) getApplication()).getFbURL())).child("games").child("game_id");
     HashMap<String, Integer> values;
 
+    private String game_id;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.vote_mission);
+
+        Firebase fbRef =
+                new Firebase(((Resistance) getApplication()).getFbURL());
+        game_id = getIntent().getStringExtra("game_id");
+        gameRef = fbRef.child("games").child(game_id);
 
         //Listener for agents and values
         gameRef.addValueEventListener(new ValueEventListener() {
@@ -39,6 +46,15 @@ public class VoteMission extends AppCompatActivity{
             public void onDataChange(DataSnapshot snapshot) {
                 // Copying the agent array
                 agentArray = ((ArrayList<Player>) snapshot.child("agents").getValue(new GenericTypeIndicator<ArrayList<Player>>(){}));
+
+                //Get the list of agents to display for people to vote on
+                String list = "";
+                for (int i = 0; i < agentArray.size(); i++) {
+                    list = list + agentArray.get(i) + "\n";
+                }
+                //Set the list
+                ((TextView) findViewById(R.id.proposedList)).setText(list);
+
                 // Getting the vote counter and num players
                 values = (HashMap<String, Integer>) snapshot.child("values").getValue();
                 voteCounter = values.get("vote_counter");
@@ -50,20 +66,17 @@ public class VoteMission extends AppCompatActivity{
                     //move on based off of whether or not it was approved
                     moveOn(proCounter > numPlayers / 2);
                 }
-            }
 
+
+            }
             @Override
             public void onCancelled(FirebaseError firebaseError) {
             }
         });
 
-        //Get the list of agents to display for people to vote on
-        String list = "";
-        for (int i = 0; i < agentArray.size(); i++) {
-            list = list + agentArray.get(i) + "\n";
-        }
-        //Set the list
-        ((TextView) findViewById(R.id.proposedList)).setText(list);
+
+
+
     }
 
     public void handleApprove(View view) {
@@ -81,6 +94,7 @@ public class VoteMission extends AppCompatActivity{
         values.put("vote_counter", voteCounter);
         gameRef.child("values").setValue(values);
     }
+
 
     public void moveOn(boolean accepted) {
         Intent toGoOrNotToGo;

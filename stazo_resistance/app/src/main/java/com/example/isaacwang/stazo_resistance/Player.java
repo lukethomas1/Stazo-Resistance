@@ -19,6 +19,11 @@ public class Player {
         this.num = num;
     }
 
+    public Player(){
+        this.name = "default";
+        this.num = -1;
+    }
+
     //Setters
     public void setSpy(boolean isSpy) {this.isSpy = isSpy;}
     public void setName(String name) {this.name = name;}

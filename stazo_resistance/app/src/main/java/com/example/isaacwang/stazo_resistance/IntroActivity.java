@@ -48,7 +48,7 @@ public class IntroActivity extends AppCompatActivity {
     }
 
     /**
-     * Creates game directory on database and initializes player array
+     * Creates game directory on database an d initializes player array
      * with player 1 and moves to the lobby screen
      * @param view
      */
@@ -74,6 +74,7 @@ public class IntroActivity extends AppCompatActivity {
         values.put("spy_score", new Integer(0));
         values.put("res_score", new Integer(0));
         values.put("round", new Integer(0));
+        values.put("ready", new Integer(0));      // are we ready for the game to start?
         fbRef.child("games").child(game_id).child("values").setValue(values);
 
         // Starting Lobby activity
@@ -109,6 +110,7 @@ public class IntroActivity extends AppCompatActivity {
 
                         // Adding us to the player array
                         int id = ((ArrayList<Player>) snapshot.getValue()).size() + 1;
+                        ((Resistance) getApplication()).setMyId(id);
                         p = ((ArrayList<Player>) snapshot.getValue());
                         Player me = new Player("Player " + id, id);
                         p.add(me);
