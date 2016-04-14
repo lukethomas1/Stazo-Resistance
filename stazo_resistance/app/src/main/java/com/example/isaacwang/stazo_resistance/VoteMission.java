@@ -68,17 +68,11 @@ public class VoteMission extends AppCompatActivity{
                     //move on based off of whether or not it was approved
                     moveOn(proCounter > numPlayers / 2);
                 }
-
-
             }
             @Override
             public void onCancelled(FirebaseError firebaseError) {
             }
         });
-
-
-
-
     }
 
     public void handleApprove(View view) {
