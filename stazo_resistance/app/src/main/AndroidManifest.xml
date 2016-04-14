@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.isaacwang.stazo_resistance">
+
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".Resistance"
         android:allowBackup="true"
@@ -9,7 +11,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <uses-sdk android:minSdkVersion="7"/>
+        <uses-sdk android:minSdkVersion="7" />
+
         <activity
             android:name=".IntroActivity"
             android:label="@string/app_name"
@@ -20,19 +23,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".NameEntry"
-            android:windowSoftInputMode="stateVisible" ></activity>
-        <activity android:name=".RoleRevealActivity"></activity>
-        <activity android:name=".HowToPlay"
-            android:label="How To Play"></activity>
-        <activity android:name=".GameOver"></activity>
-        <activity android:name=".Lobby"></activity>
-        <activity android:name=".Approval"></activity>
-        <activity android:name=".Sabotage"></activity>
-        <activity android:name=".Proposal"></activity>
-        <activity android:name=".MissionPassTho"></activity>
-        <activity android:name=".VoteMission"></activity>
+        <activity
+            android:name=".NameEntry"
+            android:windowSoftInputMode="stateVisible" />
+        <activity android:name=".RoleRevealActivity" />
+        <activity
+            android:name=".HowToPlay"
+            android:label="How To Play" />
+        <activity android:name=".GameOver" />
+        <activity android:name=".Lobby" />
+        <activity android:name=".Approval" />
+        <activity android:name=".Proposal" />
+        <activity android:name=".MissionPassTho" />
+        <activity android:name=".VoteMission" />
+        <activity android:name=".MissionActiveActivity"></activity>
     </application>
-
 
 </manifest>

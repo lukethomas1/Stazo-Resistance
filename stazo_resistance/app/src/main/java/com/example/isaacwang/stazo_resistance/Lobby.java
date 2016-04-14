@@ -2,10 +2,15 @@ package com.example.isaacwang.stazo_resistance;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -113,13 +118,33 @@ public class Lobby extends AppCompatActivity
         // Get the grid
         LinearLayout grid = (LinearLayout) findViewById( R.id.player_container );
 
-        TextView playerView = new TextView( this );
+        final Button playerButton = new Button(this);
+        playerButton.setText(playerName);
+        playerButton.setBackground(getResources().getDrawable(R.drawable.lobby_button, null));
 
-        playerView.setGravity(Gravity.CENTER); // Center vertically and horizontally
+        // Make button width a function of display width
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
-        playerView.setText(playerName);
+        int buttonWidth = 2 * metrics.widthPixels / 5; // 1/3 of the screen width
+        int buttonHeight = metrics.heightPixels / 14; // 1/12 of the screen height
 
-        grid.addView(playerView);
+        // Set height and width
+        playerButton.setLayoutParams(new LinearLayout.LayoutParams(buttonWidth, buttonHeight));
+        playerButton.setGravity( Gravity.CENTER );
+
+        playerButton.setTextColor(Color.WHITE);
+
+        // Remove player on click
+        // TODO Set up IDs so that only the player can remove themselves
+        playerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                removePlayerFromGrid(playerButton.getText().toString());
+            }
+        });
+
+        grid.addView(playerButton);
     }
 
     // is this name already in the grid?
@@ -130,10 +155,10 @@ public class Lobby extends AppCompatActivity
         for ( int i = 0; i < grid.getChildCount(); i++ )
         {
             // Get the view at the current index
-            TextView playerView = (TextView) grid.getChildAt( i );
+            Button playerBtn = (Button) grid.getChildAt( i );
 
             // Check if the player name is equal to the one to remove
-            if ( playerView.getText().equals(name ) )
+            if ( playerBtn.getText().equals(name ) )
             {
                 return true;
             }
@@ -149,10 +174,10 @@ public class Lobby extends AppCompatActivity
         for ( int i = 0; i < grid.getChildCount(); i++ )
         {
             // Get the view at the current index
-            TextView playerView = (TextView) grid.getChildAt( i );
+            Button playerBtn = (Button) grid.getChildAt( i );
 
             // Check if the player name is equal to the one to remove
-            if ( playerView.getText().equals( playerName ) )
+            if ( playerBtn.getText().equals( playerName ) )
             {
                 grid.removeViewAt( i );
 

@@ -68,17 +68,11 @@ public class VoteMission extends AppCompatActivity{
                     //move on based off of whether or not it was approved
                     moveOn(proCounter > numPlayers / 2);
                 }
-
-
             }
             @Override
             public void onCancelled(FirebaseError firebaseError) {
             }
         });
-
-
-
-
     }
 
     public void handleApprove(View view) {
@@ -104,11 +98,11 @@ public class VoteMission extends AppCompatActivity{
             //check if current player is an agent or not
             if (agentArray.contains(((Resistance)getApplication()).getPlayer())) {
                 //go on mission if agent
-                toGoOrNotToGo = new Intent(this, Mission.class);
+                toGoOrNotToGo = new Intent(this, MissionActiveActivity.class);
             }
             else {
                 //go to boring mission page if not
-                toGoOrNotToGo = new Intent(this, Mission.class); // TODO: CHANGE TO BORING MISSION SCREEN
+                toGoOrNotToGo = new Intent(this, MissionActiveActivity.class); // TODO: CHANGE TO BORING MISSION SCREEN
             }
         }
         else {
