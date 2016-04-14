@@ -8,6 +8,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Your Game ID is"
+        android:textColor="#000000"
         android:id="@+id/titleTextView"
         android:layout_gravity="center_horizontal"
         android:textSize="40dp" />
@@ -16,6 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="1234567890"
+        android:textColor="#000000"
         android:id="@+id/idTextView"
         android:layout_gravity="center_horizontal"
         android:textSize="30dp" />
@@ -24,6 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Lobby"
+        android:textColor="#000000"
         android:id="@+id/lobbyTextView"
         android:layout_gravity="center_horizontal"
         android:textSize="35dp" />
@@ -35,6 +38,7 @@
         android:columnCount="2"
         android:rowCount="5"
         android:layout_gravity="center_horizontal"
+        android:gravity="center"
         android:useDefaultMargins="true"
         android:orientation="vertical">
     </LinearLayout>
