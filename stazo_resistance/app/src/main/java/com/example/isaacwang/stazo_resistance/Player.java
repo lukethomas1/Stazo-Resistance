@@ -19,6 +19,11 @@ public class Player {
         this.num = num;
     }
 
+    public Player(){
+        this.name = "default";
+        this.num = -1;
+    }
+
     //Setters
     public void setSpy(boolean isSpy) {this.isSpy = isSpy;}
     public void setName(String name) {this.name = name;}
@@ -27,6 +32,9 @@ public class Player {
     public String getName(){return name;}
     public boolean isSpy(){return isSpy;}
     public int getNum(){return num;}
+
+    @Override
+    public String toString() {return name;}
 
     @Override
     public boolean equals(Object o) {

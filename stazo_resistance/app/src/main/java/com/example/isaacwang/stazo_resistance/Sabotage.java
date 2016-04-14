@@ -12,7 +12,7 @@ import android.widget.TextView;
 import org.w3c.dom.Text;
 
 public class Sabotage extends AppCompatActivity {
-
+    /*
     private Game game;
     boolean keepDefault = true;
 
@@ -96,5 +96,5 @@ public class Sabotage extends AppCompatActivity {
     public void goToIntro() {
         Intent i = new Intent(this, IntroActivity.class);
         startActivity(i);
-    }
+    }*/
 }

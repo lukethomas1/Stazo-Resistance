@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 
 public class RoleRevealActivity extends AppCompatActivity {
-
+    /*
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +60,7 @@ public class RoleRevealActivity extends AppCompatActivity {
      * Activity.
      *
      * @param view
-     */
+     *
     public void goToName(View view){
         // To be set to next Activity
         Intent i;
@@ -101,5 +101,5 @@ public class RoleRevealActivity extends AppCompatActivity {
     public void goToIntro() {
         Intent i = new Intent(this, IntroActivity.class);
         startActivity(i);
-    }
+    }*/
 }

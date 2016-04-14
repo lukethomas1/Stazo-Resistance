@@ -4,14 +4,19 @@ package com.example.isaacwang.stazo_resistance;
  * Created by isaacwang on 4/8/16.
  */
 public class Mission {
-    private final int numMems;
-    private final int numFails;
+    private final int mems;
+    private final int fails;
 
     public Mission(int mems, int fails) {
-        numMems = mems;
-        numFails = fails;
+        this.mems = mems;
+        this.fails = fails;
     }
-    public int getMems(){return numMems;}
+
+    public Mission(){
+        mems = 0;
+        fails = 0;
+    }
+    public int getMems(){return mems;}
 
     /**
      * Checks if mission passes or fails
@@ -19,5 +24,5 @@ public class Mission {
      * @return whether the mission passes
      */
 
-    private boolean missionPass(int fails) {return fails < numFails;}
+    private boolean missionPass(int fails) {return fails < this.fails;}
 }

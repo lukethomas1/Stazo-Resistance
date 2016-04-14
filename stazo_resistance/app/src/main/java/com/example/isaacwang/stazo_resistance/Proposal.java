@@ -11,38 +11,56 @@ import android.view.ViewManager;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.GenericTypeIndicator;
+import com.firebase.client.ValueEventListener;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 /**
  * Created by isaacwang on 3/29/16.
  */
 public class Proposal extends AppCompatActivity{
-    private Game game;
-    private int memsLeft; // used to track how many more members are needed
+
+    private Firebase gameRef;
+    private Firebase agentsRef;
+    private Firebase valsRef;
+    private String game_id;
+    private ArrayList<Player> playerArray; // pulled from database
+    private ArrayList<Player> agentsArray; // stored locally
+    private Mission curMission;            // what is the current mission?
+    private int proposer_index;            // who is proposing the mission?
+    private int memsLeft;                  // how many more members do we need
+    private HashMap<String, Integer> vals; // map of values
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.proposal);
-        game = getGame();
-        memsLeft = game.getMission().getMems();
 
-        //Resets agentIndex, "clearing" the agents
-        game.clearAgents();
+        // firebase reference definitions
+        Firebase fbRef =
+                new Firebase(((Resistance) getApplication()).getFbURL());
+        game_id = getIntent().getStringExtra("game_id");
+        gameRef = fbRef.child("games").child(game_id);
+        agentsRef = gameRef.child("agents");
+        valsRef = gameRef.child("values");
 
-        //Sets proposer and # textviews
-        setProposerText();
-        setAgentsText();
-
-        //Set button names to the names of players
-        setNames();
-
-        //Remove extra buttons for < 10 players
-        removeExtras();
+        // initialization
+        grabData();
     }
 
     /**
      * Set text of textview at top to have the correct player's name
      */
     private void setProposerText() {
-        ((TextView) findViewById(R.id.proposeMission)).setText(game.getProposer().getName() +
+        ((TextView) findViewById(R.id.proposeMission)).setText(playerArray.get(proposer_index).getName() +
                 ", propose a Mission!");
     }
 
@@ -60,163 +78,218 @@ public class Proposal extends AppCompatActivity{
         }
     }
 
+    private void grabData() {
+        gameRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                // grabbing the player array
+                playerArray = ((ArrayList<Player>) snapshot.child("players").getValue(
+                        new GenericTypeIndicator<List<Player>>() {
+                        }
+                ));
+
+                // setting local agentsArray
+                agentsArray = new ArrayList<Player>();
+
+                // grabbing the current mission
+                vals = ((HashMap<String, Integer>)
+                        snapshot.child("values").getValue(
+                                new GenericTypeIndicator<HashMap<String, Integer>>() {
+                        }));
+                int round = ((Integer) vals.get("round")).intValue();
+                ArrayList<Mission> sequence = ((ArrayList<Mission>) snapshot.child("sequence").getValue(
+                        new GenericTypeIndicator<List<Mission>>() {
+                        }));
+                curMission = sequence.get(round);
+
+                // grabbing proposer index
+                proposer_index = vals.get("proposer_index");
+
+                // sets proposer and # textviews
+                setProposerText();
+                setAgentsText();
+
+                // set button names to the names of players
+                setNames();
+
+                // set members still needed
+                setMemsLeft();
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+            }
+        });
+    }
     /**
      * Sets names for all the buttons
      */
     private void setNames() {
-        ((Button)findViewById(R.id.pButton1)).setText(game.getPlayerName(0));
-        ((Button)findViewById(R.id.pButton2)).setText(game.getPlayerName(1));
-        ((Button)findViewById(R.id.pButton3)).setText(game.getPlayerName(2));
-        ((Button)findViewById(R.id.pButton4)).setText(game.getPlayerName(3));
-        ((Button)findViewById(R.id.pButton5)).setText(game.getPlayerName(4));
-        ((Button)findViewById(R.id.pButton6)).setText(game.getPlayerName(5));
-        ((Button)findViewById(R.id.pButton7)).setText(game.getPlayerName(6));
-        ((Button)findViewById(R.id.pButton8)).setText(game.getPlayerName(7));
-        ((Button)findViewById(R.id.pButton9)).setText(game.getPlayerName(8));
-        ((Button)findViewById(R.id.pButton10)).setText(game.getPlayerName(9));
+
+        // Set names for buttons 1-5
+        ((Button) findViewById(R.id.pButton1)).setText(playerArray.get(0).getName());
+        ((Button) findViewById(R.id.pButton2)).setText(playerArray.get(1).getName());
+        ((Button) findViewById(R.id.pButton3)).setText(playerArray.get(2).getName());
+        ((Button) findViewById(R.id.pButton4)).setText(playerArray.get(3).getName());
+        ((Button) findViewById(R.id.pButton5)).setText(playerArray.get(4).getName());
+
+        // Deal with button removal/name setting for buttons 6-10
+        removeExtras(playerArray.size());
     }
 
     /**
      * Removes the extra buttons depending on numPlayers
+     * Sets the names for buttons 6-10 if needed
+     * Called by setNames
      */
-    private void removeExtras() {
-        if (game.getNumPlayers() < 10) {
+    private void removeExtras(int numPlayers) {
+        if (numPlayers < 10) {
             View v = (View) findViewById(R.id.pButton10);
             ((ViewManager)v.getParent()).removeView(v);
         }
-        if (game.getNumPlayers() < 9) {
+        else {
+            ((Button) findViewById(R.id.pButton10)).setText(playerArray.get(9).getName());
+        }
+        if (numPlayers < 9) {
             View v = (View) findViewById(R.id.pButton9);
             ((ViewManager)v.getParent()).removeView(v);
         }
-        if (game.getNumPlayers() < 8) {
+        else {
+            ((Button) findViewById(R.id.pButton9)).setText(playerArray.get(8).getName());
+        }
+        if (numPlayers < 8) {
             View v = (View) findViewById(R.id.pButton8);
             ((ViewManager)v.getParent()).removeView(v);
         }
-        if (game.getNumPlayers() < 7) {
+        else {
+            ((Button) findViewById(R.id.pButton8)).setText(playerArray.get(7).getName());
+        }
+        if (numPlayers < 7) {
             View v = (View) findViewById(R.id.pButton7);
             ((ViewManager)v.getParent()).removeView(v);
         }
-        if (game.getNumPlayers() < 6) {
+        else {
+            ((Button) findViewById(R.id.pButton7)).setText(playerArray.get(6).getName());
+        }
+        if (numPlayers < 6) {
             View v = (View) findViewById(R.id.pButton6);
             ((ViewManager)v.getParent()).removeView(v);
         }
-    }
-
-    /**
-     * Retrieves game from application
-     * @return the game
-     */
-    private Game getGame() {
-        // Retrieve the Resistance application
-        Resistance resistance = (Resistance) getApplication();
-
-        // Retrieve the game
-        Game game = resistance.getGame();
-
-        return game;
+        else {
+            ((Button) findViewById(R.id.pButton6)).setText(playerArray.get(5).getName());
+        }
     }
 
     /**
      * Adds player to the mission, response to name being clicked.
      * @param view
      */
-    public void addPlayer(View view) {
+    public void togglePlayer(View view) {
         Player player;
         Button button;
         switch(view.getId())
         {
             case R.id.pButton1:
-                player = game.getPlayer(0);
+                player = playerArray.get(0);
                 button = (Button) findViewById(R.id.pButton1);
                 break;
             case R.id.pButton2:
-                player = game.getPlayer(1);
+                player = playerArray.get(1);
                 button = (Button) findViewById(R.id.pButton2);
                 break;
             case R.id.pButton3:
-                player = game.getPlayer(2);
+                player = playerArray.get(2);
                 button = (Button) findViewById(R.id.pButton3);
                 break;
             case R.id.pButton4:
-                player = game.getPlayer(3);
+                player = playerArray.get(3);
                 button = (Button) findViewById(R.id.pButton4);
                 break;
             case R.id.pButton5:
-                player = game.getPlayer(4);
+                player = playerArray.get(4);
                 button = (Button) findViewById(R.id.pButton5);
                 break;
             case R.id.pButton6:
-                player = game.getPlayer(5);
+                player = playerArray.get(5);
                 button = (Button) findViewById(R.id.pButton6);
                 break;
             case R.id.pButton7:
-                player = game.getPlayer(6);
+                player = playerArray.get(6);
                 button = (Button) findViewById(R.id.pButton7);
                 break;
             case R.id.pButton8:
-                player = game.getPlayer(7);
+                player = playerArray.get(7);
                 button = (Button) findViewById(R.id.pButton8);
                 break;
             case R.id.pButton9:
-                player = game.getPlayer(8);
+                player = playerArray.get(8);
                 button = (Button) findViewById(R.id.pButton9);
                 break;
             case R.id.pButton10:
-                player = game.getPlayer(9);
+                player = playerArray.get(9);
                 button = (Button) findViewById(R.id.pButton10);
                 break;
             default:
-                player = game.getPlayer(0);
+                player = playerArray.get(0);
                 button = (Button) findViewById(R.id.pButton1);
                 break;
         }
 
         /* if the player isn't on the mission already*/
-        if (!game.isOnMission(player)) {
+        if (!agentsArray.contains(player)) {
 
             // if the mission is already full, do nothing
-            if (game.missionReady()) {
+            if (memsLeft == 0) {
                 return;
             }
 
-            // change button color
-            /*((Button)button).setBackgroundColor(ContextCompat.getColor(getApplicationContext(),
-                    R.color.colorPressed));*/
+            // change button color to selected
             ((Button)button).setBackground(getDrawable(R.drawable.player_button_selected));
 
-
             // add player to mission
-            game.addToMission(player);
+            agentsArray.add(player);
 
-            // decrement number of members still needed
-            memsLeft--;
+            // adjust decrement number of members still needed
+            setMemsLeft();
         }
 
         /* if the player is already on the mission */
         else {
 
-            // change button color
-            /*((Button)button).setBackgroundColor(ContextCompat.getColor(getApplicationContext(),
-                    R.color.colorNotPressed));*/
+            // change button color to unselected
             ((Button)button).setBackground(getDrawable(R.drawable.player_button));
 
-
             // remove player from mission
-            game.removeFromMission(player);
+            agentsArray.remove(player);
 
-            // increment number of members still needed
-            memsLeft++;
-
+            // adjust number of members still needed
+            setMemsLeft();
         }
 
-        if (memsLeft >= 0) {
-            setAgentsText();
-        }
+        setAgentsText();
     }
 
+    public void setMemsLeft() {
+        memsLeft = curMission.getMems() - agentsArray.size();
+    }
+
+    /**
+     * Updates database values
+     * Proceeds to mission voting screen
+     */
     public void done(View view) {
-        if (game.missionReady()) {
-            Intent i = new Intent(this, Approval.class);
+        if (memsLeft == 0) {
+
+            // update Database agents array and proposer_index
+            agentsRef.setValue(agentsArray);
+            vals.put("proposer_index", proposer_index + 1);
+            vals.put("vote_counter", 0);
+            vals.put("pro_counter", 0);
+            valsRef.setValue(vals);
+
+            // move on to next activity
+            Intent i = new Intent(this, VoteMission.class);
+            i.putExtra("game_id", game_id);
             startActivity(i);
         }
     }

@@ -22,14 +22,14 @@ public class NameEntry extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.entername);
-        setPlayerNumberText();
+        //setPlayerNumberText();
 
         Firebase fbRef = new Firebase(((Resistance)getApplication()).getFbURL());
         /*Firebase userRef = fbRef.child("players").child("players1");
         userRef.setValue(new Player(5));*/
     }
 
-    public void handleClick(View view)
+    /*public void handleClick(View view)
     {
         // Check if a String was entered
         EditText nameField = (EditText) findViewById(R.id.nameEditText);
@@ -139,5 +139,5 @@ public class NameEntry extends AppCompatActivity {
     public void goToIntro() {
         Intent i = new Intent(this, IntroActivity.class);
         startActivity(i);
-    }
+    }*/
 }

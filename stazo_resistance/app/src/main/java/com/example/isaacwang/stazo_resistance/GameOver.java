@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 public class GameOver extends AppCompatActivity {
 
-    Game game;
+    /*Game game;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,5 +56,5 @@ public class GameOver extends AppCompatActivity {
     public void returnToMain(View view) {
         Intent i = new Intent(this, IntroActivity.class);
         startActivity(i);
-    }
+    }*/
 }

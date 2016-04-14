@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.provider.SyncStateContract;
+import android.speech.RecognizerIntent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -47,7 +48,7 @@ public class IntroActivity extends AppCompatActivity {
     }
 
     /**
-     * Creates game directory on database and initializes player array
+     * Creates game directory on database an d initializes player array
      * with player 1 and moves to the lobby screen
      * @param view
      */
@@ -59,14 +60,21 @@ public class IntroActivity extends AppCompatActivity {
 
         // Creating players array in game and adding player 1
         p = new ArrayList<Player>();
-        p.add(new Player("Player 1", 1));
+        Player me = new Player("Player 1", 1);
+        p.add(me);
         playerRef.setValue(p);
+
+        // Save payer to application too
+        Resistance game = ((Resistance)getApplication());
+        game.setPlayer(me);
 
         // Values hashmap initialization
         HashMap<String, Integer> values = new HashMap<String, Integer>();
         values.put("proposer_index", new Integer(0));
         values.put("spy_score", new Integer(0));
         values.put("res_score", new Integer(0));
+        values.put("round", new Integer(0));
+        values.put("ready", new Integer(0));      // are we ready for the game to start?
         fbRef.child("games").child(game_id).child("values").setValue(values);
 
         // Starting Lobby activity
@@ -103,8 +111,13 @@ public class IntroActivity extends AppCompatActivity {
                         // Adding us to the player array
                         int id = ((ArrayList<Player>) snapshot.getValue()).size() + 1;
                         p = ((ArrayList<Player>) snapshot.getValue());
-                        p.add(new Player("Player " + id, id));
+                        Player me = new Player("Player " + id, id);
+                        p.add(me);
                         playerRef.setValue(p);
+
+                        // Save player to application too
+                        Resistance game = ((Resistance)getApplication());
+                        game.setPlayer(me);
 
                         // Starting Lobby activity
                         Intent toLobby = new Intent(getApplicationContext(),
