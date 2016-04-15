@@ -33,9 +33,10 @@ public class IntroActivity extends AppCompatActivity {
 
     private String android_id;
     private Firebase fbRef;
+    private Firebase playerRef;
     private String game_id;
     private ArrayList<Player> p;
-    private Firebase playerRef;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +77,8 @@ public class IntroActivity extends AppCompatActivity {
         values.put("round", new Integer(0));
         values.put("proceed_to_proposal", new Integer(0));
         values.put("proceed_to_vote", new Integer(0));
-
+        values.put("fail_counter", new Integer(0)); // Used in MissionActiveActivity
+        values.put("voter_turnout", new Integer(0)); // Used in MissionActiveActivity
         fbRef.child("games").child(game_id).child("values").setValue(values);
 
         // Starting Lobby activity
