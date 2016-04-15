@@ -29,6 +29,7 @@ public class MissionPassTho extends AppCompatActivity{
     private boolean pass;
     private int res_score;
     private int spy_score;
+    private int round;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +68,7 @@ public class MissionPassTho extends AppCompatActivity{
                                 new GenericTypeIndicator<HashMap<String, Integer>>() {
                                 }));
 
-                int round = ((Integer) vals.get("round")).intValue();
+                round = ((Integer) vals.get("round")).intValue();
                 int fails = ((Integer) vals.get("fails")).intValue();
                 res_score = ((Integer) vals.get("res_score")).intValue();
                 spy_score = ((Integer) vals.get("spy_score")).intValue();
@@ -100,10 +101,11 @@ public class MissionPassTho extends AppCompatActivity{
         }
         //otherwise go back to proposal screen
         else {
-            // kinda jank, only the creator updates score
+            // kinda jank, only the creator updates score and round
             if (((Resistance) getApplication()).getPlayer().getNum() == 1) {
                 vals.put("res_score", new Integer(res_score));
                 vals.put("spy_score", new Integer(spy_score));
+                vals.put("round", new Integer(round + 1));
             }
             if (((Resistance) getApplication()).getPlayer().getNum() ==
                     vals.get("proposer_index")) {
