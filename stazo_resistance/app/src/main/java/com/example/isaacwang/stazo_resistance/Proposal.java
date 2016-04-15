@@ -285,11 +285,13 @@ public class Proposal extends AppCompatActivity{
             vals.put("proposer_index", proposer_index + 1);
             vals.put("vote_counter", 0);
             vals.put("pro_counter", 0);
+            vals.put("proceed_to_vote", 1);
             valsRef.setValue(vals);
 
             // move on to next activity
             Intent i = new Intent(this, VoteMission.class);
             i.putExtra("game_id", game_id);
+            i.putExtra("reset_proceed", true);
             startActivity(i);
         }
     }

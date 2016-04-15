@@ -36,7 +36,8 @@
         <activity android:name=".Proposal" />
         <activity android:name=".MissionPassTho" />
         <activity android:name=".VoteMission" />
-        <activity android:name=".MissionActiveActivity"></activity>
+        <activity android:name=".MissionActiveActivity" />
+        <activity android:name=".ProposalInactive"></activity>
     </application>
 
 </manifest>

@@ -48,7 +48,6 @@ public class MissionPassTho extends AppCompatActivity{
         if (pass) {
             ((TextView) findViewById(R.id.missionPassedText)).setText("Mission Passed! :D");
             res_score++;
-
         }
         //if mission fails
         else {
@@ -106,10 +105,17 @@ public class MissionPassTho extends AppCompatActivity{
                 vals.put("res_score", new Integer(res_score));
                 vals.put("spy_score", new Integer(spy_score));
             }
-            intent = new Intent(this, Proposal.class);
+            if (((Resistance) getApplication()).getPlayer().getNum() ==
+                    vals.get("proposer_index")) {
+                intent = new Intent(this, Proposal.class);
+            }
+            else {
+                intent = new Intent(this, ProposalInactive.class);
+            }
         }
 
         intent.putExtra("game_id", game_id);
+        startActivity(intent);
     }
 
     @Override
