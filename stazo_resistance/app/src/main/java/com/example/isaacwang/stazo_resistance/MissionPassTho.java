@@ -9,52 +9,107 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.GenericTypeIndicator;
+import com.firebase.client.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 /**
  * Created by ericzhang on 3/29/16.
  */
 public class MissionPassTho extends AppCompatActivity{
-    /*
-    private Game game;
+    private Firebase gameRef;
+    private String game_id;
+    private HashMap<String, Integer> vals;
+    private boolean pass;
+    private int res_score;
+    private int spy_score;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mission_pass_tho);
-        Resistance resistance = ((Resistance) this.getApplication());
-        game = resistance.getGame();
 
-        //for updating the text message
-        //if mission passes
-        if (game.executeMission()) {
+        Resistance resistance = ((Resistance) this.getApplication());
+        this.game_id = getIntent().getStringExtra("game_id");
+        ((TextView) findViewById(R.id.idTextView)).setText(game_id);
+
+        Firebase fbRef =
+                new Firebase(((Resistance) getApplication()).getFbURL());
+        gameRef = fbRef.child("games").child(game_id);
+        grabData();
+
+
+        if (pass) {
             ((TextView) findViewById(R.id.missionPassedText)).setText("Mission Passed! :D");
+            res_score++;
 
         }
         //if mission fails
         else {
             ((TextView) findViewById(R.id.missionPassedText)).setText("Mission Failed! D:");
+            spy_score++;
         }
+    }
+
+    // Ultimately, just sets pass to true or false
+    public void grabData() {
+        gameRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+
+                vals = ((HashMap<String, Integer>)
+                        snapshot.child("values").getValue(
+                                new GenericTypeIndicator<HashMap<String, Integer>>() {
+                                }));
+
+                int round = ((Integer) vals.get("round")).intValue();
+                int fails = ((Integer) vals.get("fails")).intValue();
+                res_score = ((Integer) vals.get("res_score")).intValue();
+                spy_score = ((Integer) vals.get("spy_score")).intValue();
+                ArrayList<Mission> sequence = ((ArrayList<Mission>) snapshot.child("sequence").getValue(
+                        new GenericTypeIndicator<List<Mission>>() {
+                        }));
+                pass = sequence.get(round).missionPass(fails);
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+            }
+        });
     }
 
     public void handleClick(View view)
     {
+        Intent intent;
         //Resistance won
-        if (game.getResistanceScore() == 3) {
+        if (res_score == 3) {
             //update the fact that resistance won
-            game.setWhoWon(true);
-            Intent intent = new Intent(this, GameOver.class);
-            startActivity(intent);
+            intent = new Intent(this, GameOver.class);
+            intent.putExtra("winner", "Resistance");
         }
         //Spies won
-        else if (game.getSpyScore() == 3) {
+        else if (spy_score == 3) {
             //update the fact that spies won
-            game.setWhoWon(false);
-            Intent intent = new Intent(this, GameOver.class);
-            startActivity(intent);
+            intent = new Intent(this, GameOver.class);
+            intent.putExtra("winner", "Spies");
         }
         //otherwise go back to proposal screen
         else {
-            Intent intent = new Intent(this, Proposal.class);
-            startActivity(intent);
+            // kinda jank, only the creator updates score
+            if (((Resistance) getApplication()).getPlayer().getNum() == 1) {
+                vals.put("res_score", new Integer(res_score));
+                vals.put("spy_score", new Integer(spy_score));
+            }
+            intent = new Intent(this, Proposal.class);
         }
+
+        intent.putExtra("game_id", game_id);
     }
 
     @Override
@@ -77,5 +132,5 @@ public class MissionPassTho extends AppCompatActivity{
     public void goToIntro() {
         Intent i = new Intent(this, IntroActivity.class);
         startActivity(i);
-    }*/
+    }
 }

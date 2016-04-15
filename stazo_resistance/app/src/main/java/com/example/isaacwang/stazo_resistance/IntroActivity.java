@@ -66,7 +66,7 @@ public class IntroActivity extends AppCompatActivity {
         playerRef.setValue(p);
 
         // Save payer to application too
-        Resistance game = ((Resistance)getApplication());
+        Resistance game = ((Resistance) getApplication());
         game.setPlayer(me);
 
         // Values hashmap initialization

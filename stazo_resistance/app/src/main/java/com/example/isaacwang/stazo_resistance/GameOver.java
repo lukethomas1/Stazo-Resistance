@@ -25,8 +25,11 @@ public class GameOver extends AppCompatActivity {
     private Firebase fbRef;
     private Firebase playerRef;
     private String winner;
+<<<<<<< HEAD
     private String game_id;
     private ArrayList<Player> playerArray;
+=======
+>>>>>>> 53dae79eeaa08c19273067b1f9b2fc8f30e6bb42
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
