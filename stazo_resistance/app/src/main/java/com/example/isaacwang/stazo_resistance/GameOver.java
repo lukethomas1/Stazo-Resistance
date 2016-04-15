@@ -8,25 +8,32 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
+
 public class GameOver extends AppCompatActivity {
 
-    /*Game game;
 
+    private Firebase fbRef;
+    private Game game;
+    private String winner;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gameoverscreen);
 
-        Resistance resistance = (Resistance) this.getApplication();
-        game = resistance.getGame();
-        boolean whoWon = game.getWhoWon();
+        Firebase fbRef = new Firebase(((Resistance) getApplication()).getFbURL());
 
-        //if resistance won
-        if(whoWon) {
+
+        winner = getIntent().getStringExtra("winner");
+
+        //if resistance wins
+        if(winner.equals("Resistance")){
             ((TextView) findViewById(R.id.wonText)).setText("Resistance wins!");
-        }
-        //if spies won
-        else {
+        //spies win
+        } else {
             ((TextView) findViewById(R.id.wonText)).setText("Spies win!");
         }
     }
@@ -56,5 +63,5 @@ public class GameOver extends AppCompatActivity {
     public void returnToMain(View view) {
         Intent i = new Intent(this, IntroActivity.class);
         startActivity(i);
-    }*/
+    }
 }
