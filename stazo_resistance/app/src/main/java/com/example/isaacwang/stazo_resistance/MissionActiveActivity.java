@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
-public class Sabotage extends AppCompatActivity {
+public class MissionActiveActivity extends AppCompatActivity {
     /*
     private Game game;
     boolean keepDefault = true;
