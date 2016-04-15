@@ -27,7 +27,7 @@ public class VoteMission extends AppCompatActivity{
     HashMap<String, Integer> values;
 
     private String game_id;
-
+    private int voted;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +44,8 @@ public class VoteMission extends AppCompatActivity{
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 // Copying the agent array
-                agentArray = ((ArrayList<Player>) snapshot.child("agents").getValue(new GenericTypeIndicator<ArrayList<Player>>(){}));
+                agentArray = ((ArrayList<Player>) snapshot.child("agents").getValue(new GenericTypeIndicator<ArrayList<Player>>() {
+                }));
 
                 //Get the list of agents to display for people to vote on
                 String list = "";
@@ -59,9 +60,9 @@ public class VoteMission extends AppCompatActivity{
                         new GenericTypeIndicator<HashMap<String, Integer>>() {
                         }
                 );
-                voteCounter = ((Integer)values.get("vote_counter")).intValue();
+                voteCounter = ((Integer) values.get("vote_counter")).intValue();
                 int numPlayers = ((Integer) values.get("num_players")).intValue();
-                proCounter = ((Integer)values.get("pro_counter")).intValue();
+                proCounter = ((Integer) values.get("pro_counter")).intValue();
 
                 //check if vote counter reached num players
                 if (voteCounter == numPlayers) {
@@ -69,25 +70,45 @@ public class VoteMission extends AppCompatActivity{
                     moveOn(proCounter > numPlayers / 2);
                 }
             }
+
             @Override
             public void onCancelled(FirebaseError firebaseError) {
             }
         });
     }
 
+    //int voted keeps track of both what the person voted and if person has voted or not
+    //0 = not voted, 1 = yes, 2 = no
     public void handleApprove(View view) {
-        //increment and update voteCounter and proCounter
-        voteCounter++;
-        proCounter++;
-        values.put("vote_counter", voteCounter);
-        values.put(("pro_counter"), proCounter);
+        //increment and update voteCounter and proCounter if needed
+        if (voted == 0) {
+            voteCounter++;
+            values.put("vote_counter", voteCounter);
+            proCounter++;
+            values.put(("pro_counter"), proCounter);
+        }
+        //increment pro_counter if previous vote was yes
+        if (voted == 2) {
+            proCounter++;
+            values.put(("pro_counter"), proCounter);
+        }
+        voted = 1;
         gameRef.child("values").setValue(values);
     }
 
     public void handleDeny(View view) {
-        //increment and update voteCounter
-        voteCounter++;
-        values.put("vote_counter", voteCounter);
+        //increment and update voteCounter if needed
+        if (voted == 0) {
+            voteCounter++;
+            values.put("vote_counter", voteCounter);
+        }
+        //decrement pro_counter if previous vote was yes
+        if (voted == 1) {
+            proCounter--;
+            values.put(("pro_counter"), proCounter);
+        }
+        //set voted state to no
+        voted = 2;
         gameRef.child("values").setValue(values);
     }
 
