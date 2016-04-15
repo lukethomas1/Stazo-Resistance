@@ -86,19 +86,18 @@ public class MissionPassTho extends AppCompatActivity{
 
     public void handleClick(View view)
     {
+        Intent intent;
         //Resistance won
         if (res_score == 3) {
             //update the fact that resistance won
-            Intent intent = new Intent(this, GameOver.class);
+            intent = new Intent(this, GameOver.class);
             intent.putExtra("winner", "Resistance");
-            startActivity(intent);
         }
         //Spies won
         else if (spy_score == 3) {
             //update the fact that spies won
-            Intent intent = new Intent(this, GameOver.class);
+            intent = new Intent(this, GameOver.class);
             intent.putExtra("winner", "Spies");
-            startActivity(intent);
         }
         //otherwise go back to proposal screen
         else {
@@ -107,9 +106,10 @@ public class MissionPassTho extends AppCompatActivity{
                 vals.put("res_score", new Integer(res_score));
                 vals.put("spy_score", new Integer(spy_score));
             }
-            Intent intent = new Intent(this, Proposal.class);
-            startActivity(intent);
+            intent = new Intent(this, Proposal.class);
         }
+
+        intent.putExtra("game_id", game_id);
     }
 
     @Override
