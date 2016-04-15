@@ -10,13 +10,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.isaacwang.stazo_resistance.GameOver">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_marginTop="30dp"
-        android:textSize="50dp"
-        android:text="Game Over" />
 
     <TextView
         android:layout_width="match_parent"
@@ -24,9 +17,25 @@
         android:gravity="center"
         android:textSize="50dp"
         android:layout_marginTop="20dp"
-        android:text="Eric wins!"
+        android:text="ToBeReplaced"
         android:id="@+id/wonText"
         />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="35dp"
+        android:text="Congratulations to"
+        android:id="@+id/CongratulationsText"
+        android:layout_gravity="center_horizontal" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal">
+        android:id="@id/playersList"
+    </LinearLayout>
 
     <Button
         android:layout_width="match_parent"

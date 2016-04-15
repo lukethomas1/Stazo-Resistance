@@ -33,9 +33,10 @@ public class IntroActivity extends AppCompatActivity {
 
     private String android_id;
     private Firebase fbRef;
+    private Firebase playerRef;
     private String game_id;
     private ArrayList<Player> p;
-    private Firebase playerRef;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +66,7 @@ public class IntroActivity extends AppCompatActivity {
         playerRef.setValue(p);
 
         // Save payer to application too
-        Resistance game = ((Resistance)getApplication());
+        Resistance game = ((Resistance) getApplication());
         game.setPlayer(me);
 
         // Values hashmap initialization

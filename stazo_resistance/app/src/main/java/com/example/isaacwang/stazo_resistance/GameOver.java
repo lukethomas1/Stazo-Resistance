@@ -8,26 +8,80 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.GenericTypeIndicator;
+import com.firebase.client.ValueEventListener;
+import com.firebase.client.DataSnapshot;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 public class GameOver extends AppCompatActivity {
 
-    /*Game game;
+
+    private Firebase fbRef;
+    private Firebase playerRef;
+    private String winner;
+<<<<<<< HEAD
+    private String game_id;
+    private ArrayList<Player> playerArray;
+=======
+>>>>>>> 53dae79eeaa08c19273067b1f9b2fc8f30e6bb42
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gameoverscreen);
 
-        Resistance resistance = (Resistance) this.getApplication();
-        game = resistance.getGame();
-        boolean whoWon = game.getWhoWon();
+        fbRef = new Firebase(((Resistance) getApplication()).getFbURL());
+        game_id = getIntent().getStringExtra("game_id");
+        playerRef = fbRef.child("games").child(game_id).child("players");
+        winner = getIntent().getStringExtra("winner");
 
-        //if resistance won
-        if(whoWon) {
+
+        //if resistance wins
+        if(winner.equals("Resistance")){
             ((TextView) findViewById(R.id.wonText)).setText("Resistance wins!");
-        }
-        //if spies won
-        else {
+            iteratePlayers(winner);
+        //spies win
+        } else {
             ((TextView) findViewById(R.id.wonText)).setText("Spies win!");
+            iteratePlayers(winner);
+        }
+    }
+
+    private void getArray(){
+
+        playerRef.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                // grabbing the player array
+                playerArray = ((ArrayList<Player>) snapshot.child("players").getValue(
+                        new GenericTypeIndicator<List<Player>>() {
+                        }
+                ));
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+            }
+        });
+    }
+
+    /*
+     * iterates through list of players and
+     * dynamically creates textviews for players who have won.
+     */
+    private void iteratePlayers(String str){
+        getArray();
+        //iterate through array from firebase
+        for (Player player : playerArray){
+            //dynamically create texviews to be shown...
         }
     }
 
@@ -53,8 +107,4 @@ public class GameOver extends AppCompatActivity {
         startActivity(i);
     }
 
-    public void returnToMain(View view) {
-        Intent i = new Intent(this, IntroActivity.class);
-        startActivity(i);
-    }*/
 }
