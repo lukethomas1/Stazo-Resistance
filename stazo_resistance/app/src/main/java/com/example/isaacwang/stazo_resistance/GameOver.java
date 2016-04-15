@@ -19,6 +19,7 @@ public class GameOver extends AppCompatActivity {
     private Firebase fbRef;
     private Game game;
     private String winner;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

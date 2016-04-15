@@ -196,6 +196,29 @@ public class Lobby extends AppCompatActivity
         gameRef.child("values").child("ready").setValue(new Integer(1));
 
         gameRef.child("values").child("num_players").setValue(new Integer(numPlayers));
+
+        // assigns spies to the local playerArray
+        setSpies();
+        // push the spy-updates playerArray to the database
+        gameRef.child("players").setValue(playerArray);
+    }
+
+    // assigns spies to the local playerArray
+    public void setSpies() {
+        int maxSpies = (numPlayers + 2) / 3; //Gets max number of spies according to playerCount
+        int numSpies = 0; //Current number of spies in array
+
+        while (numSpies < maxSpies) {
+
+            //Randomly generates index from 0 to playerCount-1
+            int randomNum = (int) (Math.random() * numPlayers);
+
+            //If the player at that index is not already a spy, make them a spy
+            if (!playerArray.get(randomNum).isSpy()) {
+                playerArray.get(randomNum).setSpy(true);
+                numSpies++;
+            }
+        }
     }
 
     // called when ready is set to 1;
