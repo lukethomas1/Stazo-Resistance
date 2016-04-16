@@ -9,29 +9,47 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.GenericTypeIndicator;
+import com.firebase.client.ValueEventListener;
+
 import org.w3c.dom.Text;
 
+import java.util.HashMap;
+
 public class MissionActiveActivity extends AppCompatActivity {
-    /*
-    private Game game;
+
+    private Firebase valuesRef;
+    private String game_id;
     boolean keepDefault = true;
+    private int turnout;
+    private int failCount;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        final int FULL = 100;
-        final int HALF = 50;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sabotage);
 
-        Resistance resistance = ((Resistance) this.getApplication());
+        this.game_id = getIntent().getStringExtra("game_id");
+
+        // Changes to Lobby handling
+        Firebase fbRef =
+                new Firebase(((Resistance) getApplication()).getFbURL());
+        valuesRef = fbRef.child("games").child(game_id).child("values");
+
+        /*Resistance resistance = ((Resistance) this.getApplication());
         game = resistance.getGame();
         Player saboteur = game.getAgents().get(game.getSabotageIndex());
-        ((TextView) findViewById(R.id.makeYourChoice)).setText(saboteur.getName() + ", make your choice!");
+        ((TextView) findViewById(R.id.makeYourChoice)).setText(saboteur.getName() + ", make your choice!");*/
 
-        // Randomly place the succeed and fail buttons
-        keepDefault = ((((int)(Math.random() * FULL)) + 1) < HALF);
+        // Set keepDefault to true or false with a 50/50 chance
+        keepDefault = ((((int)(Math.random() * 100)) + 1) < 50);
+        // If keepDefault is false, switch the text of the two buttons but not the functions
         if(!keepDefault) {
-            TextView button1 = (TextView) findViewById(R.id.button);
+            TextView button1 = (TextView) findViewById(R.id.button1);
             TextView button2 = (TextView) findViewById(R.id.button2);
             button1.setText("Fail");
             button2.setText("Succeed");
@@ -39,10 +57,12 @@ public class MissionActiveActivity extends AppCompatActivity {
     }
 
     public void succeed(View view) {
+        // Work as normal
         if(keepDefault) {
             proceed();
         }
 
+        // Button has opposite text, so switch back to normal and call the other function
         else {
             keepDefault = true;
             fail(view);
@@ -50,30 +70,46 @@ public class MissionActiveActivity extends AppCompatActivity {
     }
 
     public void fail(View view) {
+        // Work as normal
         if(keepDefault) {
-            game.sabotageMission();
+            valuesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                public void onDataChange(DataSnapshot snapshot) {
+                    failCount = ((Integer)snapshot.child("fail_counter").getValue()).intValue();
+                    valuesRef.child("fail_counter").setValue(++failCount);
+                }
+
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+                }
+            });
             proceed();
         }
 
+        // Button has opposite text, so switch back to normal and call the other function
         else {
             keepDefault = true;
             succeed(view);
         }
     }
 
+    // This method is called from both fail() and succeed() to increment the # of votes and continue
+    // to the mission inactive screen to wait for the rest of the votes
     private void proceed() {
-        game.incrementSabotager();
-        Intent i;
+        //TODO increment # of votes for mission in firebase
+        valuesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            public void onDataChange(DataSnapshot snapshot) {
+                turnout = ((Integer)snapshot.child("voter_turnout").getValue()).intValue();
+                valuesRef.child("voter_turnout").setValue(++turnout);
+            }
 
-        //If all agents have succeeded/sabotaged
-        if (game.getSabotageIndex() >= game.getAgents().size()) {
-            i = new Intent(this, MissionPassTho.class);
-            startActivity(i);
-        }
-        else {
-            i = new Intent(this, Sabotage.class);
-            startActivity(i);
-        }
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+            }
+        });
+
+        // After voting, send user to Inactive screen to wait for other voters
+        Intent i = new Intent(this, MissionInactiveActivity.class);
+        startActivity(i);
     }
 
     @Override
@@ -96,5 +132,5 @@ public class MissionActiveActivity extends AppCompatActivity {
     public void goToIntro() {
         Intent i = new Intent(this, IntroActivity.class);
         startActivity(i);
-    }*/
+    }
 }

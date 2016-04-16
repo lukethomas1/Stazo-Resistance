@@ -66,7 +66,7 @@ public class Lobby extends AppCompatActivity {
                 new Firebase(((Resistance) getApplication()).getFbURL());
         gameRef = fbRef.child("games").child(game_id);
         Firebase playerRef = gameRef.child("players");
-        Firebase readyRef = gameRef.child("values").child("ready");
+        Firebase readyRef = gameRef.child("values").child("proceed_to_proposal");
 
         // Adding players to the player array
         playerRef.addValueEventListener(new ValueEventListener() {
@@ -236,7 +236,7 @@ public class Lobby extends AppCompatActivity {
         gameRef.child("sequence").setValue(getMissionSequence());
 
         // we are ready for the game to start -> chain into goToProposal
-        gameRef.child("values").child("ready").setValue(new Integer(1));
+        gameRef.child("values").child("proceed_to_proposal").setValue(new Integer(1));
 
         gameRef.child("values").child("num_players").setValue(new Integer(numPlayers));
 
@@ -266,7 +266,13 @@ public class Lobby extends AppCompatActivity {
 
     // called when ready is set to 1;
     public void goToProposal() {
-        Intent i = new Intent(this, Proposal.class);
+        Intent i;
+        if (((Resistance) getApplication()).getPlayer().getNum() == 1) {
+            i = new Intent(this, Proposal.class);
+        }
+        else {
+            i = new Intent(this, ProposalInactive.class);
+        }
         i.putExtra("game_id", game_id);
         startActivity(i);
     }
