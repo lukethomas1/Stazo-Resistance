@@ -49,7 +49,6 @@ public class IntroActivity extends AppCompatActivity {
                 Settings.Secure.ANDROID_ID);
         fbRef =
                 new Firebase(((Resistance) getApplication()).getFbURL());
-        setupGamesListener();
     }
 
     /**
@@ -109,10 +108,11 @@ public class IntroActivity extends AppCompatActivity {
 
                 // Finding the game
                 game_id = (input.getText().toString());
-
+                setupGamesListener();
                 //check if the game id exists
                 if(exists) {
                     // Single-execution for adding us to the player array
+                    playerRef = fbRef.child("games").child(game_id).child("players");
                     playerRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot snapshot) {
@@ -174,12 +174,15 @@ public class IntroActivity extends AppCompatActivity {
     private void setupGamesListener() {
         Firebase gameDirectoryRef = fbRef.child("games");
         //find game id within dir
-        gameDirectoryRef.addValueEventListener(new ValueEventListener() {
+        System.out.println("hello");
+        gameDirectoryRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 exists = snapshot.hasChild(game_id);
+                System.out.println(exists);
 
             }
+
             @Override
             public void onCancelled(FirebaseError firebaseError) {
                 System.out.println("The read failed: " + firebaseError.getMessage());
