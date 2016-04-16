@@ -107,43 +107,8 @@ public class IntroActivity extends AppCompatActivity {
 
                 // Finding the game
                 game_id = (input.getText().toString());
-                setupGamesListener();
-                //check if the game id exists
-                if(exists) {
-
-                    // Single-execution for adding us to the player array
-                    playerRef = fbRef.child("games").child(game_id).child("players");
-                    playerRef.addListenerForSingleValueEvent(new ValueEventListener() {
-
-                        @Override
-                        public void onDataChange(DataSnapshot snapshot) {
-                            // Adding us to the player array
-                            int id = ((ArrayList<Player>) snapshot.getValue()).size() + 1;
-                            Player me = new Player("Player " + id, id);
-
-                            p = ((ArrayList<Player>) snapshot.getValue());
-                            p.add(me);
-                            playerRef.setValue(p);
-
-                            // Save player to application too
-                            Resistance game = ((Resistance)getApplication());
-                            game.setPlayer(me);
-
-                            // Starting Lobby activity
-                            Intent toLobby = new Intent(getApplicationContext(), Lobby.class );
-                            toLobby.putExtra("game_id", game_id);
-                            startActivity(toLobby);
-                        }
-
-                        @Override
-                        public void onCancelled(FirebaseError firebaseError) {
-                        }
-                    });
+                if (!game_id.isEmpty()){setupGamesListener();}
                 }
-                else {URLDoesNotExist(game_id);}
-
-
-            }
         });
         gameIdEntry.show();
     }
@@ -177,12 +142,44 @@ public class IntroActivity extends AppCompatActivity {
         Firebase gameDirectoryRef = fbRef.child("games");
 
         //find game id within dir
-        System.out.println("hello");
         gameDirectoryRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 exists = snapshot.hasChild(game_id);
-                System.out.println(exists);
+                //check if the game id exists
+                System.out.println("exists:" + exists);
+                if(exists) {
+
+                    // Single-execution for adding us to the player array
+                    playerRef = fbRef.child("games").child(game_id).child("players");
+                    playerRef.addListenerForSingleValueEvent(new ValueEventListener() {
+
+                        @Override
+                        public void onDataChange(DataSnapshot snapshot) {
+                            // Adding us to the player array
+                            int id = ((ArrayList<Player>) snapshot.getValue()).size() + 1;
+                            Player me = new Player("Player " + id, id);
+
+                            p = ((ArrayList<Player>) snapshot.getValue());
+                            p.add(me);
+                            playerRef.setValue(p);
+
+                            // Save player to application too
+                            Resistance game = ((Resistance)getApplication());
+                            game.setPlayer(me);
+
+                            // Starting Lobby activity
+                            Intent toLobby = new Intent(getApplicationContext(), Lobby.class );
+                            toLobby.putExtra("game_id", game_id);
+                            startActivity(toLobby);
+                        }
+
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {
+                        }
+                    });
+                }
+                else {URLDoesNotExist(game_id);}
 
             }
 
