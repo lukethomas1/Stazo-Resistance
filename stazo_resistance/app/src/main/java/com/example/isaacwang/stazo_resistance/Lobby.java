@@ -308,7 +308,7 @@ public class Lobby extends AppCompatActivity {
         numEntry.show();
     }
 
-    @Override
+    /*@Override
     public void onBackPressed() {
         String[] quitArray = {"Yes", "No"};
         AlertDialog.Builder numEntry = new AlertDialog.Builder(this);
@@ -323,7 +323,7 @@ public class Lobby extends AppCompatActivity {
         });
         numEntry.create();
         numEntry.show();
-    }
+    }*/
 
     public void goToIntro() {
         Intent i = new Intent(this, IntroActivity.class);

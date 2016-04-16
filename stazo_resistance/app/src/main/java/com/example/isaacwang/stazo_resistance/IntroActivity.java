@@ -78,7 +78,7 @@ public class IntroActivity extends AppCompatActivity {
         values.put("proceed_to_proposal", new Integer(0));
         values.put("proceed_to_vote", new Integer(0));
         values.put("fail_counter", new Integer(0)); // Used in MissionActiveActivity
-        values.put("voter_turnout", new Integer(0)); // Used in MissionActiveActivity
+        values.put("sabotage_counter", new Integer(0)); // Used in MissionActiveActivity
         fbRef.child("games").child(game_id).child("values").setValue(values);
 
         // Starting Lobby activity

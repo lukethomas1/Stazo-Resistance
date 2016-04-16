@@ -32,7 +32,7 @@ public class MissionInactiveActivity extends AppCompatActivity {
                 ((TextView)findViewById(R.id.votecounter)).setText(snapshot.child("voter_turnout").getValue().toString());
 
                 // Check if everybody has voted
-                if(((Long)snapshot.child("voter_turnout").getValue()).longValue() ==
+                if(((Long)snapshot.child("sabotage_counter").getValue()).longValue() ==
                         ((Long)snapshot.child("num_players").getValue()).longValue()) {
                     allVotesCounted();
                 }

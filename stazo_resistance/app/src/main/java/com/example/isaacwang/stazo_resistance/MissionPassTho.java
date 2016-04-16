@@ -42,17 +42,6 @@ public class MissionPassTho extends AppCompatActivity{
                 new Firebase(((Resistance) getApplication()).getFbURL());
         gameRef = fbRef.child("games").child(game_id);
         grabData();
-
-
-        if (pass) {
-            ((TextView) findViewById(R.id.missionPassedText)).setText("Mission Passed! :D");
-            res_score++;
-        }
-        //if mission fails
-        else {
-            ((TextView) findViewById(R.id.missionPassedText)).setText("Mission Failed! D:");
-            spy_score++;
-        }
     }
 
     // Ultimately, just sets pass to true or false
@@ -74,6 +63,16 @@ public class MissionPassTho extends AppCompatActivity{
                         new GenericTypeIndicator<List<Mission>>() {
                         }));
                 pass = sequence.get(round).missionPass(fails);
+
+                if (pass) {
+                    ((TextView) findViewById(R.id.missionPassedText)).setText("Mission Passed! :D");
+                    res_score++;
+                }
+                //if mission fails
+                else {
+                    ((TextView) findViewById(R.id.missionPassedText)).setText("Mission Failed! D:");
+                    spy_score++;
+                }
             }
 
             @Override
