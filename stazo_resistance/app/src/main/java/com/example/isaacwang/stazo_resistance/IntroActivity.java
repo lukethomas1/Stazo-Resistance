@@ -55,7 +55,7 @@ public class IntroActivity extends AppCompatActivity {
     public void startGame(View view){
 
         // Creating game on database
-        game_id = "557"; //generateGameId();
+        game_id = "556"; //generateGameId();
         playerRef = fbRef.child("games").child(game_id).child("players");
 
         // Creating players array in game and adding player 1

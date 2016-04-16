@@ -1,7 +1,9 @@
 package com.example.isaacwang.stazo_resistance;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -232,18 +234,24 @@ public class Lobby extends AppCompatActivity {
     // initializes game values
     public void startGame(View view) {
 
-        // the sequence of missions stored on database
-        gameRef.child("sequence").setValue(getMissionSequence());
+        if (numPlayers >= 5 && numPlayers <= 10) {
 
-        // we are ready for the game to start -> chain into goToProposal
-        gameRef.child("values").child("proceed_to_proposal").setValue(new Integer(1));
+            // the sequence of missions stored on database
+            gameRef.child("sequence").setValue(getMissionSequence());
 
-        gameRef.child("values").child("num_players").setValue(new Integer(numPlayers));
+            // we are ready for the game to start -> chain into goToProposal
+            gameRef.child("values").child("proceed_to_proposal").setValue(new Integer(1));
 
-        // assigns spies to the local playerArray
-        setSpies();
-        // push the spy-updates playerArray to the database
-        gameRef.child("players").setValue(playerArray);
+            gameRef.child("values").child("num_players").setValue(new Integer(numPlayers));
+
+            // assigns spies to the local playerArray
+            setSpies();
+            // push the spy-updates playerArray to the database
+            gameRef.child("players").setValue(playerArray);
+        }
+        else {
+            incorrectNumPlayers();
+        }
     }
 
     // assigns spies to the local playerArray
@@ -282,5 +290,23 @@ public class Lobby extends AppCompatActivity {
         //return allSequences[0];
     }
 
+    public void incorrectNumPlayers() {
+        String[] quitArray = {"Okay"};
+        AlertDialog.Builder numEntry = new AlertDialog.Builder(this);
+
+        if (numPlayers == 1) {
+            numEntry.setTitle("You only have " + numPlayers + " player. Please try again when you have 5 to 10 players!");
+        }
+        else {
+            numEntry.setTitle("You only have " + numPlayers + " players. Please try again when you have 5 to 10 players!");
+        }
+        numEntry.setItems(quitArray, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                dialog.cancel();
+            }
+        });
+        numEntry.create();
+        numEntry.show();
+    }
 
 }
