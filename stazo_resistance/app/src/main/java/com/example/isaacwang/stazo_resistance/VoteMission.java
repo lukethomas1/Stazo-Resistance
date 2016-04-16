@@ -67,8 +67,8 @@ public class VoteMission extends AppCompatActivity{
 
                 // Reset proceed_to_vote logic for proposal screens
                 if (needsReset && getIntent().getBooleanExtra("reset_proceed", false)) {
-                    values.put("proceed_to_vote", 0);
-                    gameRef.child("values").setValue(values);
+                    //values.put("proceed_to_vote", 0);
+                    //gameRef.child("values").setValue(values);
                     needsReset = false;
                 }
 

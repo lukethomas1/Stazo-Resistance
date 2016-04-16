@@ -36,7 +36,7 @@ public class ProposalInactive extends AppCompatActivity {
     }
 
     private void grabData() {
-        gameRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        gameRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 vals = ((HashMap<String, Integer>)
@@ -57,25 +57,15 @@ public class ProposalInactive extends AppCompatActivity {
                 playerName = playerArray.get(proposer_index).getName();
                 System.out.println(playerName);
                 ((TextView)findViewById(R.id.proposing)).setText(playerName + " is proposing...");
-            }
 
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-            }
-        });
-
-        gameRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (vals.containsKey("proceed_to_vote") &&
-                        vals.get("proceed_to_vote").intValue() == 1) {
+                // has the proposer finished?
+                if (vals.get("proceed_to_vote").intValue() == 1) {
                     proceedToVote();
                 }
             }
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
-
             }
         });
     }
