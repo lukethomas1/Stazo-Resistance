@@ -36,7 +36,6 @@ public class IntroActivity extends AppCompatActivity {
 
     private String android_id;
     private Firebase fbRef;
-    private Firebase playerRef;
     private String game_id;
     private ArrayList<Player> p;
     private Firebase playerRef;
