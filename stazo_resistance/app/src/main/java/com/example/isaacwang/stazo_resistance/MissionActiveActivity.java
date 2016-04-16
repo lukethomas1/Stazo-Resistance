@@ -131,6 +131,7 @@ public class MissionActiveActivity extends AppCompatActivity {
 
     public void goToIntro() {
         Intent i = new Intent(this, IntroActivity.class);
+        i.putExtra("game_id", game_id);
         startActivity(i);
     }
 }

@@ -12,25 +12,28 @@ import com.firebase.client.ValueEventListener;
 
 public class MissionInactiveActivity extends AppCompatActivity {
     private Firebase fbRef;
+    private String game_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mission_inactive);
 
-        final Firebase voteCount;
+        final Firebase valsRef;
 
         fbRef = new Firebase(((Resistance) getApplication()).getFbURL());
-        voteCount = fbRef.child(getIntent().getStringExtra("game_id")).child("values").child("voter_turnout");
+        game_id = getIntent().getStringExtra("game_id");
+        valsRef = fbRef.child("games").child(game_id).child("values");
 
         // This will constantly update the # of people that have voted
-        voteCount.addValueEventListener(new ValueEventListener() {
+        valsRef.addValueEventListener(new ValueEventListener() {
             public void onDataChange(DataSnapshot snapshot) {
                 // Get the text box for vote counting and update it each time the # of votes increases
-                ((TextView)findViewById(R.id.votecounter)).setText(snapshot.getValue().toString());
+                ((TextView)findViewById(R.id.votecounter)).setText(snapshot.child("voter_turnout").getValue().toString());
 
                 // Check if everybody has voted
-                if(((Integer)snapshot.getValue()).intValue() == 5) {
+                if(((Long)snapshot.child("voter_turnout").getValue()).longValue() ==
+                        ((Long)snapshot.child("num_players").getValue()).longValue()) {
                     allVotesCounted();
                 }
             }
@@ -43,6 +46,7 @@ public class MissionInactiveActivity extends AppCompatActivity {
 
     private void allVotesCounted() {
         Intent i = new Intent(this, MissionPassTho.class);
+        i.putExtra("game_id", game_id);
         startActivity(i);
     }
 }

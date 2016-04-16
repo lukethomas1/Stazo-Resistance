@@ -36,9 +36,7 @@ public class MissionPassTho extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mission_pass_tho);
 
-        Resistance resistance = ((Resistance) this.getApplication());
         this.game_id = getIntent().getStringExtra("game_id");
-        ((TextView) findViewById(R.id.idTextView)).setText(game_id);
 
         Firebase fbRef =
                 new Firebase(((Resistance) getApplication()).getFbURL());
@@ -69,7 +67,7 @@ public class MissionPassTho extends AppCompatActivity{
                                 }));
 
                 round = ((Integer) vals.get("round")).intValue();
-                int fails = ((Integer) vals.get("fails")).intValue();
+                int fails = ((Integer) vals.get("fail_counter")).intValue();
                 res_score = ((Integer) vals.get("res_score")).intValue();
                 spy_score = ((Integer) vals.get("spy_score")).intValue();
                 ArrayList<Mission> sequence = ((ArrayList<Mission>) snapshot.child("sequence").getValue(
