@@ -47,8 +47,6 @@ public class ProposalInactive extends AppCompatActivity {
                 int proposer_index = ((Integer) vals.get("proposer_index")).intValue();
 
                 // grabbing the proposing player
-                playerName =
-                        (String) snapshot.child("players").child("1").child("name").getValue();
 
                 ArrayList<Player> playerArray = (ArrayList<Player>)
                         snapshot.child("players").getValue(new GenericTypeIndicator<List<Player>>() {
