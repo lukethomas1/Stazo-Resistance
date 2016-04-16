@@ -68,7 +68,7 @@ public class ProposalInactive extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (vals.containsKey("proceed_to_vote") &&
-                        vals.get("proceed_to_vote") == 1) {
+                        vals.get("proceed_to_vote").intValue() == 1) {
                     proceedToVote();
                 }
             }
@@ -80,7 +80,15 @@ public class ProposalInactive extends AppCompatActivity {
         });
     }
 
-    public void proceedToVote(){}
+    public void proceedToVote(){
+
+
+        // move on to next activity
+        Intent i = new Intent(this, VoteMission.class);
+        i.putExtra("game_id", game_id);
+        i.putExtra("reset_proceed", false); // we are not proposer so let that guy do it
+        startActivity(i);
+    }
 
     @Override
     public void onBackPressed() {
