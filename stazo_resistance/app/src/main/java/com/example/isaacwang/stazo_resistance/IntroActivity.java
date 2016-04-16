@@ -34,7 +34,6 @@ import java.util.Random;
 
 public class IntroActivity extends AppCompatActivity {
 
-    private String android_id;
     private Firebase fbRef;
     private String game_id;
     private ArrayList<Player> p;
@@ -45,10 +44,8 @@ public class IntroActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.introscreen);
-        android_id = Settings.Secure.getString(getApplicationContext().getContentResolver(),
-                Settings.Secure.ANDROID_ID);
-        fbRef =
-                new Firebase(((Resistance) getApplication()).getFbURL());
+        fbRef = new Firebase(((Resistance) getApplication()).getFbURL());
+        setupGamesListener();
     }
 
     /**
@@ -99,10 +96,13 @@ public class IntroActivity extends AppCompatActivity {
         // Name entry dialog
         AlertDialog.Builder gameIdEntry = new AlertDialog.Builder(this);
         final EditText input = new EditText(this);
+
         input.setInputType(InputType.TYPE_CLASS_TEXT);
+
         gameIdEntry.setTitle("Enter the game code");
         gameIdEntry.setView(input);
         gameIdEntry.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
@@ -111,33 +111,35 @@ public class IntroActivity extends AppCompatActivity {
                 setupGamesListener();
                 //check if the game id exists
                 if(exists) {
+
                     // Single-execution for adding us to the player array
                     playerRef = fbRef.child("games").child(game_id).child("players");
                     playerRef.addListenerForSingleValueEvent(new ValueEventListener() {
+
                         @Override
                         public void onDataChange(DataSnapshot snapshot) {
-                                // Adding us to the player array
-                                int id = ((ArrayList<Player>) snapshot.getValue()).size() + 1;
-                                p = ((ArrayList<Player>) snapshot.getValue());
-                                Player me = new Player("Player " + id, id);
-                                p.add(me);
-                                playerRef.setValue(p);
+                            // Adding us to the player array
+                            int id = ((ArrayList<Player>) snapshot.getValue()).size() + 1;
+                            Player me = new Player("Player " + id, id);
 
-                                // Save player to application too
-                                Resistance game = ((Resistance)getApplication());
-                                game.setPlayer(me);
+                            p = ((ArrayList<Player>) snapshot.getValue());
+                            p.add(me);
+                            playerRef.setValue(p);
 
-                                // Starting Lobby activity
-                                Intent toLobby = new Intent(getApplicationContext(),
-                                        Lobby.class );
-                                toLobby.putExtra("game_id", game_id);
-                                startActivity(toLobby);
-                            }
+                            // Save player to application too
+                            Resistance game = ((Resistance)getApplication());
+                            game.setPlayer(me);
 
-                            @Override
-                            public void onCancelled(FirebaseError firebaseError) {
-                            }
-                        });
+                            // Starting Lobby activity
+                            Intent toLobby = new Intent(getApplicationContext(), Lobby.class );
+                            toLobby.putExtra("game_id", game_id);
+                            startActivity(toLobby);
+                        }
+
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {
+                        }
+                    });
                 }
                 else {URLDoesNotExist(game_id);}
 
@@ -150,6 +152,7 @@ public class IntroActivity extends AppCompatActivity {
     public void URLDoesNotExist(String gameID) {
         String[] quitArray = {"Okay"};
         AlertDialog.Builder numEntry = new AlertDialog.Builder(this);
+
         numEntry.setTitle("The game " + gameID + " you entered does not exist. Try Again!");
         numEntry.setItems(quitArray, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
@@ -173,6 +176,7 @@ public class IntroActivity extends AppCompatActivity {
 
     private void setupGamesListener() {
         Firebase gameDirectoryRef = fbRef.child("games");
+
         //find game id within dir
         System.out.println("hello");
         gameDirectoryRef.addListenerForSingleValueEvent(new ValueEventListener() {
