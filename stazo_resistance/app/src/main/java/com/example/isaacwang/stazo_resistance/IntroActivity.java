@@ -110,23 +110,29 @@ public class IntroActivity extends AppCompatActivity {
                 playerRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
+                        // Rudimentary fix to invalid game code bug
+                        try {
+                            // Adding us to the player array
+                            int id = ((ArrayList<Player>) snapshot.getValue()).size() + 1;
+                            p = ((ArrayList<Player>) snapshot.getValue());
+                            Player me = new Player("Player " + id, id);
+                            p.add(me);
+                            playerRef.setValue(p);
 
-                        // Adding us to the player array
-                        int id = ((ArrayList<Player>) snapshot.getValue()).size() + 1;
-                        p = ((ArrayList<Player>) snapshot.getValue());
-                        Player me = new Player("Player " + id, id);
-                        p.add(me);
-                        playerRef.setValue(p);
+                            // Save player to application too
+                            Resistance game = ((Resistance) getApplication());
+                            game.setPlayer(me);
 
-                        // Save player to application too
-                        Resistance game = ((Resistance)getApplication());
-                        game.setPlayer(me);
+                            // Starting Lobby activity
+                            Intent toLobby = new Intent(getApplicationContext(),
+                                    Lobby.class);
+                            toLobby.putExtra("game_id", game_id);
+                            startActivity(toLobby);
+                        }
 
-                        // Starting Lobby activity
-                        Intent toLobby = new Intent(getApplicationContext(),
-                                Lobby.class );
-                        toLobby.putExtra("game_id", game_id);
-                        startActivity(toLobby);
+                        catch(NullPointerException e) {
+
+                        }
                     }
 
                     @Override
@@ -136,8 +142,6 @@ public class IntroActivity extends AppCompatActivity {
             }
         });
         gameIdEntry.show();
-
-
     }
 
     public String generateGameId() {

@@ -74,8 +74,8 @@ public class MissionActiveActivity extends AppCompatActivity {
         if(keepDefault) {
             valuesRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 public void onDataChange(DataSnapshot snapshot) {
-                    turnout = ((Integer)snapshot.child("voter_turnout").getValue()).intValue();
-                    valuesRef.child("voter_turnout").setValue(++turnout);
+                    failCount = ((Integer)snapshot.child("fail_counter").getValue()).intValue();
+                    valuesRef.child("fail_counter").setValue(++failCount);
                 }
 
                 @Override
@@ -92,22 +92,23 @@ public class MissionActiveActivity extends AppCompatActivity {
         }
     }
 
+    // This method is called from both fail() and succeed() to increment the # of votes and continue
+    // to the mission inactive screen to wait for the rest of the votes
     private void proceed() {
         //TODO increment # of votes for mission in firebase
         valuesRef.addListenerForSingleValueEvent(new ValueEventListener() {
             public void onDataChange(DataSnapshot snapshot) {
-                failCount = ((Integer)snapshot.child("fail_counter").getValue()).intValue();
-                valuesRef.child("fail_counter").setValue(++failCount);
+                turnout = ((Integer)snapshot.child("voter_turnout").getValue()).intValue();
+                valuesRef.child("voter_turnout").setValue(++turnout);
             }
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
             }
         });
-        Intent i;
 
-        //If all agents have succeeded/sabotaged
-        i = new Intent(this, MissionPassTho.class); // TODO switch to mission inactive until all votes are in
+        // After voting, send user to Inactive screen to wait for other voters
+        Intent i = new Intent(this, MissionInactiveActivity.class);
         startActivity(i);
     }
 

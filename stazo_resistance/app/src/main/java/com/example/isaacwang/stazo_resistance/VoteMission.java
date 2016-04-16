@@ -123,7 +123,7 @@ public class VoteMission extends AppCompatActivity{
             }
             else {
                 //go to boring mission page if not
-                toGoOrNotToGo = new Intent(this, MissionActiveActivity.class); // TODO: CHANGE TO BORING MISSION SCREEN
+                toGoOrNotToGo = new Intent(this, MissionInactiveActivity.class);
             }
         }
         else {
