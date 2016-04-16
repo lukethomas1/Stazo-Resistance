@@ -267,7 +267,7 @@ public class Lobby extends AppCompatActivity {
     // called when ready is set to 1;
     public void goToProposal() {
         Intent i;
-        if (((Resistance) getApplication()).getPlayer().getNum() == 1) {
+        if (((Resistance) getApplication()).getPlayer().getNum() == 4) {
             i = new Intent(this, Proposal.class);
         }
         else {
