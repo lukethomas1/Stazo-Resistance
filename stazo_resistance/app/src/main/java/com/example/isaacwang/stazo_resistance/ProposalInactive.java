@@ -45,9 +45,9 @@ public class ProposalInactive extends AppCompatActivity {
 
                 String proposer_index = ((Integer) vals.get("proposer_index")).toString();
 
-                // grabbing the proposingplayer
-                playerName = ((Player)
-                        snapshot.child("players").child(proposer_index).getValue()).getName();
+                // grabbing the proposing player
+                playerName =
+                        (String) snapshot.child("players").child(proposer_index).child("name").getValue();
             }
 
             @Override
