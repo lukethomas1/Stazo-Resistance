@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 
 import com.firebase.client.DataSnapshot;
@@ -25,6 +26,7 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
 import java.lang.reflect.Array;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -132,17 +134,30 @@ public class IntroActivity extends AppCompatActivity {
                         }
 
                         catch(NullPointerException e) {
-
+                            URLDoesNotExist();
                         }
-                    }
+                }
 
-                    @Override
-                    public void onCancelled(FirebaseError firebaseError) {
-                    }
-                });
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+                }
+            });
             }
         });
         gameIdEntry.show();
+    }
+
+    public void URLDoesNotExist() {
+        String[] quitArray = {"Okay"};
+        AlertDialog.Builder numEntry = new AlertDialog.Builder(this);
+        numEntry.setTitle("The game you entered does not exist. Try Again!");
+        numEntry.setItems(quitArray, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                dialog.cancel();
+            }
+        });
+        numEntry.create();
+        numEntry.show();
     }
 
     public String generateGameId() {
