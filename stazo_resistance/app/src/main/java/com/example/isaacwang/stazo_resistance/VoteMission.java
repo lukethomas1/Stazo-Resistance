@@ -112,7 +112,6 @@ public class VoteMission extends AppCompatActivity{
         gameRef.child("values").setValue(values);
     }
 
-
     public void moveOn(boolean accepted) {
         Intent toGoOrNotToGo;
         if (accepted) {

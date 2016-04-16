@@ -22,6 +22,7 @@ import android.widget.EditText;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.GenericTypeIndicator;
 import com.firebase.client.ValueEventListener;
 
 import java.lang.reflect.Array;
@@ -36,6 +37,7 @@ public class IntroActivity extends AppCompatActivity {
     private String game_id;
     private ArrayList<Player> p;
     private Firebase playerRef;
+    private boolean exists;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +47,7 @@ public class IntroActivity extends AppCompatActivity {
                 Settings.Secure.ANDROID_ID);
         fbRef =
                 new Firebase(((Resistance) getApplication()).getFbURL());
+        setupGamesListener();
     }
 
     /**
@@ -101,36 +104,45 @@ public class IntroActivity extends AppCompatActivity {
 
                 // Finding the game
                 game_id = (input.getText().toString());
-                playerRef = fbRef.child("games").child(game_id).child("players");
 
-                // Single-execution for adding us to the player array
-                playerRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot snapshot) {
+                //check if the game id exists
+                if(exists) {
 
-                        // Adding us to the player array
-                        int id = ((ArrayList<Player>) snapshot.getValue()).size() + 1;
-                        p = ((ArrayList<Player>) snapshot.getValue());
-                        Player me = new Player("Player " + id, id);
-                        p.add(me);
-                        playerRef.setValue(p);
+                    playerRef = fbRef.child("games").child(game_id).child("players");
+                    // Single-execution for adding us to the player array
+                    playerRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot snapshot) {
 
-                        // Save player to application too
-                        Resistance game = ((Resistance)getApplication());
-                        game.setPlayer(me);
+                            // Adding us to the player array
+                            int id = ((ArrayList<Player>) snapshot.getValue()).size() + 1;
+                            p = ((ArrayList<Player>) snapshot.getValue());
+                            Player me = new Player("Player " + id, id);
+                            p.add(me);
+                            playerRef.setValue(p);
 
-                        // Starting Lobby activity
-                        Intent toLobby = new Intent(getApplicationContext(),
-                                Lobby.class );
-                        toLobby.putExtra("game_id", game_id);
-                        startActivity(toLobby);
-                    }
+                            // Save player to application too
+                            Resistance game = ((Resistance)getApplication());
+                            game.setPlayer(me);
 
-                    @Override
-                    public void onCancelled(FirebaseError firebaseError) {
-                    }
-                });
+                            // Starting Lobby activity
+                            Intent toLobby = new Intent(getApplicationContext(),
+                                    Lobby.class );
+                            toLobby.putExtra("game_id", game_id);
+                            startActivity(toLobby);
+                        }
+
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {
+                        }
+                    });
+                }
+                else {
+                    System.out.println("that's the wrong numba");
+                }
             }
+
+
         });
         gameIdEntry.show();
 
@@ -146,6 +158,23 @@ public class IntroActivity extends AppCompatActivity {
             code += a;
         }
         return code;
+    }
+
+    private void setupGamesListener() {
+        Firebase gameDirectoryRef = fbRef.child("games");
+        //find game id within dir
+        gameDirectoryRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                exists = snapshot.hasChild(game_id);
+
+            }
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                System.out.println("The read failed: " + firebaseError.getMessage());
+            }
+
+        });
     }
 
     public Boolean hasPlayer(String id) {
