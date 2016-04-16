@@ -30,8 +30,6 @@ public class ProposalInactive extends AppCompatActivity {
         game_id = getIntent().getStringExtra("game_id");
         gameRef = fbRef.child("games").child(game_id);
         grabData();
-
-        ((TextView)findViewById(R.id.proposing)).setText(playerName + " is proposing...");
     }
 
     private void grabData() {
@@ -43,11 +41,19 @@ public class ProposalInactive extends AppCompatActivity {
                                 new GenericTypeIndicator<HashMap<String, Integer>>() {
                                 }));
 
-                String proposer_index = ((Integer) vals.get("proposer_index")).toString();
+                int proposer_index = ((Integer) vals.get("proposer_index")).intValue();
 
                 // grabbing the proposing player
                 playerName =
-                        (String) snapshot.child("players").child(proposer_index).child("name").getValue();
+                        (String) snapshot.child("players").child("1").child("name").getValue();
+
+                ArrayList<Player> playerArray = (ArrayList<Player>)
+                        snapshot.child("players").getValue(new GenericTypeIndicator<List<Player>>() {
+                        });
+
+                playerName = playerArray.get(proposer_index).getName();
+                System.out.println(playerName);
+                ((TextView)findViewById(R.id.proposing)).setText(playerName + " is proposing...");
             }
 
             @Override

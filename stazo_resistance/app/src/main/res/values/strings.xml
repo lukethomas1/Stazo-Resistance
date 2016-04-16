@@ -10,5 +10,6 @@
         <item> "10" </item>
     </string-array>
     <string name="title_activity_mission_inactive">MissionInactiveActivity</string>
+    <string name="title_activity_options">OptionsActivity</string>
 
 </resources>

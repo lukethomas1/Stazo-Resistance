@@ -56,7 +56,7 @@ public class IntroActivity extends AppCompatActivity {
     public void startGame(View view){
 
         // Creating game on database
-        game_id = generateGameId();
+        game_id = "555"; //generateGameId();
         playerRef = fbRef.child("games").child(game_id).child("players");
 
         // Creating players array in game and adding player 1
@@ -163,5 +163,10 @@ public class IntroActivity extends AppCompatActivity {
     public void howToPlay (View view) {
         Intent intent = new Intent(this, HowToPlay.class);
         startActivity(intent);
+    }
+
+    public void goToOptions(View view) {
+        Intent i = new Intent(this, OptionsActivity.class);
+        startActivity(i);
     }
 }
