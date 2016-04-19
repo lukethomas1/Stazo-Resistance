@@ -38,11 +38,12 @@
     </LinearLayout>
 
     <Button
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Return to Main Menu"
         android:onClick="returnToMain"
-        android:layout_marginTop="50dp"
-        android:textSize="25dp"/>
+        android:layout_marginTop="100dp"
+        android:textAllCaps="false"
+        android:layout_gravity="center_horizontal" />
 
 </LinearLayout>

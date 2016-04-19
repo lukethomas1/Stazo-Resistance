@@ -22,7 +22,9 @@
         android:id="@+id/newgame"
         android:layout_gravity="center_horizontal"
         android:layout_weight="0"
-        android:onClick="startGame"/>
+        android:onClick="startGame"
+        android:textSize="15dp"
+        android:textAllCaps="false"/>
     <Button
         android:layout_width="150dp"
         android:layout_height="wrap_content"
@@ -30,7 +32,9 @@
         android:id="@+id/joingame"
         android:layout_gravity="center_horizontal"
         android:layout_weight="0"
-        android:onClick="joinGame"/>
+        android:onClick="joinGame"
+        android:textSize="15dp"
+        android:textAllCaps="false"/>
     <Button
         android:layout_width="150dp"
         android:layout_height="wrap_content"
@@ -38,7 +42,9 @@
         android:id="@+id/howtoplay"
         android:layout_gravity="center_horizontal"
         android:layout_weight="0"
-        android:onClick="howToPlay"/>
+        android:onClick="howToPlay"
+        android:textSize="15dp"
+        android:textAllCaps="false"/>
     <Button
         android:layout_width="150dp"
         android:layout_height="wrap_content"
@@ -46,5 +52,7 @@
         android:id="@+id/options"
         android:layout_gravity="center_horizontal"
         android:layout_weight="0"
-        android:onClick="goToOptions"/>
+        android:onClick="goToOptions"
+        android:textSize="15dp"
+        android:textAllCaps="false"/>
 </LinearLayout>
