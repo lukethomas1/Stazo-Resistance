@@ -12,6 +12,7 @@ import com.firebase.client.ValueEventListener;
 
 public class MissionInactiveActivity extends AppCompatActivity {
     private Firebase fbRef;
+    private Firebase gameRef;
     private String game_id;
 
     @Override
@@ -22,17 +23,24 @@ public class MissionInactiveActivity extends AppCompatActivity {
         final Firebase valsRef;
         fbRef = new Firebase(((Resistance) getApplication()).getFbURL());
         game_id = getIntent().getStringExtra("game_id");
+        gameRef = fbRef.child("games").child(game_id);
         valsRef = fbRef.child("games").child(game_id).child("values");
 
         // This will constantly update the # of people that have voted
-        valsRef.addValueEventListener(new ValueEventListener() {
+        gameRef.addValueEventListener(new ValueEventListener() {
             public void onDataChange(DataSnapshot snapshot) {
                 // Get the text box for vote counting and update it each time the # of votes increases
-                ((TextView)findViewById(R.id.votecounter)).setText(snapshot.child("sabotage_counter").getValue().toString());
-
+                ((TextView)findViewById(R.id.votecounter)).setText(
+                        snapshot.child("values").child("sabotage_counter").getValue().toString());
+                Long sabotage_counter = ((Long)
+                        snapshot.child("values").child("sabotage_counter").getValue()).longValue();
+                Long round = ((Long)
+                        snapshot.child("values").child("round").getValue()).longValue();
+                int numMems = ((Mission)
+                        snapshot.child("sequence").child(round.toString()).getValue(Mission.class)).getMems();
                 // Check if everybody has voted
-                if(((Long)snapshot.child("sabotage_counter").getValue()).longValue() ==
-                        ((Long)snapshot.child("num_players").getValue()).longValue()) {
+                if(sabotage_counter == numMems) {
+                    gameRef.removeEventListener(this);
                     allVotesCounted();
                 }
             }
