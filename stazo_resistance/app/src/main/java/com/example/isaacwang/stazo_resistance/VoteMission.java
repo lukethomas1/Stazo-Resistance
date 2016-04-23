@@ -29,6 +29,8 @@ public class VoteMission extends AppCompatActivity{
     private String game_id;
     private int voted;
     private boolean needsReset = true;
+    private int resScore;
+    private int spyScore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +42,14 @@ public class VoteMission extends AppCompatActivity{
         game_id = getIntent().getStringExtra("game_id");
         gameRef = fbRef.child("games").child(game_id);
 
+        grabData(); // also sets up continuous listener
+
+        // update the score at top
+        ((TextView)findViewById(R.id.scoreView)).setText("Agents' Score: " + resScore +
+                " Spies' Score: " + spyScore);
+    }
+
+    public void grabData() {
         //Listener for agents and values
         gameRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -86,6 +96,7 @@ public class VoteMission extends AppCompatActivity{
             }
         });
     }
+
 
     //int voted keeps track of both what the person voted and if person has voted or not
     //0 = not voted, 1 = yes, 2 = no

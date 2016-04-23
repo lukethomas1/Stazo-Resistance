@@ -57,6 +57,7 @@ public class Proposal extends AppCompatActivity{
         // initialization
         grabData();
 
+        // update the score at top
         ((TextView)findViewById(R.id.scoreView)).setText("Agents' Score: " + resScore +
                 " Spies' Score: " + spyScore);
     }
