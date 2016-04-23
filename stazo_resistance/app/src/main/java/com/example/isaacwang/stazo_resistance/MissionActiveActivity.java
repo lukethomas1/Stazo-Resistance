@@ -24,8 +24,8 @@ public class MissionActiveActivity extends AppCompatActivity {
     private Firebase valuesRef;
     private String game_id;
     boolean keepDefault = true;
-    private Long turnout;
-    private Long failCount;
+    private Long turnout; // DOES THIS HAVE TO BE LONG OR NAH
+    private int failCount;
 
 
     @Override
@@ -80,7 +80,7 @@ public class MissionActiveActivity extends AppCompatActivity {
         if(keepDefault) {
             valuesRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 public void onDataChange(DataSnapshot snapshot) {
-                    failCount = ((Long)snapshot.child("fail_counter").getValue()).longValue();
+                    failCount = ((Integer)snapshot.child("fail_counter").getValue()).intValue();
                     valuesRef.child("fail_counter").setValue(++failCount);
                 }
 

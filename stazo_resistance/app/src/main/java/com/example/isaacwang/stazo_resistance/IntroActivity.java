@@ -1,8 +1,11 @@
 package com.example.isaacwang.stazo_resistance;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.provider.SyncStateContract;
@@ -13,11 +16,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.firebase.client.DataSnapshot;
@@ -94,24 +99,39 @@ public class IntroActivity extends AppCompatActivity {
      */
     public void joinGame(View view) {
         // Name entry dialog
-        AlertDialog.Builder gameIdEntry = new AlertDialog.Builder(this);
+        final AlertDialog.Builder gameIdEntry = new AlertDialog.Builder(this);
         final EditText input = new EditText(this);
 
-        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        //Default to numberpad
+        input.setInputType(InputType.TYPE_CLASS_NUMBER);
 
         gameIdEntry.setTitle("Enter the game code");
         gameIdEntry.setView(input);
         gameIdEntry.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                //Hide keyboard when pressing OK
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(input.getWindowToken(), 0);
 
                 // Finding the game
                 game_id = (input.getText().toString());
                 if (!game_id.isEmpty()){setupGamesListener();}
-                }
+            }
         });
+        gameIdEntry.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //Hide keyboard when pressing cancel
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(input.getWindowToken(), 0);
+            }
+        });
+
         gameIdEntry.show();
+
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
 
     public void URLDoesNotExist(String gameID) {

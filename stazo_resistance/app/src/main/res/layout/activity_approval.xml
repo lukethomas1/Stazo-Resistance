@@ -31,7 +31,8 @@
         android:layout_marginStart="36dp"
         android:layout_centerVertical="true"
         android:layout_alignStart="@+id/enterNameTextView"
-        android:onClick="approved" />
+        android:onClick="approved"
+        android:textAllCaps="false"/>
 
     <Button
         android:layout_width="wrap_content"
@@ -41,5 +42,6 @@
         android:layout_marginEnd="39dp"
         android:layout_alignTop="@+id/button1"
         android:layout_alignEnd="@+id/enterNameTextView"
-        android:onClick="disapproved"/>
+        android:onClick="disapproved"
+        android:textAllCaps="false"/>
 </RelativeLayout>

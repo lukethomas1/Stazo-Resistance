@@ -24,11 +24,12 @@ public class VoteMission extends AppCompatActivity{
     private int voteCounter;
     private int proCounter;
     private Firebase gameRef;
-    HashMap<String, Integer> values;
-
+    private HashMap<String, Integer> values;
     private String game_id;
     private int voted;
     private boolean needsReset = true;
+    private int resScore;
+    private int spyScore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +41,10 @@ public class VoteMission extends AppCompatActivity{
         game_id = getIntent().getStringExtra("game_id");
         gameRef = fbRef.child("games").child(game_id);
 
+        grabData(); // also sets up continuous listener
+    }
+
+    public void grabData() {
         //Listener for agents and values
         gameRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -72,6 +77,13 @@ public class VoteMission extends AppCompatActivity{
                     needsReset = false;
                 }
 
+                //grab spy and res score
+                spyScore = ((Integer) values.get("spy_score")).intValue();
+                resScore = ((Integer) values.get("res_score")).intValue();
+                // update the score at top
+                ((TextView)findViewById(R.id.scoreView)).setText("Agents' Score: " + resScore +
+                        " Spies' Score: " + spyScore);
+
                 //check if vote counter reached num players
                 if (voteCounter == numPlayers) {
                     //move on based off of whether or not it was approved
@@ -85,6 +97,7 @@ public class VoteMission extends AppCompatActivity{
             }
         });
     }
+
 
     //int voted keeps track of both what the person voted and if person has voted or not
     //0 = not voted, 1 = yes, 2 = no

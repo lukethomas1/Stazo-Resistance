@@ -23,6 +23,7 @@ public class ProposalInactive extends AppCompatActivity {
     private String game_id;
     private String playerName;
     private HashMap<String, Integer> vals;
+    private int spyScore, resScore;        // spy and resistance score to be shown at top
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +61,12 @@ public class ProposalInactive extends AppCompatActivity {
                 if (vals.get("proceed_to_vote").intValue() == 1) {
                     proceedToVote();
                 }
+                //grab spy and res score
+                spyScore = ((Integer) vals.get("spy_score")).intValue();
+                resScore = ((Integer) vals.get("res_score")).intValue();
+                // update the score at top
+                ((TextView)findViewById(R.id.scoreView)).setText("Agents' Score: " + resScore +
+                        " Spies' Score: " + spyScore);
             }
 
             @Override
