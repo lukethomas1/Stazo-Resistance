@@ -150,7 +150,7 @@ public class VoteMission extends AppCompatActivity{
         else {
             //go back to proposal
             if (((Resistance) getApplication()).getPlayer().getNum() ==
-                    values.get("proposer_index")) {
+                    values.get("proposer_index") + 1) {
                 toGoOrNotToGo = new Intent(this, Proposal.class);
             }
             else {
