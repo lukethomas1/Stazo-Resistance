@@ -55,6 +55,7 @@ public class Proposal extends AppCompatActivity{
 
         // initialization
         grabData();
+        updateScoreLabel(); // constant listener
     }
 
     /**
@@ -120,13 +121,6 @@ public class Proposal extends AppCompatActivity{
 
                 // set members still needed
                 setMemsLeft();
-
-                //grab spy and res score
-                spyScore = ((Integer) vals.get("spy_score")).intValue();
-                resScore = ((Integer) vals.get("res_score")).intValue();
-                // update the score at top
-                ((TextView)findViewById(R.id.scoreView)).setText("Agents' Score: " + resScore +
-                        " Spies' Score: " + spyScore);
             }
 
             @Override
@@ -134,6 +128,27 @@ public class Proposal extends AppCompatActivity{
             }
         });
     }
+
+    /**
+     * Constant listener for score changes
+     */
+    public void updateScoreLabel() {
+        gameRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                //grab spy and res score
+                spyScore = ((Integer) vals.get("spy_score")).intValue();
+                resScore = ((Integer) vals.get("res_score")).intValue();
+                // update the score at top
+                ((TextView)findViewById(R.id.scoreView)).setText("Agents' Score: " + resScore +
+                        " Spies' Score: " + spyScore);
+            }
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+            }
+        });
+    }
+
     /**
      * Sets names for all the buttons
      */
