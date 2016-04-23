@@ -25,7 +25,7 @@ public class MissionActiveActivity extends AppCompatActivity {
     private String game_id;
     boolean keepDefault = true;
     private Long turnout; // DOES THIS HAVE TO BE LONG OR NAH
-    private int failCount;
+    private Long failCount;
 
 
     @Override
@@ -81,7 +81,7 @@ public class MissionActiveActivity extends AppCompatActivity {
             //SINGLE GRAB
             valuesRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 public void onDataChange(DataSnapshot snapshot) {
-                    failCount = ((Integer)snapshot.child("fail_counter").getValue()).intValue();
+                    failCount = ((Long)snapshot.child("fail_counter").getValue()).longValue();
                     valuesRef.child("fail_counter").setValue(++failCount);
                 }
 
