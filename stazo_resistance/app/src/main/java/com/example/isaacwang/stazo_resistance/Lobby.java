@@ -185,7 +185,7 @@ public class Lobby extends AppCompatActivity {
     // is this name already in the grid?
     public boolean gridContainsPlayer(String name) {
         // Get the grid
-        LinearLayout grid = (LinearLayout) findViewById( R.id.player_container );
+        LinearLayout grid = (LinearLayout) findViewById(R.id.player_container);
 
         for ( int i = 0; i < grid.getChildCount(); i++ )
         {
@@ -281,6 +281,12 @@ public class Lobby extends AppCompatActivity {
         else {
             i = new Intent(this, ProposalInactive.class);
         }
+        i.putExtra("game_id", game_id);
+        startActivity(i);
+    }
+
+    public void goToRoleReveal() {
+        Intent i = new Intent(this, RoleRevealActivity.class);
         i.putExtra("game_id", game_id);
         startActivity(i);
     }

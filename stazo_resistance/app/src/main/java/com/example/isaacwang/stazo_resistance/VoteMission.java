@@ -44,7 +44,6 @@ public class VoteMission extends AppCompatActivity{
         gameRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                System.out.println("why the FUCK are we here");
                 // Copying the agent array
                 agentArray = ((ArrayList<Player>) snapshot.child("agents").getValue(new GenericTypeIndicator<ArrayList<Player>>() {
                 }));
@@ -123,7 +122,6 @@ public class VoteMission extends AppCompatActivity{
     }
 
     public void moveOn(boolean accepted) {
-        System.out.println("can we MOVE ON");
         Intent toGoOrNotToGo;
         if (accepted) {
             //check if current player is an agent or not

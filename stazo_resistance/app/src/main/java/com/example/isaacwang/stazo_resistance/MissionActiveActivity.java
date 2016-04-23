@@ -33,7 +33,6 @@ public class MissionActiveActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sabotage);
 
-        System.out.println("ActiveActivity");
         this.game_id = getIntent().getStringExtra("game_id");
 
         // Changes to Lobby handling
@@ -102,11 +101,9 @@ public class MissionActiveActivity extends AppCompatActivity {
     // This method is called from both fail() and succeed() to increment the # of votes and continue
     // to the mission inactive screen to wait for the rest of the votes
     private void proceed() {
-        System.out.println("proceed");
         //TODO increment # of votes for mission in firebase
         valuesRef.addListenerForSingleValueEvent(new ValueEventListener() {
             public void onDataChange(DataSnapshot snapshot) {
-                System.out.println("we're fucking in this listener wtf");
                 turnout = ((Long) snapshot.child("sabotage_counter").getValue()).longValue();
                 valuesRef.child("sabotage_counter").setValue(++turnout);
                 goToInactive();
@@ -119,7 +116,6 @@ public class MissionActiveActivity extends AppCompatActivity {
     }
 
     public void goToInactive() {
-        System.out.println("goToInactive");
         // After voting, send user to Inactive screen to wait for other voters
         Intent i = new Intent(this, MissionInactiveActivity.class);
         i.putExtra("game_id", game_id);

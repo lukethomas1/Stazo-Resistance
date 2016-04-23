@@ -8,8 +8,18 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.ValueEventListener;
+
 public class RoleRevealActivity extends AppCompatActivity {
-    /*
+
+    /*Firebase gameRef;
+    Firebase playersRef;
+    String game_id;
+    Resistance resistanceGame = (Resistance) getApplication();
+    Player currentPlayer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,49 +33,61 @@ public class RoleRevealActivity extends AppCompatActivity {
         TextView spyText = (TextView)findViewById(R.id.spy2_textView);
         // Get the text field that displays the phrase above the spies
         TextView phraseText = (TextView)findViewById(R.id.phrase_textView);
-        // Get the game object
-        Game gameObject = ((Resistance)getApplication()).getGame();
-        // Set the text to the player's role
-        Player currentPlayer = ((Resistance)getApplication()).getGame().getNextPlayer();
-        // Make sure player isn't null
-        if(currentPlayer != null) {
-            // If player is a spy, change text to say "Spy" rather than "Rebel"
-            if(currentPlayer.isSpy()) {
-                roleText.setText("Spy");
-                // Iterate through all players and show spies in the text field
-                for(int i = 0; i < gameObject.getNumPlayers(); i++) {
-                    // Don't show this spy himself as a spy, and only show spies
-                    if(i != currentPlayer.getNum() && gameObject.getPlayer(i).isSpy()) {
-                        // Add the phrase above the spies names
-                        phraseText.setText("The other spies are:");
-                        // Get the name of the player, even if it is null
-                        CharSequence playerName = gameObject.getPlayer(i).getName();
-                        // If the player name is null, set it to "Player #"
-                        if(playerName == null) {
-                            playerName = "Player " + (gameObject.getPlayer(i).getNum() + 1);
-                        }
-                        // Add the other spies name to the text field
-                        spyText.append(playerName + ", ");
-                    }
-                }
-                // Trim off the last comma and space after the last spy was added
-                spyText.setText(spyText.getText().subSequence(0, spyText.getText().length() - 2));
-            }
-        }
-    }
 
-    /**
-     * Called onClick when the OK button is pressed in RoleReveal, checks whether
-     * to go on to mission proposal or back to name entry before starting the next
-     * Activity.
-     *
-     * @param view
-     *
-    public void goToName(View view){
+        currentPlayer = resistanceGame.getPlayer();
+
+        // Get the game ID as an extra from the intent
+        game_id = intent.getStringExtra("game_id");
+
+        Firebase fbRef =
+                new Firebase(((Resistance) getApplication()).getFbURL());
+
+        // Set the reference to the game on Firebase
+        gameRef = fbRef.child("games").child(game_id);
+
+        playersRef = gameRef.child("players");
+
+        // If player is a spy, change text to say "Spy" rather than "Rebel"
+        if(currentPlayer.isSpy()) {
+            roleText.setText("Spy");
+
+            .addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot snapshot) {
+
+                    int numPlayers = Integer.parseInt(gameRef.child("values").child("num_players").);
+
+                    // Iterate through all players and show spies in the text field
+                    for (int i = 0; i < resistanceGame.getNumPlayers(); i++) {
+                        // Don't show this spy himself as a spy, and only show spies
+                        if (i != currentPlayer.getNum() && gameObject.getPlayer(i).isSpy()) {
+                            // Add the phrase above the spies names
+                            phraseText.setText("The other spies are:");
+                            // Get the name of the player, even if it is null
+                            CharSequence playerName = gameObject.getPlayer(i).getName();
+                            // If the player name is null, set it to "Player #"
+                            if (playerName == null) {
+                                playerName = "Player " + (gameObject.getPlayer(i).getNum() + 1);
+                            }
+                            // Add the other spies name to the text field
+                            spyText.append(playerName + ", ");
+                        }
+                    }
+                    // Trim off the last comma and space after the last spy was added
+                    spyText.setText(spyText.getText().subSequence(0, spyText.getText().length() - 2));
+                }
+            }
+
+                    /**
+                     * Called onClick when the OK button is pressed in RoleReveal, checks whether
+                     * to go on to mission proposal or back to name entry before starting the next
+                     * Activity.
+                     *
+                     * @param view
+                     *
+        public void goToName(View view){
         // To be set to next Activity
         Intent i;
-        // Get the global Game object
-        Game gameObject = ((Resistance)getApplication()).getGame();
 
         // Check if this is the last player, if so go to mission proposal activity
         if(gameObject.getIteratorIndex() == gameObject.getNumPlayers()) {

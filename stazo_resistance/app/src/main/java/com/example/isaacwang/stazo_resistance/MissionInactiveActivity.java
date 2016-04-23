@@ -20,7 +20,6 @@ public class MissionInactiveActivity extends AppCompatActivity {
         setContentView(R.layout.mission_inactive);
 
         final Firebase valsRef;
-        System.out.println("onCreate");
         fbRef = new Firebase(((Resistance) getApplication()).getFbURL());
         game_id = getIntent().getStringExtra("game_id");
         valsRef = fbRef.child("games").child(game_id).child("values");
