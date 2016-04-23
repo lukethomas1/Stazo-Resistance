@@ -7,11 +7,17 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -36,6 +42,7 @@ public class Lobby extends AppCompatActivity {
     //private Firebase playerRef;
     private ArrayList<Player> playerArray;
     private int numPlayers;
+    private Player thisPlayer;
 
     // Sequences for missions depending on number of players
     private static final Mission[] fiveSequence = {new Mission(2, 1), new Mission(3, 1),
@@ -68,22 +75,29 @@ public class Lobby extends AppCompatActivity {
         Firebase playerRef = gameRef.child("players");
         Firebase readyRef = gameRef.child("values").child("ready");
 
+        // Get this player
+        thisPlayer = getThisPlayer();
+
         // Adding players to the player array
         playerRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
+                clearGrid();
+
                 // Copying the player array
                 playerArray = ((ArrayList<Player>)
                         snapshot.getValue(new GenericTypeIndicator<List<Player>>() {
                         }));
 
-                if ( playerArray != null ) {
+                if (playerArray != null) {
                     // updating number of players
                     numPlayers = playerArray.size();
 
                     // displaying the names
                     for (Player p : playerArray) {
-                        addPlayerToGrid(p.getName());
+                        boolean isThisPlayer = thisPlayer.getNum() == p.getNum();
+
+                        addPlayerToGrid(p.getName(), isThisPlayer);
                     }
                 }
             }
@@ -107,16 +121,13 @@ public class Lobby extends AppCompatActivity {
             }
         });
 
-        // Get this player
-        Player thisPlayer = getThisPlayer();
-
         // Inform the player if he is the game creator that he can remove players
         if (thisPlayer.getNum() == 1) // If this player is the game creator
         {
             Context context = getApplicationContext();
 
             // Text to display
-            CharSequence text = "Tap a player to remove them from the game.";
+            CharSequence text = "Tap the yellow player to change your name.";
 
             // How long to display the toast
             int duration = Toast.LENGTH_LONG;
@@ -128,17 +139,36 @@ public class Lobby extends AppCompatActivity {
     }
 
 
-    public void addPlayerToGrid(String playerName) {
-        // no duplicate additions
+    public void addPlayerToGrid(String playerName, boolean isThisPlayer) {
+        /* no duplicate additions
         if (gridContainsPlayer(playerName)) {
             return;
-        }
+        } */
         // Get the grid
         LinearLayout grid = (LinearLayout) findViewById(R.id.player_container);
 
-        final Button playerButton = new Button(this);
-        playerButton.setText(playerName);
-        playerButton.setBackground(getResources().getDrawable(R.drawable.lobby_button, null));
+        // Create the EditText
+        EditText playerET = new EditText(this);
+
+        // Only one line of text
+        playerET.setSingleLine(true);
+        playerET.setFocusableInTouchMode(true);
+
+        // Set the text
+        playerET.setText(playerName);
+
+        // Set background and text color
+        if (isThisPlayer) {
+            playerET.setBackground(getResources().getDrawable(R.drawable.lobby_this_player_button,
+                    null));
+            playerET.setTextColor(Color.parseColor("#878787"));
+        } else {
+            playerET.setBackground(getResources().getDrawable(R.drawable.lobby_button, null));
+            playerET.setTextColor(Color.WHITE);
+
+            // Prevent edit text from being editable if it is not this player
+            playerET.setInputType(InputType.TYPE_NULL);
+        }
 
         // Make button width a function of display width
         DisplayMetrics metrics = new DisplayMetrics();
@@ -148,28 +178,75 @@ public class Lobby extends AppCompatActivity {
         int buttonHeight = metrics.heightPixels / 14; // 1/12 of the screen height
 
         // Set height and width
-        playerButton.setLayoutParams(new LinearLayout.LayoutParams(buttonWidth, buttonHeight));
-        playerButton.setGravity(Gravity.CENTER);
+        playerET.setLayoutParams(new LinearLayout.LayoutParams(buttonWidth, buttonHeight));
+        playerET.setGravity(Gravity.CENTER);
 
-        playerButton.setTextColor(Color.WHITE);
-
-        // Remove player on click
-        playerButton.setOnClickListener(new View.OnClickListener() {
+        playerET.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                EditText playerET = (EditText) v;
 
-                // Get the reference to the player on this phone
-                Player thisPlayer = getThisPlayer();
-
-                if (thisPlayer.getNum() == 1) // Whether this player created the game
-                {
-                    // Only allow the game creator to remove players
-                    removePlayerFromGrid(playerButton.getText().toString());
+                // Clear the player name when the user taps on the ET
+                if (thisPlayer.getName().equals(playerET.getText().toString())) {
+                    playerET.setText("");
                 }
             }
         });
 
-        grid.addView(playerButton);
+        playerET.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                EditText playerET = (EditText) v;
+
+                // Clear the player name when the user taps on the ET
+                if (hasFocus && thisPlayer.getName().equals(playerET.getText().toString())) {
+                    playerET.setText("");
+                }
+            }
+        });
+
+        playerET.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                boolean handled = false;
+
+                // Cast the calling view to an EditTExt
+                EditText playerET = (EditText) v;
+
+                // When the keyboard check/enter button is pressed
+                if (actionId == EditorInfo.IME_ACTION_SEND
+                        || actionId == EditorInfo.IME_ACTION_DONE
+                        || actionId == EditorInfo.IME_ACTION_NEXT ) {
+
+                    // Extract the current text from the edittext
+                    String name = playerET.getText().toString();
+
+                    // Hide the keyboard
+                    hideKeyboard();
+
+                    // Remove focus from the edittext, which clears the text
+                    playerET.clearFocus();
+
+                    // Set the text to the saved text before removing focus
+                    playerET.setText( name );
+
+                    // Update player name in Resistance
+                    thisPlayer.setName( name );
+
+                    // Update player name on database
+                    int playerIndex = thisPlayer.getNum() - 1;
+
+                    gameRef.child("players")
+                            .child(Integer.toString(playerIndex))
+                            .child("name").setValue(name);
+
+                }
+                return handled;
+            }
+        });
+
+        // Add view to the grid
+        grid.addView(playerET);
     }
 
     // Get the player on this phone
@@ -183,49 +260,65 @@ public class Lobby extends AppCompatActivity {
     // is this name already in the grid?
     public boolean gridContainsPlayer(String name) {
         // Get the grid
-        LinearLayout grid = (LinearLayout) findViewById( R.id.player_container );
+        LinearLayout grid = (LinearLayout) findViewById(R.id.player_container);
 
-        for ( int i = 0; i < grid.getChildCount(); i++ )
-        {
+        for (int i = 0; i < grid.getChildCount(); i++) {
             // Get the view at the current index
-            Button playerBtn = (Button) grid.getChildAt( i );
+            EditText playerET = (EditText) grid.getChildAt(i);
 
             // Check if the player name is equal to the one to remove
-            if ( playerBtn.getText().equals(name ) )
-            {
+            if (playerET.getText().toString().equals(name)) {
                 return true;
             }
         }
         return false;
     }
 
-    public void removePlayerFromGrid( String playerName )
-    {
-        // Get the grid
-        LinearLayout grid = (LinearLayout) findViewById( R.id.player_container );
+    public void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        View view = this.getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = new View(this);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
 
-        for ( int i = 0; i < grid.getChildCount(); i++ )
-        {
+    public void removePlayerFromGrid(String playerName) {
+        // Get the grid
+        LinearLayout grid = (LinearLayout) findViewById(R.id.player_container);
+
+        for (int i = 0; i < grid.getChildCount(); i++) {
             // Get the view at the current index
-            Button playerBtn = (Button) grid.getChildAt( i );
+            EditText playerET = (EditText) grid.getChildAt(i);
 
             // Check if the player name is equal to the one to remove
-            if ( playerBtn.getText().equals( playerName ) )
-            {
-                Player thisPlayer = getThisPlayer();
-
-                // Firebase stores the indices at 0
-                int playerIndex = thisPlayer.getNum() - 1;
-
-                // Remove the player from the firebase
-                gameRef.child("players").child(Integer.toString(playerIndex)).removeValue();
+            if (playerET.getText().equals(playerName)) {
+                //removePlayerFromDatabase();
 
                 // Remove the button from the grid
-                grid.removeViewAt( i );
+                grid.removeViewAt(i);
 
                 break;
             }
         }
+    }
+
+    public void clearGrid() {
+        LinearLayout grid = (LinearLayout) findViewById(R.id.player_container);
+
+        grid.removeAllViews();
+    }
+
+    public void removePlayerFromDatabase() {
+        Player thisPlayer = getThisPlayer();
+
+        // Firebase stores the indices at 0
+        int playerIndex = thisPlayer.getNum() - 1;
+
+        // Remove the player from the firebase
+        gameRef.child("players").child(Integer.toString(playerIndex)).removeValue();
     }
 
 
