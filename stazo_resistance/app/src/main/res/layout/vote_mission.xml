@@ -38,7 +38,8 @@
         android:id="@+id/ApproveButton"
         android:onClick="handleApprove"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="20dp"
+        android:textAllCaps="false"/>
 
     <Button
         android:layout_width="150dp"
@@ -47,6 +48,7 @@
         android:id="@+id/DenyButton"
         android:onClick="handleDeny"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="10dp"
+        android:textAllCaps="false"/>
 
 </LinearLayout>

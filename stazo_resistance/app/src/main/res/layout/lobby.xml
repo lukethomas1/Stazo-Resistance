@@ -51,5 +51,6 @@
         android:layout_column="12"
         android:layout_gravity="bottom|center_horizontal"
         android:layout_marginTop="0dp"
-        android:onClick="startGame"/>
+        android:onClick="startGame"
+        android:textAllCaps="false"/>
 </LinearLayout>

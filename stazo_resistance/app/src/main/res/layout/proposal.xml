@@ -130,7 +130,8 @@
         android:text="Done"
         android:id="@+id/Done"
         android:layout_gravity="center"
-        android:onClick = "done"/>
+        android:onClick = "done"
+        android:textAllCaps="false"/>
 
     <LinearLayout
         android:orientation="vertical"

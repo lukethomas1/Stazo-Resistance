@@ -41,7 +41,8 @@
         android:text="Submit"
         android:id="@+id/submitBtn"
         android:onClick="handleClick"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:textAllCaps="false"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
