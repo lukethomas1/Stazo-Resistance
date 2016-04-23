@@ -34,12 +34,16 @@ public class MissionInactiveActivity extends AppCompatActivity {
                         snapshot.child("values").child("sabotage_counter").getValue().toString());
                 Long sabotage_counter = ((Long)
                         snapshot.child("values").child("sabotage_counter").getValue()).longValue();
+                System.out.println("sabotage is " + sabotage_counter);
                 Long round = ((Long)
                         snapshot.child("values").child("round").getValue()).longValue();
+                System.out.println("round is " + round);
                 int numMems = ((Mission)
                         snapshot.child("sequence").child(round.toString()).getValue(Mission.class)).getMems();
+                System.out.println("num mems is " + numMems);
                 // Check if everybody has voted
-                if(sabotage_counter == numMems) {
+                if(sabotage_counter >= numMems) {
+                    System.out.println("let's goooo");
                     gameRef.removeEventListener(this);
                     allVotesCounted();
                 }
