@@ -78,6 +78,7 @@ public class MissionActiveActivity extends AppCompatActivity {
     public void fail(View view) {
         // Work as normal
         if(keepDefault) {
+            //SINGLE GRAB
             valuesRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 public void onDataChange(DataSnapshot snapshot) {
                     failCount = ((Integer)snapshot.child("fail_counter").getValue()).intValue();
@@ -101,7 +102,7 @@ public class MissionActiveActivity extends AppCompatActivity {
     // This method is called from both fail() and succeed() to increment the # of votes and continue
     // to the mission inactive screen to wait for the rest of the votes
     private void proceed() {
-        //TODO increment # of votes for mission in firebase
+        //SINGLE GRAB
         valuesRef.addListenerForSingleValueEvent(new ValueEventListener() {
             public void onDataChange(DataSnapshot snapshot) {
                 turnout = ((Long) snapshot.child("sabotage_counter").getValue()).longValue();

@@ -45,6 +45,7 @@ public class Lobby extends AppCompatActivity {
     private ArrayList<Player> playerArray;
     private int numPlayers;
     private Player thisPlayer;
+    private ValueEventListener playerListener; // just ref to be removed
 
     // Sequences for missions depending on number of players
     private static final Mission[] fiveSequence = {new Mission(2, 1), new Mission(3, 1),
@@ -74,14 +75,14 @@ public class Lobby extends AppCompatActivity {
         Firebase fbRef =
                 new Firebase(((Resistance) getApplication()).getFbURL());
         gameRef = fbRef.child("games").child(game_id);
-        Firebase playerRef = gameRef.child("players");
-        Firebase readyRef = gameRef.child("values").child("proceed_to_proposal");
+        final Firebase playerRef = gameRef.child("players");
+        final Firebase readyRef = gameRef.child("values").child("proceed_to_proposal");
 
         // Get this player
         thisPlayer = getThisPlayer();
 
-        // Adding players to the player array
-        playerRef.addValueEventListener(new ValueEventListener() {
+        // Adding players to the player array and also make ref to be removed
+        playerRef.addValueEventListener(playerListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 clearGrid();
@@ -113,6 +114,9 @@ public class Lobby extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (((Integer) dataSnapshot.getValue(Integer.class)).intValue() == 1) {
+                    //remove listeners
+                    readyRef.removeEventListener(this);
+                    playerRef.removeEventListener(playerListener);
                     goToProposal();
                 }
             }
@@ -218,7 +222,7 @@ public class Lobby extends AppCompatActivity {
                 // When the keyboard check/enter button is pressed
                 if (actionId == EditorInfo.IME_ACTION_SEND
                         || actionId == EditorInfo.IME_ACTION_DONE
-                        || actionId == EditorInfo.IME_ACTION_NEXT ) {
+                        || actionId == EditorInfo.IME_ACTION_NEXT) {
 
                     // Extract the current text from the edittext
                     String name = playerET.getText().toString();
@@ -230,10 +234,10 @@ public class Lobby extends AppCompatActivity {
                     playerET.clearFocus();
 
                     // Set the text to the saved text before removing focus
-                    playerET.setText( name );
+                    playerET.setText(name);
 
                     // Update player name in Resistance
-                    thisPlayer.setName( name );
+                    thisPlayer.setName(name);
 
                     // Update player name on database
                     int playerIndex = thisPlayer.getNum() - 1;

@@ -46,6 +46,7 @@ public class MissionPassTho extends AppCompatActivity{
 
     // Ultimately, just sets pass to true or false
     public void grabData() {
+        //SINGLE GRAB
         gameRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {

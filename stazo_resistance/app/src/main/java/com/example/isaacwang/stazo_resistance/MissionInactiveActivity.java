@@ -33,6 +33,7 @@ public class MissionInactiveActivity extends AppCompatActivity {
                 // Check if everybody has voted
                 if(((Long)snapshot.child("sabotage_counter").getValue()).longValue() ==
                         ((Long)snapshot.child("num_players").getValue()).longValue()) {
+                    valsRef.removeEventListener(this);
                     allVotesCounted();
                 }
             }

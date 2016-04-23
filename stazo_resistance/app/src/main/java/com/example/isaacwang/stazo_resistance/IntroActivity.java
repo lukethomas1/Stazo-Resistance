@@ -163,6 +163,7 @@ public class IntroActivity extends AppCompatActivity {
         Firebase gameDirectoryRef = fbRef.child("games");
 
         //find game id within dir
+        //SINGLE GRAB
         gameDirectoryRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
