@@ -24,5 +24,5 @@ public class Mission {
      * @return whether the mission passes
      */
 
-    public boolean missionPass(int fails) {return fails < this.fails;}
+    public boolean missionPass(int fails) {return fails >= this.fails;}
 }
