@@ -1,7 +1,9 @@
 package com.example.isaacwang.stazo_resistance;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -73,7 +75,7 @@ public class Lobby extends AppCompatActivity {
                 new Firebase(((Resistance) getApplication()).getFbURL());
         gameRef = fbRef.child("games").child(game_id);
         Firebase playerRef = gameRef.child("players");
-        Firebase readyRef = gameRef.child("values").child("ready");
+        Firebase readyRef = gameRef.child("values").child("proceed_to_proposal");
 
         // Get this player
         thisPlayer = getThisPlayer();
@@ -325,26 +327,100 @@ public class Lobby extends AppCompatActivity {
     // initializes game values
     public void startGame(View view) {
 
-        // the sequence of missions stored on database
-        gameRef.child("sequence").setValue(getMissionSequence());
+        if (numPlayers >= 5 && numPlayers <= 10) {
 
-        // we are ready for the game to start -> chain into goToProposal
-        gameRef.child("values").child("ready").setValue(new Integer(1));
+            // the sequence of missions stored on database
+            gameRef.child("sequence").setValue(getMissionSequence());
 
-        gameRef.child("values").child("num_players").setValue(new Integer(numPlayers));
+            // we are ready for the game to start -> chain into goToProposal
+            gameRef.child("values").child("proceed_to_proposal").setValue(new Integer(1));
+
+            gameRef.child("values").child("num_players").setValue(new Integer(numPlayers));
+
+            // assigns spies to the local playerArray
+            setSpies();
+            // push the spy-updates playerArray to the database
+            gameRef.child("players").setValue(playerArray);
+        }
+        else {
+            incorrectNumPlayers();
+        }
+    }
+
+    // assigns spies to the local playerArray
+    public void setSpies() {
+        int maxSpies = (numPlayers + 2) / 3; //Gets max number of spies according to playerCount
+        int numSpies = 0; //Current number of spies in array
+
+        while (numSpies < maxSpies) {
+
+            //Randomly generates index from 0 to playerCount-1
+            int randomNum = (int) (Math.random() * numPlayers);
+
+            //If the player at that index is not already a spy, make them a spy
+            if (!playerArray.get(randomNum).isSpy()) {
+                playerArray.get(randomNum).setSpy(true);
+                numSpies++;
+            }
+        }
     }
 
     // called when ready is set to 1;
     public void goToProposal() {
-        Intent i = new Intent(this, Proposal.class);
+        Intent i;
+        if (((Resistance) getApplication()).getPlayer().getNum() == 1) {
+            i = new Intent(this, Proposal.class);
+        }
+        else {
+            i = new Intent(this, ProposalInactive.class);
+        }
         i.putExtra("game_id", game_id);
         startActivity(i);
     }
 
     public Mission[] getMissionSequence() {
         return allSequences[numPlayers-5];
-        //return allSequences[0];
     }
 
+    public void incorrectNumPlayers() {
+        String[] quitArray = {"Okay"};
+        AlertDialog.Builder numEntry = new AlertDialog.Builder(this);
+
+        if (numPlayers == 1) {
+            numEntry.setTitle("You only have " + numPlayers + " player. Please try again when you have 5 to 10 players!");
+        }
+        else {
+            numEntry.setTitle("You only have " + numPlayers + " players. Please try again when you have 5 to 10 players!");
+        }
+        numEntry.setItems(quitArray, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                dialog.cancel();
+            }
+        });
+        numEntry.create();
+        numEntry.show();
+    }
+
+    /*@Override
+    public void onBackPressed() {
+        String[] quitArray = {"Yes", "No"};
+        AlertDialog.Builder numEntry = new AlertDialog.Builder(this);
+        numEntry.setTitle("Are you sure you want to quit this game?");
+        numEntry.setItems(quitArray, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                if (whichButton == 1)
+                    dialog.cancel();
+                else
+                    goToIntro();
+            }
+        });
+        numEntry.create();
+        numEntry.show();
+    }*/
+
+    public void goToIntro() {
+        Intent i = new Intent(this, IntroActivity.class);
+        startActivity(i);
+    }
 
 }

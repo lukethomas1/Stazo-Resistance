@@ -6,11 +6,21 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Joe, propose a Mission!"
+        android:text="Agents' Score: # Spies' Score: #"
+        android:id="@+id/scoreView"
+        android:layout_gravity="center_horizontal"
+        android:textSize="20dp"
+        android:layout_marginTop="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Player 1, propose a Mission!"
         android:id="@+id/proposeMission"
         android:layout_gravity="center_horizontal"
-        android:textSize="30dp"
-        android:layout_marginTop="30dp" />
+        android:textSize="25dp"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -115,7 +125,7 @@
     </ScrollView>
 
     <Button
-        android:layout_width="140dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:text="Done"
         android:id="@+id/Done"

@@ -23,25 +23,21 @@
         android:textStyle="bold" />
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:text="Approve"
         android:id="@+id/ApproveButton"
         android:onClick="handleApprove"
-        android:textSize="20dp"
         android:layout_gravity="center_horizontal"
-        android:textStyle="italic"
         android:layout_marginTop="20dp"/>
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:text="Deny"
         android:id="@+id/DenyButton"
         android:onClick="handleDeny"
-        android:textSize="20dp"
         android:layout_gravity="center_horizontal"
-        android:textStyle="italic"
         android:layout_marginTop="10dp"/>
 
 </LinearLayout>

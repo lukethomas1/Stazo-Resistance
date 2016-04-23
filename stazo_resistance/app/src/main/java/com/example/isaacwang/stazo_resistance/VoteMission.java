@@ -28,6 +28,7 @@ public class VoteMission extends AppCompatActivity{
 
     private String game_id;
     private int voted;
+    private boolean needsReset = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +44,7 @@ public class VoteMission extends AppCompatActivity{
         gameRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
+                System.out.println("why the FUCK are we here");
                 // Copying the agent array
                 agentArray = ((ArrayList<Player>) snapshot.child("agents").getValue(new GenericTypeIndicator<ArrayList<Player>>() {
                 }));
@@ -64,9 +66,17 @@ public class VoteMission extends AppCompatActivity{
                 int numPlayers = ((Integer) values.get("num_players")).intValue();
                 proCounter = ((Integer) values.get("pro_counter")).intValue();
 
+                // Reset proceed_to_vote logic for proposal screens
+                if (needsReset && getIntent().getBooleanExtra("reset_proceed", false)) {
+                    values.put("proceed_to_vote", 0);
+                    gameRef.child("values").setValue(values);
+                    needsReset = false;
+                }
+
                 //check if vote counter reached num players
                 if (voteCounter == numPlayers) {
                     //move on based off of whether or not it was approved
+                    gameRef.removeEventListener(this);
                     moveOn(proCounter > numPlayers / 2);
                 }
             }
@@ -112,8 +122,8 @@ public class VoteMission extends AppCompatActivity{
         gameRef.child("values").setValue(values);
     }
 
-
     public void moveOn(boolean accepted) {
+        System.out.println("can we MOVE ON");
         Intent toGoOrNotToGo;
         if (accepted) {
             //check if current player is an agent or not
@@ -123,13 +133,21 @@ public class VoteMission extends AppCompatActivity{
             }
             else {
                 //go to boring mission page if not
-                toGoOrNotToGo = new Intent(this, MissionActiveActivity.class); // TODO: CHANGE TO BORING MISSION SCREEN
+                toGoOrNotToGo = new Intent(this, MissionInactiveActivity.class);
             }
         }
         else {
             //go back to proposal
-            toGoOrNotToGo = new Intent(this, Proposal.class);
+            if (((Resistance) getApplication()).getPlayer().getNum() ==
+                    values.get("proposer_index")) {
+                toGoOrNotToGo = new Intent(this, Proposal.class);
+            }
+            else {
+                toGoOrNotToGo = new Intent(this, ProposalInactive.class);
+            }
         }
+        toGoOrNotToGo.putExtra("game_id", game_id);
         startActivity(toGoOrNotToGo);
+        finish();
     }
 }
