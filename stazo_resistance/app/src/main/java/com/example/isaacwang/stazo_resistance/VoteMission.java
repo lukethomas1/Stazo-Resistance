@@ -24,8 +24,7 @@ public class VoteMission extends AppCompatActivity{
     private int voteCounter;
     private int proCounter;
     private Firebase gameRef;
-    HashMap<String, Integer> values;
-
+    private HashMap<String, Integer> values;
     private String game_id;
     private int voted;
     private boolean needsReset = true;
@@ -43,10 +42,6 @@ public class VoteMission extends AppCompatActivity{
         gameRef = fbRef.child("games").child(game_id);
 
         grabData(); // also sets up continuous listener
-
-        // update the score at top
-        ((TextView)findViewById(R.id.scoreView)).setText("Agents' Score: " + resScore +
-                " Spies' Score: " + spyScore);
     }
 
     public void grabData() {
@@ -82,6 +77,13 @@ public class VoteMission extends AppCompatActivity{
                     gameRef.child("values").setValue(values);
                     needsReset = false;
                 }
+
+                //grab spy and res score
+                spyScore = ((Integer) values.get("spy_score")).intValue();
+                resScore = ((Integer) values.get("res_score")).intValue();
+                // update the score at top
+                ((TextView)findViewById(R.id.scoreView)).setText("Agents' Score: " + resScore +
+                        " Spies' Score: " + spyScore);
 
                 //check if vote counter reached num players
                 if (voteCounter == numPlayers) {

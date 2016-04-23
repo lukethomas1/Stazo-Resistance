@@ -53,13 +53,8 @@ public class Proposal extends AppCompatActivity{
         agentsRef = gameRef.child("agents");
         valsRef = gameRef.child("values");
 
-
         // initialization
         grabData();
-
-        // update the score at top
-        ((TextView)findViewById(R.id.scoreView)).setText("Agents' Score: " + resScore +
-                " Spies' Score: " + spyScore);
     }
 
     /**
@@ -121,10 +116,12 @@ public class Proposal extends AppCompatActivity{
                 // set members still needed
                 setMemsLeft();
 
-                //grab spscore
+                //grab spy and res score
                 spyScore = ((Integer) vals.get("spy_score")).intValue();
                 resScore = ((Integer) vals.get("res_score")).intValue();
-
+                // update the score at top
+                ((TextView)findViewById(R.id.scoreView)).setText("Agents' Score: " + resScore +
+                        " Spies' Score: " + spyScore);
             }
 
             @Override
