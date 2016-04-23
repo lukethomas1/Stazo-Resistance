@@ -127,9 +127,11 @@ public class IntroActivity extends AppCompatActivity {
                 imm.hideSoftInputFromWindow(input.getWindowToken(), 0);
             }
         });
+        gameIdEntry.setCancelable(false);
 
         gameIdEntry.show();
 
+        //Show keyboard on popup
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
