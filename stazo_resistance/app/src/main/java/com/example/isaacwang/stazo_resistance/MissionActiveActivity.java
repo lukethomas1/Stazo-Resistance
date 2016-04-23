@@ -24,7 +24,7 @@ public class MissionActiveActivity extends AppCompatActivity {
     private Firebase valuesRef;
     private String game_id;
     boolean keepDefault = true;
-    private int turnout;
+    private Long turnout;
     private Long failCount;
 
 
@@ -33,6 +33,7 @@ public class MissionActiveActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sabotage);
 
+        System.out.println("ActiveActivity");
         this.game_id = getIntent().getStringExtra("game_id");
 
         // Changes to Lobby handling
@@ -51,9 +52,15 @@ public class MissionActiveActivity extends AppCompatActivity {
         if(!keepDefault) {
             TextView button1 = (TextView) findViewById(R.id.button1);
             TextView button2 = (TextView) findViewById(R.id.button2);
-            button1.setText("Fail");
+            button1.setText("Sabotage");
             button2.setText("Succeed");
         }
+    }
+
+    private void allVotesCounted() {
+        Intent i = new Intent(this, MissionPassTho.class);
+        i.putExtra("game_id", game_id);
+        startActivity(i);
     }
 
     public void succeed(View view) {
@@ -95,21 +102,29 @@ public class MissionActiveActivity extends AppCompatActivity {
     // This method is called from both fail() and succeed() to increment the # of votes and continue
     // to the mission inactive screen to wait for the rest of the votes
     private void proceed() {
+        System.out.println("proceed");
         //TODO increment # of votes for mission in firebase
         valuesRef.addListenerForSingleValueEvent(new ValueEventListener() {
             public void onDataChange(DataSnapshot snapshot) {
-                turnout = ((Integer)snapshot.child("sabotage_counter").getValue()).intValue();
+                System.out.println("we're fucking in this listener wtf");
+                turnout = ((Long) snapshot.child("sabotage_counter").getValue()).longValue();
                 valuesRef.child("sabotage_counter").setValue(++turnout);
+                goToInactive();
             }
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
             }
         });
+    }
 
+    public void goToInactive() {
+        System.out.println("goToInactive");
         // After voting, send user to Inactive screen to wait for other voters
         Intent i = new Intent(this, MissionInactiveActivity.class);
+        i.putExtra("game_id", game_id);
         startActivity(i);
+        finish();
     }
 
     @Override

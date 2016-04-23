@@ -20,7 +20,7 @@ public class MissionInactiveActivity extends AppCompatActivity {
         setContentView(R.layout.mission_inactive);
 
         final Firebase valsRef;
-
+        System.out.println("onCreate");
         fbRef = new Firebase(((Resistance) getApplication()).getFbURL());
         game_id = getIntent().getStringExtra("game_id");
         valsRef = fbRef.child("games").child(game_id).child("values");
@@ -29,7 +29,7 @@ public class MissionInactiveActivity extends AppCompatActivity {
         valsRef.addValueEventListener(new ValueEventListener() {
             public void onDataChange(DataSnapshot snapshot) {
                 // Get the text box for vote counting and update it each time the # of votes increases
-                ((TextView)findViewById(R.id.votecounter)).setText(snapshot.child("voter_turnout").getValue().toString());
+                ((TextView)findViewById(R.id.votecounter)).setText(snapshot.child("sabotage_counter").getValue().toString());
 
                 // Check if everybody has voted
                 if(((Long)snapshot.child("sabotage_counter").getValue()).longValue() ==
