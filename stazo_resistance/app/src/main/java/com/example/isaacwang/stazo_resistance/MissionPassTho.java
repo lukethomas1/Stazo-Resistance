@@ -105,7 +105,7 @@ public class MissionPassTho extends AppCompatActivity{
                 vals.put("round", new Integer(round + 1));
             }
             if (((Resistance) getApplication()).getPlayer().getNum() ==
-                    vals.get("proposer_index")) {
+                    vals.get("proposer_index") + 1) {
                 intent = new Intent(this, Proposal.class);
             }
             else {

@@ -44,6 +44,7 @@ public class VoteMission extends AppCompatActivity{
         gameRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
+                System.out.println("why the FUCK are we here");
                 // Copying the agent array
                 agentArray = ((ArrayList<Player>) snapshot.child("agents").getValue(new GenericTypeIndicator<ArrayList<Player>>() {
                 }));
@@ -75,6 +76,7 @@ public class VoteMission extends AppCompatActivity{
                 //check if vote counter reached num players
                 if (voteCounter == numPlayers) {
                     //move on based off of whether or not it was approved
+                    gameRef.removeEventListener(this);
                     moveOn(proCounter > numPlayers / 2);
                 }
             }
@@ -121,6 +123,7 @@ public class VoteMission extends AppCompatActivity{
     }
 
     public void moveOn(boolean accepted) {
+        System.out.println("can we MOVE ON");
         Intent toGoOrNotToGo;
         if (accepted) {
             //check if current player is an agent or not
@@ -145,5 +148,6 @@ public class VoteMission extends AppCompatActivity{
         }
         toGoOrNotToGo.putExtra("game_id", game_id);
         startActivity(toGoOrNotToGo);
+        finish();
     }
 }
