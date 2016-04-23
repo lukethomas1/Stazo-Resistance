@@ -59,6 +59,8 @@ public class ProposalInactive extends AppCompatActivity {
 
                 // has the proposer finished?
                 if (vals.get("proceed_to_vote").intValue() == 1) {
+                    //remove listener
+                    gameRef.removeEventListener(this);
                     proceedToVote();
                 }
                 //grab spy and res score

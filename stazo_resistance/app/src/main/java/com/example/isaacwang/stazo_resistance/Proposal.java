@@ -80,6 +80,7 @@ public class Proposal extends AppCompatActivity{
     }
 
     private void grabData() {
+        //SINGLE GRAB
         gameRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {

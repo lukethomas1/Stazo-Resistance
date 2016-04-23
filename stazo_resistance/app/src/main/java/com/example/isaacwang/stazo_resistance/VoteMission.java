@@ -41,10 +41,10 @@ public class VoteMission extends AppCompatActivity{
         game_id = getIntent().getStringExtra("game_id");
         gameRef = fbRef.child("games").child(game_id);
 
-        grabData(); // also sets up continuous listener
+        startData(); // also sets up continuous listener
     }
 
-    public void grabData() {
+    public void startData() {
         //Listener for agents and values
         gameRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -87,6 +87,7 @@ public class VoteMission extends AppCompatActivity{
                 //check if vote counter reached num players
                 if (voteCounter == numPlayers) {
                     //move on based off of whether or not it was approved
+                    //remove listener
                     gameRef.removeEventListener(this);
                     moveOn(proCounter > numPlayers / 2);
                 }
