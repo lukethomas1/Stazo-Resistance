@@ -37,6 +37,7 @@ public class Proposal extends AppCompatActivity{
     private int proposer_index;            // who is proposing the mission?
     private int memsLeft;                  // how many more members do we need
     private HashMap<String, Integer> vals; // map of values
+    private int spyScore, agentScore;
 
 
     @Override
@@ -52,8 +53,12 @@ public class Proposal extends AppCompatActivity{
         agentsRef = gameRef.child("agents");
         valsRef = gameRef.child("values");
 
+
         // initialization
         grabData();
+
+        ((TextView)findViewById(R.id.scoreView)).setText("Agents' Score: " + agentScore +
+                " Spies' Score: " + spyScore);
     }
 
     /**
@@ -114,6 +119,11 @@ public class Proposal extends AppCompatActivity{
 
                 // set members still needed
                 setMemsLeft();
+
+                //grab spy score
+                spyScore = ((Integer) vals.get("spy_score")).intValue();
+                agentScore = ((Integer) vals.get("res_score")).intValue();
+
             }
 
             @Override
