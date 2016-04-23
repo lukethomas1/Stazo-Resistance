@@ -82,7 +82,7 @@ public class Proposal extends AppCompatActivity{
 
     private void grabData() {
         //SINGLE GRAB
-        gameRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        gameRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 // grabbing the player array
