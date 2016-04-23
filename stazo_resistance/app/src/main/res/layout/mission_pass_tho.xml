@@ -15,14 +15,12 @@
         android:textStyle="bold" />
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:text="Continue"
         android:id="@+id/submitBtn"
         android:onClick="handleClick"
-        android:textSize="60dp"
         android:layout_gravity="center_horizontal"
-        android:textStyle="italic"
         android:layout_marginTop="50dp"/>
 
 </LinearLayout>
