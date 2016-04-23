@@ -58,6 +58,7 @@ public class MissionPassTho extends AppCompatActivity{
 
                 round = ((Integer) vals.get("round")).intValue();
                 int fails = ((Integer) vals.get("fail_counter")).intValue();
+                System.out.println("fail counter is " + fails);
                 res_score = ((Integer) vals.get("res_score")).intValue();
                 spy_score = ((Integer) vals.get("spy_score")).intValue();
                 ArrayList<Mission> sequence = ((ArrayList<Mission>) snapshot.child("sequence").getValue(
@@ -101,9 +102,11 @@ public class MissionPassTho extends AppCompatActivity{
         else {
             // kinda jank, only the creator updates score and round
             if (((Resistance) getApplication()).getPlayer().getNum() == 1) {
+                System.out.println("you are updating this shit");
                 vals.put("res_score", new Integer(res_score));
                 vals.put("spy_score", new Integer(spy_score));
                 vals.put("round", new Integer(round + 1));
+                gameRef.child("values").setValue(vals);
             }
             if (((Resistance) getApplication()).getPlayer().getNum() ==
                     vals.get("proposer_index") + 1) {
