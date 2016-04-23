@@ -98,6 +98,10 @@ public class Proposal extends AppCompatActivity{
                         snapshot.child("values").getValue(
                                 new GenericTypeIndicator<HashMap<String, Integer>>() {
                         }));
+
+                // Set logic for the continue in MissionPassTho
+                vals.put("proceed_from_MissionPassTho", new Integer(0));
+                
                 int round = ((Integer) vals.get("round")).intValue();
                 ArrayList<Mission> sequence = ((ArrayList<Mission>) snapshot.child("sequence").getValue(
                         new GenericTypeIndicator<List<Mission>>() {

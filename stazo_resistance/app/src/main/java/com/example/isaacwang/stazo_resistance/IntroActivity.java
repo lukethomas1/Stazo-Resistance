@@ -105,6 +105,8 @@ public class IntroActivity extends AppCompatActivity {
         //Default to numberpad
         input.setInputType(InputType.TYPE_CLASS_NUMBER);
 
+
+
         gameIdEntry.setTitle("Enter the game code");
         gameIdEntry.setView(input);
         gameIdEntry.setPositiveButton("OK", new DialogInterface.OnClickListener() {
