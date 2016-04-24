@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/Stazo_Resistance.iml" filepath="$PROJECT_DIR$/Stazo_Resistance.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/stazo_resistance.iml" filepath="$PROJECT_DIR$/stazo_resistance.iml" />
     </modules>
   </component>
 </project>

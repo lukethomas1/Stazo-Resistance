@@ -24,6 +24,7 @@ import java.util.List;
  */
 public class MissionPassTho extends AppCompatActivity{
     private Firebase gameRef;
+    private Firebase valsRef;
     private String game_id;
     private HashMap<String, Integer> vals;
     private boolean pass;
@@ -38,11 +39,27 @@ public class MissionPassTho extends AppCompatActivity{
 
         this.game_id = getIntent().getStringExtra("game_id");
 
-        Firebase fbRef =
-                new Firebase(((Resistance) getApplication()).getFbURL());
+        Firebase fbRef = new Firebase(((Resistance) getApplication()).getFbURL());
+
         gameRef = fbRef.child("games").child(game_id);
+        valsRef = fbRef.child("games").child(game_id).child("values");
+
         grabData();
+
+        valsRef.addValueEventListener(new ValueEventListener() {
+            public void onDataChange(DataSnapshot snapshot) {
+                if(((Long)(snapshot.child("proceed_from_MissionPassTho")).getValue()).longValue() == 1){
+                    valsRef.removeEventListener(this);
+                    proceed();
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+            }
+        });
     }
+
 
     // Ultimately, just sets pass to true or false
     public void grabData() {
@@ -58,12 +75,13 @@ public class MissionPassTho extends AppCompatActivity{
 
                 round = ((Integer) vals.get("round")).intValue();
                 int fails = ((Integer) vals.get("fail_counter")).intValue();
+                System.out.println("fail counter is " + fails);
                 res_score = ((Integer) vals.get("res_score")).intValue();
                 spy_score = ((Integer) vals.get("spy_score")).intValue();
                 ArrayList<Mission> sequence = ((ArrayList<Mission>) snapshot.child("sequence").getValue(
                         new GenericTypeIndicator<List<Mission>>() {
                         }));
-                pass = sequence.get(round).missionPass(fails);
+                pass = (sequence.get(round).getFails() > fails);
 
                 if (pass) {
                     ((TextView) findViewById(R.id.missionPassedText)).setText("Mission Passed! :D");
@@ -82,8 +100,21 @@ public class MissionPassTho extends AppCompatActivity{
         });
     }
 
-    public void handleClick(View view)
-    {
+    public void handleClick(View view) {
+        valsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            public void onDataChange(DataSnapshot snapshot) {
+                valsRef.child("proceed_from_MissionPassTho").setValue(1);
+                valsRef.removeEventListener(this);
+                proceed();
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+            }
+        });
+    }
+
+    private void proceed() {
         Intent intent;
         //Resistance won
         if (res_score == 3) {
@@ -101,9 +132,11 @@ public class MissionPassTho extends AppCompatActivity{
         else {
             // kinda jank, only the creator updates score and round
             if (((Resistance) getApplication()).getPlayer().getNum() == 1) {
+                System.out.println("you are updating this shit");
                 vals.put("res_score", new Integer(res_score));
                 vals.put("spy_score", new Integer(spy_score));
                 vals.put("round", new Integer(round + 1));
+                gameRef.child("values").setValue(vals);
             }
             if (((Resistance) getApplication()).getPlayer().getNum() ==
                     vals.get("proposer_index") + 1) {

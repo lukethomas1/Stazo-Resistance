@@ -55,6 +55,7 @@ public class Proposal extends AppCompatActivity{
 
         // initialization
         grabData();
+        updateScoreLabel(); // constant listener
     }
 
     /**
@@ -97,7 +98,19 @@ public class Proposal extends AppCompatActivity{
                 vals = ((HashMap<String, Integer>)
                         snapshot.child("values").getValue(
                                 new GenericTypeIndicator<HashMap<String, Integer>>() {
-                        }));
+                                }));
+
+
+                // Reset logic for the continue in MissionPassTho
+                vals.put("proceed_from_MissionPassTho", new Integer(0));
+                // Reset logic for sabotaging
+                vals.put("sabotage_counter", new Integer(0));
+                // Reset fail counter
+                vals.put("fail_counter", new Integer(0));
+                // Push that update to the database
+                valsRef.setValue(vals);
+
+
                 int round = ((Integer) vals.get("round")).intValue();
                 ArrayList<Mission> sequence = ((ArrayList<Mission>) snapshot.child("sequence").getValue(
                         new GenericTypeIndicator<List<Mission>>() {
@@ -116,12 +129,30 @@ public class Proposal extends AppCompatActivity{
 
                 // set members still needed
                 setMemsLeft();
+            }
 
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+            }
+        });
+    }
+
+    /**
+     * Constant listener for score changes
+     */
+    public void updateScoreLabel() {
+        gameRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                vals = ((HashMap<String, Integer>)
+                        snapshot.child("values").getValue(
+                                new GenericTypeIndicator<HashMap<String, Integer>>() {
+                                }));
                 //grab spy and res score
                 spyScore = ((Integer) vals.get("spy_score")).intValue();
                 resScore = ((Integer) vals.get("res_score")).intValue();
                 // update the score at top
-                ((TextView)findViewById(R.id.scoreView)).setText("Agents' Score: " + resScore +
+                ((TextView) findViewById(R.id.scoreView)).setText("Agents' Score: " + resScore +
                         " Spies' Score: " + spyScore);
             }
 
@@ -130,6 +161,7 @@ public class Proposal extends AppCompatActivity{
             }
         });
     }
+
     /**
      * Sets names for all the buttons
      */

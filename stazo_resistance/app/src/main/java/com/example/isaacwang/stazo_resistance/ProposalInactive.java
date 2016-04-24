@@ -33,7 +33,7 @@ public class ProposalInactive extends AppCompatActivity {
                 new Firebase(((Resistance) getApplication()).getFbURL());
         game_id = getIntent().getStringExtra("game_id");
         gameRef = fbRef.child("games").child(game_id);
-        grabData();
+        grabData(); // constant listener
     }
 
     private void grabData() {

@@ -17,6 +17,7 @@ public class Mission {
         fails = 0;
     }
     public int getMems(){return mems;}
+    public int getFails(){return fails;}
 
     /**
      * Checks if mission passes or fails
@@ -24,5 +25,5 @@ public class Mission {
      * @return whether the mission passes
      */
 
-    public boolean missionPass(int fails) {return fails < this.fails;}
+    public boolean missionPass(int fails) {return fails >= this.fails;}
 }

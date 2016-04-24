@@ -24,7 +24,6 @@ public class MissionInactiveActivity extends AppCompatActivity {
         fbRef = new Firebase(((Resistance) getApplication()).getFbURL());
         game_id = getIntent().getStringExtra("game_id");
         gameRef = fbRef.child("games").child(game_id);
-        valsRef = fbRef.child("games").child(game_id).child("values");
 
         // This will constantly update the # of people that have voted
         gameRef.addValueEventListener(new ValueEventListener() {
