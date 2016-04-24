@@ -142,6 +142,10 @@ public class Proposal extends AppCompatActivity{
         gameRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
+                vals = ((HashMap<String, Integer>)
+                        snapshot.child("values").getValue(
+                                new GenericTypeIndicator<HashMap<String, Integer>>() {
+                                }));
                 //grab spy and res score
                 spyScore = ((Integer) vals.get("spy_score")).intValue();
                 resScore = ((Integer) vals.get("res_score")).intValue();
