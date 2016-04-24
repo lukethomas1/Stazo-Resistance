@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:weightSum="1">
@@ -11,7 +11,8 @@
         android:textColor="#000000"
         android:id="@+id/titleTextView"
         android:layout_gravity="center_horizontal"
-        android:textSize="40dp" />
+        android:textSize="40dp"
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -20,7 +21,10 @@
         android:textColor="#000000"
         android:id="@+id/idTextView"
         android:layout_gravity="center_horizontal"
-        android:textSize="30dp" />
+        android:textSize="30dp"
+        android:layout_below="@+id/titleTextView"
+        android:layout_alignEnd="@+id/goButton"
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -29,7 +33,9 @@
         android:textColor="#000000"
         android:id="@+id/lobbyTextView"
         android:layout_gravity="center_horizontal"
-        android:textSize="35dp" />
+        android:textSize="35dp"
+        android:layout_below="@+id/idTextView"
+        android:layout_centerHorizontal="true" />
 
     <LinearLayout
         android:id="@+id/player_container"
@@ -39,6 +45,7 @@
         android:rowCount="5"
         android:layout_gravity="center_horizontal"
         android:gravity="center"
+        android:layout_below="@+id/lobbyTextView"
         android:useDefaultMargins="true"
         android:orientation="vertical">
     </LinearLayout>
@@ -50,7 +57,19 @@
         android:layout_row="25"
         android:layout_column="12"
         android:layout_gravity="bottom|center_horizontal"
-        android:layout_marginTop="0dp"
         android:onClick="startGame"
-        android:textAllCaps="false"/>
-</LinearLayout>
+        android:textAllCaps="false"
+        android:layout_marginBottom="48dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:id="@+id/button"
+        android:background="@drawable/info_outline"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:onClick="displayInstructionToast"
+        android:layout_alignParentRight="true" />
+</RelativeLayout>

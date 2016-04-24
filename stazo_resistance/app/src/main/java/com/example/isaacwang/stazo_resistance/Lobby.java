@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -68,8 +69,18 @@ public class Lobby extends AppCompatActivity {
         // Set the layout
         setContentView(R.layout.lobby);
 
+        // Set game ID
         this.game_id = getIntent().getStringExtra("game_id");
-        ((TextView) findViewById(R.id.idTextView)).setText(game_id);
+        TextView idTextView = ((TextView) findViewById(R.id.idTextView));
+
+        idTextView.setText(game_id);
+
+        RelativeLayout.LayoutParams lp =
+                new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
+                                                RelativeLayout.LayoutParams.WRAP_CONTENT);
+        lp.addRule(RelativeLayout.CENTER_IN_PARENT);
+        lp.addRule(RelativeLayout.BELOW, R.id.titleTextView);
+        idTextView.setLayoutParams( lp );
 
         // Changes to Lobby handling
         Firebase fbRef =
@@ -126,24 +137,21 @@ public class Lobby extends AppCompatActivity {
 
             }
         });
-
-        // Inform the player if he is the game creator that he can remove players
-        if (thisPlayer.getNum() == 1) // If this player is the game creator
-        {
-            Context context = getApplicationContext();
-
-            // Text to display
-            CharSequence text = "Tap the yellow player to change your name.";
-
-            // How long to display the toast
-            int duration = Toast.LENGTH_LONG;
-
-            // Display toast
-            Toast toast = Toast.makeText(context, text, duration);
-            toast.show();
-        }
     }
 
+    public void displayInstructionToast( View view ) {
+        Context context = getApplicationContext();
+
+        // Text to display
+        CharSequence text = "Tap the yellow player to change your name.";
+
+        // How long to display the toast
+        int duration = Toast.LENGTH_LONG;
+
+        // Display toast
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
+    }
 
     public void addPlayerToGrid(String playerName, boolean isThisPlayer) {
         /* no duplicate additions
