@@ -81,7 +81,7 @@ public class MissionPassTho extends AppCompatActivity{
                 ArrayList<Mission> sequence = ((ArrayList<Mission>) snapshot.child("sequence").getValue(
                         new GenericTypeIndicator<List<Mission>>() {
                         }));
-                pass = sequence.get(round).missionPass(fails);
+                pass = (sequence.get(round).getFails() > fails);
 
                 if (pass) {
                     ((TextView) findViewById(R.id.missionPassedText)).setText("Mission Passed! :D");

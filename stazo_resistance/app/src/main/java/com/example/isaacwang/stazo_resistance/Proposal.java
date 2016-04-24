@@ -105,6 +105,8 @@ public class Proposal extends AppCompatActivity{
                 vals.put("proceed_from_MissionPassTho", new Integer(0));
                 // Reset logic for sabotaging
                 vals.put("sabotage_counter", new Integer(0));
+                // Reset fail counter
+                vals.put("fail_counter", new Integer(0));
                 // Push that update to the database
                 valsRef.setValue(vals);
 
