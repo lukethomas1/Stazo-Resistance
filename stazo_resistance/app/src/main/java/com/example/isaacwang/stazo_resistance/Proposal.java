@@ -82,7 +82,7 @@ public class Proposal extends AppCompatActivity{
 
     private void grabData() {
         //SINGLE GRAB
-        gameRef.addValueEventListener(new ValueEventListener() {
+        gameRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 // grabbing the player array
@@ -98,7 +98,7 @@ public class Proposal extends AppCompatActivity{
                 vals = ((HashMap<String, Integer>)
                         snapshot.child("values").getValue(
                                 new GenericTypeIndicator<HashMap<String, Integer>>() {
-                        }));
+                                }));
 
 
                 // Reset logic for the continue in MissionPassTho
@@ -139,16 +139,17 @@ public class Proposal extends AppCompatActivity{
      * Constant listener for score changes
      */
     public void updateScoreLabel() {
-        gameRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        gameRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 //grab spy and res score
                 spyScore = ((Integer) vals.get("spy_score")).intValue();
                 resScore = ((Integer) vals.get("res_score")).intValue();
                 // update the score at top
-                ((TextView)findViewById(R.id.scoreView)).setText("Agents' Score: " + resScore +
+                ((TextView) findViewById(R.id.scoreView)).setText("Agents' Score: " + resScore +
                         " Spies' Score: " + spyScore);
             }
+
             @Override
             public void onCancelled(FirebaseError firebaseError) {
             }
